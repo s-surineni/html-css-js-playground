@@ -1,4 +1,4 @@
-#add-btn {
+.add-btn {
     padding: 10px 20px;
     background-color: #007bff;
     color: white;
@@ -9,10 +9,38 @@
     transition: background-color 0.3s ease;
 }
 
-#add-btn:hover {
+.add-btn:hover {
     background-color: #0056b3;
 }
 
-#add-btn:active {
+.add-btn:active {
     background-color: #004085;
+}
+
+.wrapper {
+    margin-top: 20px;
+}
+
+.progress-container {
+    width: 300px;
+    height: 20px;
+    border: 1px solid #333;
+    margin-bottom: 10px;
+    background: #eee;
+}
+
+.progress-fill {
+    height: 100%;
+    background: #007bff;
+    width: 0%;
+    transition: width 2s ease;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    /* Start at zero */
+    background: #0070d2;
+    /* Salesforce blue for luck! */
+    transition: width 3s linear;
 }
