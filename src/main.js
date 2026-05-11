@@ -5,16 +5,8 @@ import { setupCounter } from './counter.js'
 
 document.querySelector('#app').innerHTML = `
   <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">
-      <img src="${javascriptLogo}" class="logo vanilla" alt="JavaScript logo" />
-    </a>
-    <h1>Hello Vite!</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
+
+
     <div class="card grid-card">
       <h2>🎯 Learn CSS Grid</h2>
       <p>Master CSS Grid Layout with interactive examples and practice exercises</p>
@@ -25,9 +17,16 @@ document.querySelector('#app').innerHTML = `
       <p>Explore components with smooth height transitions - accordions, dropdowns, and more</p>
       <a href="/height-animation.html" class="animation-link">View Animations →</a>
     </div>
-    <p class="read-the-docs">
-      Click on the Vite logo to learn more
-    </p>
+    <div class="card progressbar-card">
+      <h2>📊 Progress Bar</h2>
+      <p>Interactive progress bar demonstrations and examples</p>
+      <a href="/src/progressbar/progressbar.html" class="progressbar-link">View Progress Bars →</a>
+    </div>
+    <div class="card progressbar-card">
+      <h2>📊 Progress Bar With Throttle</h2>
+      <p>Interactive progress bar demonstrations and examples</p>
+      <a href="/src/progress-bar-with-throttle/progress-bar-with-throttle.html" class="progressbar-link">View Progress Bars →</a>
+    </div>
   </div>
 `
 
