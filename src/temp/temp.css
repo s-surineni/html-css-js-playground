@@ -1,13 +1,12 @@
-.progress-container {
-    height: 20px;
+.progress-bar {
     width: 300px;
+    height: 20px;
     background-color: gray;
 }
 
 .progress-fill {
-    background-color: aqua;
+    height: 100%;
     width: 0%;
-  height: 100%;
-
-      transition: width 3s linear; 
+    transition: width 3s linear;
+    background-color: aqua;
 }
