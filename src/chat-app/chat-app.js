@@ -3,12 +3,22 @@ class MessageStore {
     this.messages = []
   }
 
+// for first iteration do messages.sort for simplicity
   addMessage(message) {
-    this.messages.push(message)
+    // Find correct insertion position using binary search
+    let left = 0
+    let right = this.messages.length
 
-    this.messages.sort((a, b) => {
-      return a.timestamp - b.timestamp
-    })
+    while (left < right) {
+      const mid = Math.floor((left + right) / 2)
+      if (this.messages[mid].timestamp < message.timestamp) {
+        left = mid + 1
+      } else {
+        right = mid
+      }
+    }
+
+    this.messages.splice(left, 0, message)
   }
 
   getMessages() {
