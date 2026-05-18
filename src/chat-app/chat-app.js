@@ -75,11 +75,47 @@ class ChatRenderer {
 }
 
 class ChatApp {
-  constructor(container) {
+  constructor(container, form, input) {
     this.store = new MessageStore()
 
     this.renderer =
       new ChatRenderer(container)
+
+    this.form = form
+
+    this.input = input
+
+    this.attachFormListener()
+  }
+
+  attachFormListener() {
+    this.form.addEventListener(
+      "submit",
+      (e) => {
+        e.preventDefault()
+
+        const text =
+          this.input.value.trim()
+
+        if (!text) {
+          return
+        }
+
+        this.receiveMessage({
+          id: crypto.randomUUID(),
+
+          senderName: "You",
+
+          text,
+
+          timestamp: Date.now(),
+
+          isSelf: true
+        })
+
+        this.input.value = ""
+      }
+    )
   }
 
   receiveMessage(message) {
@@ -101,7 +137,7 @@ const messageInput =
   document.getElementById("messageInput")
 
 const app =
-  new ChatApp(messagesContainer)
+  new ChatApp(messagesContainer, chatForm, messageInput)
 
 app.receiveMessage({
   id: 1,
@@ -126,34 +162,6 @@ app.receiveMessage({
   timestamp: Date.now() - 50000,
   isSelf: true
 })
-
-chatForm.addEventListener(
-  "submit",
-  function (e) {
-    e.preventDefault()
-
-    const text =
-      messageInput.value.trim()
-
-    if (!text) {
-      return
-    }
-
-    app.receiveMessage({
-      id: crypto.randomUUID(),
-
-      senderName: "You",
-
-      text,
-
-      timestamp: Date.now(),
-
-      isSelf: true
-    })
-
-    messageInput.value = ""
-  }
-)
 
 setTimeout(() => {
   app.receiveMessage({
