@@ -36,5 +36,10 @@ document.querySelector('#app').innerHTML = `
       <p>Interactive progress bar demonstrations and examples</p>
       <a href="/src/chat-app/chat-app.html" class="progressbar-link">Chat app →</a>
     </div>
+    <div class="card">
+      <h2>🧬 OOP Practice</h2>
+      <p>Practice JavaScript OOP concepts — classes, inheritance, getters/setters, static methods, private fields, and polymorphism</p>
+      <a href="/src/oop-practice/oop-practice.html">Start Practicing →</a>
+    </div>
   </div>
 `
