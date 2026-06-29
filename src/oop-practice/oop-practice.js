@@ -1,10 +1,12 @@
 // =====================================
 // 🧬 OOP PRACTICE — live editable playground
 // =====================================
-// Each exercise renders an editable code box. Click "Run" to evaluate the code
-// you typed (via `new Function`), run a small test against it, and see the
-// output — console.log included. "Reset" restores the starter code.
+// The editor/run/output machinery lives in the reusable code-playground module;
+// this file only holds the exercise data and mounts one playground per card.
 // =====================================
+
+import { mountCodePlayground } from '../lib/code-playground.js';
+import '../lib/code-playground.css';
 
 // Each exercise: starter code the user edits, plus a `test` snippet that
 // exercises the classes/objects the starter defines and returns a string to
@@ -172,98 +174,15 @@ return poly;`,
   },
 };
 
-// Format a console.log argument the way a dev console would.
-function format(value) {
-  if (typeof value === 'string') return value;
-  if (value instanceof Error) return value.toString();
-  try {
-    return JSON.stringify(value);
-  } catch {
-    return String(value);
-  }
-}
-
-// Evaluate `userCode`, then run `test` in the same scope. Captures console.log
-// output and either the test's return value or a thrown error.
-function runCode(userCode, test) {
-  const logs = [];
-  const sandboxConsole = {
-    log: (...args) => logs.push(args.map(format).join(' ')),
-    error: (...args) => logs.push(args.map(format).join(' ')),
-    warn: (...args) => logs.push(args.map(format).join(' ')),
-  };
-  try {
-    // The test snippet is nested so it closes over everything userCode declares.
-    const body = `${userCode}\n;return (function () {\n${test}\n})();`;
-    const result = new Function('console', body)(sandboxConsole);
-    return { logs, result, error: null };
-  } catch (error) {
-    return { logs, result: null, error };
-  }
-}
-
-// Render the run result into an exercise's output panel.
-function renderOutput(outputEl, userCode, test) {
-  const { logs, result, error } = runCode(userCode, test);
-  const lines = [...logs];
-  if (typeof result === 'string' && result.length) lines.push(result);
-
-  if (error) {
-    outputEl.classList.add('has-error');
-    const prefix = lines.length ? lines.join('\n') + '\n' : '';
-    outputEl.textContent = `${prefix}❌ ${error.name}: ${error.message}`;
-  } else {
-    outputEl.classList.remove('has-error');
-    outputEl.textContent = lines.length ? '✅ ' + lines.join('\n') : '✅ (no output)';
-  }
-}
-
-// Build the editor UI inside each exercise card and wire up Run / Reset.
-function mountEditor(section) {
-  const id = section.dataset.exercise;
-  const exercise = exercises[id];
+// Mount one editable playground per exercise card.
+document.querySelectorAll('section.exercise[data-exercise]').forEach((section) => {
+  const exercise = exercises[section.dataset.exercise];
   if (!exercise) return;
-
-  const editor = document.createElement('textarea');
-  editor.className = 'code-editor';
-  editor.spellcheck = false;
-  editor.value = exercise.starter;
-  editor.setAttribute('aria-label', `Code editor for exercise ${id}`);
-  // Tab inserts two spaces instead of moving focus out of the editor.
-  editor.addEventListener('keydown', (e) => {
-    if (e.key !== 'Tab') return;
-    e.preventDefault();
-    const { selectionStart: start, selectionEnd: end, value } = editor;
-    editor.value = value.slice(0, start) + '  ' + value.slice(end);
-    editor.selectionStart = editor.selectionEnd = start + 2;
+  mountCodePlayground(section, {
+    code: exercise.starter,
+    test: exercise.test,
+    label: `Code editor for exercise ${section.dataset.exercise}`,
   });
-
-  const output = document.createElement('div');
-  output.className = 'output';
-  output.textContent = 'Click Run to execute your code.';
-
-  const runBtn = document.createElement('button');
-  runBtn.type = 'button';
-  runBtn.textContent = '▶ Run';
-  runBtn.addEventListener('click', () => renderOutput(output, editor.value, exercise.test));
-
-  const resetBtn = document.createElement('button');
-  resetBtn.type = 'button';
-  resetBtn.className = 'secondary';
-  resetBtn.textContent = '↺ Reset';
-  resetBtn.addEventListener('click', () => {
-    editor.value = exercise.starter;
-    output.classList.remove('has-error');
-    output.textContent = 'Click Run to execute your code.';
-  });
-
-  const actions = document.createElement('div');
-  actions.className = 'actions';
-  actions.append(runBtn, resetBtn);
-
-  section.append(editor, actions, output);
-}
-
-document.querySelectorAll('section.exercise[data-exercise]').forEach(mountEditor);
+});
 
 console.log('🧬 OOP Practice loaded — edit the code on the page and click Run!');
