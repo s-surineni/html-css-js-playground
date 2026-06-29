@@ -35,7 +35,7 @@ const demos = [
     icon: '📊',
     title: 'Progress Bar',
     desc: 'Interactive progress bar demonstrations and examples',
-    href: '/src/progressbar/progressbar.html',
+    href: '/src/progress-bar/progress-bar.html',
     cta: 'View Progress Bar →',
   },
   {
@@ -47,9 +47,9 @@ const demos = [
   },
   {
     icon: '📊',
-    title: 'Progress Bar With Throttle 2',
+    title: 'Progress Bar With transitionend',
     desc: 'Same queue, advanced by the CSS transitionend event instead of a timeout',
-    href: '/src/progress-bar-with-throttle2/progress-bar-with-throttle2.html',
+    href: '/src/progress-bar-with-transitionend/progress-bar-with-transitionend.html',
     cta: 'View Progress Bar →',
   },
   {
@@ -65,13 +65,6 @@ const demos = [
     desc: 'Practice JavaScript OOP concepts — classes, inheritance, getters/setters, static methods, private fields, and polymorphism',
     href: '/src/oop-practice/oop-practice.html',
     cta: 'Start Practicing →',
-  },
-  {
-    icon: '🧪',
-    title: 'Temp Playground',
-    desc: 'Scratch space for in-progress experiments',
-    href: '/src/temp/temp.html',
-    cta: 'View Temp Component →',
   },
 ]
 
