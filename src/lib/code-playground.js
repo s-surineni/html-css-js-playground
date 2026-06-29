@@ -23,36 +23,78 @@ function format(value) {
   }
 }
 
+// Structural equality for assertions: handles primitives, arrays, and plain
+// objects. Uses Object.is for primitives so NaN === NaN and +0 !== -0.
+function deepEqual(a, b) {
+  if (Object.is(a, b)) return true;
+  if (typeof a !== 'object' || typeof b !== 'object' || a === null || b === null) {
+    return false;
+  }
+  if (Array.isArray(a) !== Array.isArray(b)) return false;
+  const keysA = Object.keys(a);
+  const keysB = Object.keys(b);
+  if (keysA.length !== keysB.length) return false;
+  return keysA.every((k) => deepEqual(a[k], b[k]));
+}
+
 // Evaluate `userCode`, then run `test` in the same scope so it can see whatever
-// the code declares. Captures console.log/error/warn. Returns { logs, result, error }.
+// the code declares. The test gets two helpers in scope:
+//   console.{log,error,warn} — captured into `logs`
+//   expect(actual, expected, label?) — recorded into `assertions`
+// Returns { logs, assertions, result, error }.
 export function runCode(userCode, test = '') {
   const logs = [];
   const capture = (...args) => logs.push(args.map(format).join(' '));
   const sandboxConsole = { log: capture, error: capture, warn: capture };
+
+  const assertions = [];
+  const expect = (actual, expected, label) => {
+    const passed = deepEqual(actual, expected);
+    assertions.push({ passed, label, actual, expected });
+    return passed;
+  };
+
   try {
     const body = `${userCode}\n;return (function () {\n${test}\n})();`;
     const compile = Function; // dynamic compile — see security note in header
-    const result = new compile('console', body)(sandboxConsole);
-    return { logs, result, error: null };
+    const result = new compile('console', 'expect', body)(sandboxConsole, expect);
+    return { logs, assertions, result, error: null };
   } catch (error) {
-    return { logs, result: null, error };
+    return { logs, assertions, result: null, error };
   }
 }
 
-// Build the combined log + result lines and render them into `outputEl`,
-// toggling the error state.
+// Render one assertion as a single ✅/❌ line, showing the expected/actual diff
+// when it fails.
+function formatAssertion({ passed, label, actual, expected }) {
+  if (passed) return `✅ ${label ?? `${format(actual)} === ${format(expected)}`}`;
+  const what = label ? `${label}\n   ` : '';
+  return `❌ ${what}expected ${format(expected)} but got ${format(actual)}`;
+}
+
+// Build the combined log + assertion + result lines and render them into
+// `outputEl`. The panel shows the error state when the code throws OR when any
+// assertion fails.
 function renderOutput(outputEl, userCode, test) {
-  const { logs, result, error } = runCode(userCode, test);
-  const lines = [...logs];
+  const { logs, assertions, result, error } = runCode(userCode, test);
+  const lines = [...logs, ...assertions.map(formatAssertion)];
   if (typeof result === 'string' && result.length) lines.push(result);
+
+  const failed = assertions.some((a) => !a.passed);
 
   if (error) {
     outputEl.classList.add('has-error');
     const prefix = lines.length ? lines.join('\n') + '\n' : '';
     outputEl.textContent = `${prefix}❌ ${error.name}: ${error.message}`;
+  } else if (failed) {
+    outputEl.classList.add('has-error');
+    outputEl.textContent = lines.join('\n');
   } else {
     outputEl.classList.remove('has-error');
-    outputEl.textContent = lines.length ? '✅ ' + lines.join('\n') : '✅ (no output)';
+    // Assertion lines already carry their own ✅; only the log-only path needs a
+    // leading marker.
+    if (!lines.length) outputEl.textContent = '✅ (no output)';
+    else outputEl.textContent = assertions.length ? lines.join('\n') : '✅ ' + lines.join('\n');
   }
 }
 
@@ -64,7 +106,9 @@ const IDLE_MESSAGE = 'Click Run to execute your code.';
  * @param {HTMLElement} target  Element to append the playground into.
  * @param {object} options
  * @param {string} options.code             Starter code shown in the editor (required).
- * @param {string} [options.test='']        Snippet run after the code; its return value is displayed.
+ * @param {string} [options.test='']        Snippet run after the code. It can console.log,
+ *                                           call expect(actual, expected, label?) to assert,
+ *                                           and/or return a string to display.
  * @param {string} [options.label]          aria-label for the editor textarea.
  * @param {boolean} [options.autoRun=false] Run once immediately after mounting.
  * @returns {{ getCode: () => string, setCode: (c: string) => void, run: () => void, reset: () => void, elements: object }}

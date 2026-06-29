@@ -53,10 +53,13 @@ const exercises = [
     hint: `Call <code>super(title, author, year)</code> in the constructor.
       Use <code>super.getInfo()</code> inside the overridden method.`,
     test: `const lb = new LibraryBook('1984', 'George Orwell', 1949);
-let msg = lb.getInfo() + '\\n';
-msg += 'borrow: ' + lb.borrow() + '\\n';
-msg += 'return: ' + lb.returnBook();
-return msg;`,
+expect(lb.isBorrowed, false, 'starts not borrowed');
+expect(lb.getInfo(), '1984 by George Orwell (1949) — available', 'getInfo() when available');
+lb.borrow();
+expect(lb.isBorrowed, true, 'borrow() sets the flag');
+expect(lb.getInfo(), '1984 by George Orwell (1949) — borrowed', 'getInfo() reflects borrowed');
+lb.returnBook();
+expect(lb.isBorrowed, false, 'returnBook() clears the flag');`,
   },
   {
     id: '3',
@@ -68,10 +71,12 @@ return msg;`,
     hint: `Use <code>_width</code> / <code>_height</code> as backing fields.
       <code>get area() { }</code>, <code>set width(v) { if (v > 0) … }</code>`,
     test: `const r = new Rectangle(10, 5);
-let s = 'area = ' + r.area + ', perimeter = ' + r.perimeter + '\\n';
+expect(r.area, 50, 'area = width × height');
+expect(r.perimeter, 30, 'perimeter = 2 × (w + h)');
 r.width = 20;
-s += 'after width=20 → area = ' + r.area;
-return s;`,
+expect(r.area, 100, 'area updates after a valid width setter');
+r.width = -4;
+expect(r.width, 20, 'setter rejects non-positive width');`,
   },
   {
     id: '4',
@@ -81,10 +86,10 @@ return s;`,
       and static methods <code>celsiusToFahrenheit(c)</code> /
       <code>fahrenheitToCelsius(f)</code>.`,
     hint: `<code>static methodName() { … }</code> — call on the class, not on an instance.`,
-    test: `const c = 25, f = 77;
-const r1 = TemperatureConverter.celsiusToFahrenheit(c);
-const r2 = TemperatureConverter.fahrenheitToCelsius(f);
-return \`\${c}°C = \${r1.toFixed(1)}°F\\n\${f}°F = \${r2.toFixed(1)}°C\`;`,
+    test: `expect(TemperatureConverter.celsiusToFahrenheit(25), 77, '25°C → 77°F');
+expect(TemperatureConverter.celsiusToFahrenheit(0), 32, '0°C → 32°F');
+expect(TemperatureConverter.fahrenheitToCelsius(77), 25, '77°F → 25°C');
+expect(TemperatureConverter.FACTOR, 1.8, 'static FACTOR is 9/5');`,
   },
   {
     id: '5',
@@ -96,11 +101,13 @@ return \`\${c}°C = \${r1.toFixed(1)}°F\\n\${f}°F = \${r2.toFixed(1)}°C\`;`,
     hint: `Declare <code>#balance</code> at the top of the class body.
       Access it with <code>this.#balance</code> inside methods.`,
     test: `const acct = new BankAccount('Alice', 1000);
-let log = 'balance = $' + acct.balance + '\\n';
-log += 'deposit(500): ' + acct.deposit(500) + '\\n';
-log += 'withdraw(200): ' + acct.withdraw(200) + '\\n';
-log += 'final balance = $' + acct.balance;
-return log;`,
+expect(acct.balance, 1000, 'initial balance');
+acct.deposit(500);
+expect(acct.balance, 1500, 'deposit(500) adds to balance');
+acct.withdraw(200);
+expect(acct.balance, 1300, 'withdraw(200) subtracts from balance');
+acct.withdraw(99999);
+expect(acct.balance, 1300, 'over-withdraw is rejected');`,
   },
   {
     id: '6',
@@ -111,12 +118,11 @@ return log;`,
       overriding <code>getArea()</code>.`,
     hint: `Use <code>Math.PI</code> for pi. Call <code>super()</code> in subclass constructors.
       Polymorphism lets you call the same method on different shapes.`,
-    test: `const shapes = [new Circle(5), new Square(4)];
-let poly = '';
-shapes.forEach((s) => {
-  poly += \`\${s.constructor.name} area = \${s.getArea().toFixed(2)}\\n\`;
-});
-return poly;`,
+    test: `expect(new Circle(5).getArea().toFixed(2), '78.54', 'Circle area = π·r²');
+expect(new Square(4).getArea(), 16, 'Square area = s²');
+expect(new Shape().getArea(), 0, 'base Shape returns 0');
+const total = [new Circle(5), new Square(4)].reduce((sum, s) => sum + s.getArea(), 0);
+expect(total.toFixed(2), '94.54', 'polymorphic sum over a mixed array');`,
   },
 ];
 
