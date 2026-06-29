@@ -11,7 +11,7 @@
   <div class="container">
 
     <h1>🧬 OOP Practice</h1>
-    <p class="subtitle">Complete the exercises below. Edit the code in <code>oop-practice.js</code></p>
+    <p class="subtitle">Edit the code in each box, then click <strong>Run</strong> to see the output live.</p>
 
     <!-- Exercise 1 -->
     <section class="exercise" data-exercise="1">
@@ -21,15 +21,14 @@
         <span class="badge easy">Easy</span>
       </div>
       <p class="description">
-        Oop using prototype on objects
+        OOP using prototypes on plain objects. Try changing the names or adding
+        a method, then run it.
       </p>
       <details class="hint">
         <summary>💡 Hint</summary>
-        <p>Use <code>constructor(title, author, year)</code> to initialise properties.
-        Method syntax: <code>getInfo() { return ... }</code></p>
+        <p><code>Object.setPrototypeOf(child, parent)</code> makes <code>parent</code>'s
+        properties available on <code>child</code> via the prototype chain.</p>
       </details>
-      <div class="output" id="output1">Click <strong>Run</strong> to test your code.</div>
-      <button onclick="objectOOP()">▶ Run objectOOP</button>
     </section>
 
     <!-- Exercise 2 -->
@@ -40,18 +39,15 @@
         <span class="badge medium">Medium</span>
       </div>
       <p class="description">
-        Create a <strong>LibraryBook</strong> class that extends <strong>Book</strong>.
-        Add an <code>isBorrowed</code> property (default <code>false</code>),
-        methods <code>borrow()</code> / <code>returnBook()</code>,
-        and override <code>getInfo()</code> to include borrow status.
+        A <strong>LibraryBook</strong> class that extends <strong>Book</strong>,
+        adds an <code>isBorrowed</code> flag with <code>borrow()</code> /
+        <code>returnBook()</code>, and overrides <code>getInfo()</code>.
       </p>
       <details class="hint">
         <summary>💡 Hint</summary>
         <p>Call <code>super(title, author, year)</code> in the constructor.
         Use <code>super.getInfo()</code> inside the overridden method.</p>
       </details>
-      <div class="output" id="output2">Click <strong>Run</strong> to test your code.</div>
-      <button onclick="runExercise(2)">▶ Run Exercise 2</button>
     </section>
 
     <!-- Exercise 3 -->
@@ -62,17 +58,15 @@
         <span class="badge medium">Medium</span>
       </div>
       <p class="description">
-        Create a <strong>Rectangle</strong> class with <code>width</code> / <code>height</code>.
-        Add getters for <code>area</code> and <code>perimeter</code>,
-        and a setter for <code>width</code> that rejects non-positive values.
+        A <strong>Rectangle</strong> with getters for <code>area</code> /
+        <code>perimeter</code> and a <code>width</code> setter that rejects
+        non-positive values.
       </p>
       <details class="hint">
         <summary>💡 Hint</summary>
         <p>Use <code>_width</code> / <code>_height</code> as backing fields.
         <code>get area() { }</code>, <code>set width(v) { if (v > 0) … }</code></p>
       </details>
-      <div class="output" id="output3">Click <strong>Run</strong> to test your code.</div>
-      <button onclick="runExercise(3)">▶ Run Exercise 3</button>
     </section>
 
     <!-- Exercise 4 -->
@@ -83,16 +77,14 @@
         <span class="badge medium">Medium</span>
       </div>
       <p class="description">
-        Create a <strong>TemperatureConverter</strong> class with a static property
-        <code>FACTOR = 9/5</code> and static methods
-        <code>celsiusToFahrenheit(c)</code> / <code>fahrenheitToCelsius(f)</code>.
+        A <strong>TemperatureConverter</strong> with a static <code>FACTOR = 9/5</code>
+        and static methods <code>celsiusToFahrenheit(c)</code> /
+        <code>fahrenheitToCelsius(f)</code>.
       </p>
       <details class="hint">
         <summary>💡 Hint</summary>
         <p><code>static methodName() { … }</code> — call on the class, not on an instance.</p>
       </details>
-      <div class="output" id="output4">Click <strong>Run</strong> to test your code.</div>
-      <button onclick="runExercise(4)">▶ Run Exercise 4</button>
     </section>
 
     <!-- Exercise 5 -->
@@ -103,17 +95,15 @@
         <span class="badge hard">Hard</span>
       </div>
       <p class="description">
-        Create a <strong>BankAccount</strong> class with a private <code>#balance</code> field.
-        Add <code>deposit(amount)</code>, <code>withdraw(amount)</code> (must not go below 0),
-        and a getter for <code>balance</code>.
+        A <strong>BankAccount</strong> with a private <code>#balance</code> field,
+        <code>deposit(amount)</code>, <code>withdraw(amount)</code> (must not go
+        below 0), and a <code>balance</code> getter.
       </p>
       <details class="hint">
         <summary>💡 Hint</summary>
         <p>Declare <code>#balance</code> at the top of the class body.
         Access it with <code>this.#balance</code> inside methods.</p>
       </details>
-      <div class="output" id="output5">Click <strong>Run</strong> to test your code.</div>
-      <button onclick="runExercise(5)">▶ Run Exercise 5</button>
     </section>
 
     <!-- Exercise 6 -->
@@ -124,17 +114,15 @@
         <span class="badge hard">Hard</span>
       </div>
       <p class="description">
-        Create a base <strong>Shape</strong> class with <code>getArea()</code> (returns 0).
-        Extend it with <strong>Circle</strong> (π·r²) and <strong>Square</strong> (s²),
-        each overriding <code>getArea()</code>.
+        A base <strong>Shape</strong> with <code>getArea()</code>, extended by
+        <strong>Circle</strong> (π·r²) and <strong>Square</strong> (s²), each
+        overriding <code>getArea()</code>.
       </p>
       <details class="hint">
         <summary>💡 Hint</summary>
         <p>Use <code>Math.PI</code> for pi. Call <code>super()</code> in subclass constructors.
         Polymorphism lets you call the same method on different shapes.</p>
       </details>
-      <div class="output" id="output6">Click <strong>Run</strong> to test your code.</div>
-      <button onclick="runExercise(6)">▶ Run Exercise 6</button>
     </section>
 
   </div>

@@ -1,261 +1,269 @@
 // =====================================
-// 🧬 OOP PRACTICE — Fill in the code!
+// 🧬 OOP PRACTICE — live editable playground
 // =====================================
-// Each exercise has a stub class below.
-// Replace /* TODO */ with working code.
-// Then click "Run" on the page to test.
+// Each exercise renders an editable code box. Click "Run" to evaluate the code
+// you typed (via `new Function`), run a small test against it, and see the
+// output — console.log included. "Reset" restores the starter code.
 // =====================================
 
-// ---------- Exercise 1: Classes & Constructors ----------
+// Each exercise: starter code the user edits, plus a `test` snippet that
+// exercises the classes/objects the starter defines and returns a string to
+// display. The test runs in the same scope as the starter, so it can see
+// everything the starter declares.
+const exercises = {
+  1: {
+    starter: `// Prototype-based OOP on plain objects.
+const person = {
+  firstName: 'Tony',
+  lastName: 'Stark',
+  getName: function () {
+    return \`\${this.firstName} \${this.lastName}\`;
+  },
+};
+console.log(person.getName());
 
-class Book {
-  // TODO: constructor(title, author, year)
-  constructor(/* TODO */) {
-    // TODO: assign this.title, this.author, this.year
+const superHero = {};
+Object.setPrototypeOf(superHero, person);
+superHero.firstName = 'Iron';
+superHero.lastName = 'Man';
+console.log(superHero.getName());`,
+    test: '',
+  },
+
+  2: {
+    starter: `class Book {
+  constructor(title, author, year) {
+    this.title = title;
+    this.author = author;
+    this.year = year;
   }
-
-  // TODO: getInfo() — return `${title} by ${author} (${year})`
   getInfo() {
-    /* TODO */
+    return \`\${this.title} by \${this.author} (\${this.year})\`;
   }
 }
 
-// ---------- Exercise 2: Inheritance (extends) ----------
-
-class LibraryBook /* TODO: extends Book */ {
-  // TODO: constructor(title, author, year)
-  constructor(/* TODO */) {
-    // TODO: call super(title, author, year)
-    // TODO: this.isBorrowed = false
+class LibraryBook extends Book {
+  constructor(title, author, year) {
+    super(title, author, year);
+    this.isBorrowed = false;
   }
-
-  // TODO: borrow() — sets isBorrowed = true, returns a string
   borrow() {
-    /* TODO */
+    this.isBorrowed = true;
+    return \`Borrowed "\${this.title}"\`;
   }
-
-  // TODO: returnBook() — sets isBorrowed = false, returns a string
   returnBook() {
-    /* TODO */
+    this.isBorrowed = false;
+    return \`Returned "\${this.title}"\`;
   }
-
-  // TODO: getInfo() — override Book's method, include borrow status
   getInfo() {
-    /* TODO */
+    return \`\${super.getInfo()} — \${this.isBorrowed ? 'borrowed' : 'available'}\`;
   }
-}
+}`,
+    test: `const lb = new LibraryBook('1984', 'George Orwell', 1949);
+let msg = lb.getInfo() + '\\n';
+msg += 'borrow: ' + lb.borrow() + '\\n';
+msg += 'return: ' + lb.returnBook();
+return msg;`,
+  },
 
-// ---------- Exercise 3: Getters & Setters ----------
-
-class Rectangle {
-  // TODO: constructor(width, height) — assign to _width, _height
-  constructor(/* TODO */) {
-    /* TODO */
+  3: {
+    starter: `class Rectangle {
+  constructor(width, height) {
+    this._width = width;
+    this._height = height;
   }
-
-  // TODO: get area() — return width * height
   get area() {
-    /* TODO */
+    return this._width * this._height;
   }
-
-  // TODO: get perimeter() — return 2 * (width + height)
   get perimeter() {
-    /* TODO */
+    return 2 * (this._width + this._height);
   }
-
-  // TODO: set width(value) — only set _width if value > 0
   set width(value) {
-    /* TODO */
+    if (value > 0) this._width = value;
   }
-
-  // TODO: get width() — return _width
   get width() {
-    /* TODO */
+    return this._width;
   }
-}
+}`,
+    test: `const r = new Rectangle(10, 5);
+let s = 'area = ' + r.area + ', perimeter = ' + r.perimeter + '\\n';
+r.width = 20;
+s += 'after width=20 → area = ' + r.area;
+return s;`,
+  },
 
-// ---------- Exercise 4: Static Methods ----------
+  4: {
+    starter: `class TemperatureConverter {
+  static FACTOR = 9 / 5;
 
-class TemperatureConverter {
-  // TODO: static FACTOR = 9/5
-  static FACTOR; // assign inside the method body or here
-
-  // TODO: static celsiusToFahrenheit(celsius)
   static celsiusToFahrenheit(celsius) {
-    /* TODO */
+    return celsius * TemperatureConverter.FACTOR + 32;
   }
-
-  // TODO: static fahrenheitToCelsius(fahrenheit)
   static fahrenheitToCelsius(fahrenheit) {
-    /* TODO */
+    return (fahrenheit - 32) / TemperatureConverter.FACTOR;
   }
-}
+}`,
+    test: `const c = 25, f = 77;
+const r1 = TemperatureConverter.celsiusToFahrenheit(c);
+const r2 = TemperatureConverter.fahrenheitToCelsius(f);
+return \`\${c}°C = \${r1.toFixed(1)}°F\\n\${f}°F = \${r2.toFixed(1)}°C\`;`,
+  },
 
-// ---------- Exercise 5: Private Fields ----------
+  5: {
+    starter: `class BankAccount {
+  #balance;
 
-class BankAccount {
-  // TODO: declare private field #balance
-  #balance; // declare private field here
-
-  // TODO: constructor(owner, initialBalance)
-  constructor(/* TODO */) {
+  constructor(owner, initialBalance) {
     this.owner = owner;
-    // TODO: this.#balance = initialBalance
+    this.#balance = initialBalance;
   }
-
-  // TODO: deposit(amount) — add to #balance if amount > 0
   deposit(amount) {
-    /* TODO */
+    if (amount > 0) this.#balance += amount;
+    return \`+\${amount}\`;
   }
-
-  // TODO: withdraw(amount) — subtract if amount <= #balance
   withdraw(amount) {
-    /* TODO */
+    if (amount <= this.#balance) this.#balance -= amount;
+    return \`-\${amount}\`;
   }
-
-  // TODO: get balance() — return #balance
   get balance() {
-    /* TODO */
+    return this.#balance;
   }
-}
+}`,
+    test: `const acct = new BankAccount('Alice', 1000);
+let log = 'balance = $' + acct.balance + '\\n';
+log += 'deposit(500): ' + acct.deposit(500) + '\\n';
+log += 'withdraw(200): ' + acct.withdraw(200) + '\\n';
+log += 'final balance = $' + acct.balance;
+return log;`,
+  },
 
-// ---------- Exercise 6: Polymorphism ----------
-
-class Shape {
-  // TODO: getArea() — return 0
+  6: {
+    starter: `class Shape {
   getArea() {
-    /* TODO */
+    return 0;
   }
 }
 
-class Circle /* TODO: extends Shape */ {
-  // TODO: constructor(radius)
-  constructor(/* TODO */) {
-    // TODO: call super()
-    // TODO: this.radius = radius
+class Circle extends Shape {
+  constructor(radius) {
+    super();
+    this.radius = radius;
   }
-
-  // TODO: getArea() — π * r²  (use Math.PI)
   getArea() {
-    /* TODO */
+    return Math.PI * this.radius ** 2;
   }
 }
 
-class Square /* TODO: extends Shape */ {
-  // TODO: constructor(side)
-  constructor(/* TODO */) {
-    // TODO: call super()
-    // TODO: this.side = side
+class Square extends Shape {
+  constructor(side) {
+    super();
+    this.side = side;
   }
-
-  // TODO: getArea() — side * side
   getArea() {
-    /* TODO */
+    return this.side * this.side;
   }
-}
-
-// =====================================
-// TEST RUNNER — do not edit below
-// =====================================
-
-function getOutput(id) {
-  return document.getElementById('output' + id);
-}
-
-// Helper to check if a function is user-defined (not a stub)
-function isImplemented(fn) {
-  if (typeof fn !== 'function') return false;
-  const src = fn.toString();
-  // If the body still contains the literal "/* TODO */" it's not done
-  return !src.includes('/* TODO */');
-}
-
-window.objectOOP = function() {
-  const person = {
-    firstName: 'Tony',
-    lastName: 'Stark',
-    getName: function () {
-      return `${this.firstName} ${this.lastName}`
-    }
-  }
-  console.log(person.getName())
-
-  const superHero = {}
-  Object.setPrototypeOf(superHero, person);
-  superHero.firstName = 'Iron'
-  superHero.lastName = 'Man'
-  console.log(superHero.getName())
-}
-
-window.runExercise = function (num) {
-  const out = getOutput(num);
-  try {
-    switch (num) {
-      case 1:
-        if (!isImplemented(Book.prototype.getInfo)) {
-          out.textContent = '⚠️ Book.getInfo() still has /* TODO */ in it. Fill it in first!';
-          return;
-        }
-        const b = new Book('The Great Gatsby', 'F. Scott Fitzgerald', 1925);
-        out.textContent = '✅ ' + b.getInfo();
-        break;
-
-      case 2:
-        if (typeof LibraryBook === 'undefined') {
-          out.textContent = '⚠️ LibraryBook class not found. Did you write "extends Book"?';
-          return;
-        }
-        const lb = new LibraryBook('1984', 'George Orwell', 1949);
-        let msg = '✅ ' + lb.getInfo() + '\n';
-        msg += '📕 borrow: ' + lb.borrow() + '\n';
-        msg += '📗 return: ' + lb.returnBook();
-        out.textContent = msg;
-        break;
-
-      case 3:
-        if (!isImplemented(Rectangle.prototype.area)) {
-          out.textContent = '⚠️ Rectangle getters still have /* TODO */ in them. Fill them in first!';
-          return;
-        }
-        const r = new Rectangle(10, 5);
-        let s = '✅ area = ' + r.area + ', perimeter = ' + r.perimeter + '\n';
-        r.width = 20;
-        s += '✅ after width=20 → area = ' + r.area;
-        out.textContent = s;
-        break;
-
-      case 4:
-        if (!isImplemented(TemperatureConverter.celsiusToFahrenheit)) {
-          out.textContent = '⚠️ TemperatureConverter.celsiusToFahrenheit still has /* TODO */ in it. Fill it in first!';
-          return;
-        }
-        const c = 25, f = 77;
-        const r1 = TemperatureConverter.celsiusToFahrenheit(c);
-        const r2 = TemperatureConverter.fahrenheitToCelsius(f);
-        out.textContent = `✅ ${c}°C = ${r1.toFixed(1)}°F\n✅ ${f}°F = ${r2.toFixed(1)}°C`;
-        break;
-
-      case 5:
-        const acct = new BankAccount('Alice', 1000);
-        let log = '✅ balance = $' + acct.balance + '\n';
-        log += '✅ deposit(500): ' + acct.deposit(500) + '\n';
-        log += '✅ withdraw(200): ' + acct.withdraw(200) + '\n';
-        log += '✅ final balance = $' + acct.balance;
-        out.textContent = log;
-        break;
-
-      case 6:
-        const shapes = [new Circle(5), new Square(4)];
-        let poly = '';
-        shapes.forEach((s, i) => {
-          poly += `✅ ${s.constructor.name} area = ${s.getArea().toFixed(2)}\n`;
-        });
-        out.textContent = poly;
-        break;
-    }
-  } catch (e) {
-    out.textContent = '❌ Error: ' + e.message + '\nCheck your implementation.';
-  }
+}`,
+    test: `const shapes = [new Circle(5), new Square(4)];
+let poly = '';
+shapes.forEach((s) => {
+  poly += \`\${s.constructor.name} area = \${s.getArea().toFixed(2)}\\n\`;
+});
+return poly;`,
+  },
 };
 
-console.log('🧬 OOP Practice loaded — edit oop-practice.js and click Run!');
+// Format a console.log argument the way a dev console would.
+function format(value) {
+  if (typeof value === 'string') return value;
+  if (value instanceof Error) return value.toString();
+  try {
+    return JSON.stringify(value);
+  } catch {
+    return String(value);
+  }
+}
+
+// Evaluate `userCode`, then run `test` in the same scope. Captures console.log
+// output and either the test's return value or a thrown error.
+function runCode(userCode, test) {
+  const logs = [];
+  const sandboxConsole = {
+    log: (...args) => logs.push(args.map(format).join(' ')),
+    error: (...args) => logs.push(args.map(format).join(' ')),
+    warn: (...args) => logs.push(args.map(format).join(' ')),
+  };
+  try {
+    // The test snippet is nested so it closes over everything userCode declares.
+    const body = `${userCode}\n;return (function () {\n${test}\n})();`;
+    const result = new Function('console', body)(sandboxConsole);
+    return { logs, result, error: null };
+  } catch (error) {
+    return { logs, result: null, error };
+  }
+}
+
+// Render the run result into an exercise's output panel.
+function renderOutput(outputEl, userCode, test) {
+  const { logs, result, error } = runCode(userCode, test);
+  const lines = [...logs];
+  if (typeof result === 'string' && result.length) lines.push(result);
+
+  if (error) {
+    outputEl.classList.add('has-error');
+    const prefix = lines.length ? lines.join('\n') + '\n' : '';
+    outputEl.textContent = `${prefix}❌ ${error.name}: ${error.message}`;
+  } else {
+    outputEl.classList.remove('has-error');
+    outputEl.textContent = lines.length ? '✅ ' + lines.join('\n') : '✅ (no output)';
+  }
+}
+
+// Build the editor UI inside each exercise card and wire up Run / Reset.
+function mountEditor(section) {
+  const id = section.dataset.exercise;
+  const exercise = exercises[id];
+  if (!exercise) return;
+
+  const editor = document.createElement('textarea');
+  editor.className = 'code-editor';
+  editor.spellcheck = false;
+  editor.value = exercise.starter;
+  editor.setAttribute('aria-label', `Code editor for exercise ${id}`);
+  // Tab inserts two spaces instead of moving focus out of the editor.
+  editor.addEventListener('keydown', (e) => {
+    if (e.key !== 'Tab') return;
+    e.preventDefault();
+    const { selectionStart: start, selectionEnd: end, value } = editor;
+    editor.value = value.slice(0, start) + '  ' + value.slice(end);
+    editor.selectionStart = editor.selectionEnd = start + 2;
+  });
+
+  const output = document.createElement('div');
+  output.className = 'output';
+  output.textContent = 'Click Run to execute your code.';
+
+  const runBtn = document.createElement('button');
+  runBtn.type = 'button';
+  runBtn.textContent = '▶ Run';
+  runBtn.addEventListener('click', () => renderOutput(output, editor.value, exercise.test));
+
+  const resetBtn = document.createElement('button');
+  resetBtn.type = 'button';
+  resetBtn.className = 'secondary';
+  resetBtn.textContent = '↺ Reset';
+  resetBtn.addEventListener('click', () => {
+    editor.value = exercise.starter;
+    output.classList.remove('has-error');
+    output.textContent = 'Click Run to execute your code.';
+  });
+
+  const actions = document.createElement('div');
+  actions.className = 'actions';
+  actions.append(runBtn, resetBtn);
+
+  section.append(editor, actions, output);
+}
+
+document.querySelectorAll('section.exercise[data-exercise]').forEach(mountEditor);
+
+console.log('🧬 OOP Practice loaded — edit the code on the page and click Run!');

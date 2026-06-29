@@ -124,6 +124,50 @@ h1 {
   color: #856404;
 }
 
+/* ----- Code editor ----- */
+.code-editor {
+  width: 100%;
+  min-height: 180px;
+  margin: 6px 0 12px;
+  padding: 14px;
+  border: 1px solid #d7dbe0;
+  border-radius: 8px;
+  background: #1e1e2e;
+  color: #e4e4ef;
+  font-family: 'SF Mono', 'Fira Code', 'Courier New', monospace;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  tab-size: 2;
+  resize: vertical;
+  white-space: pre;
+  overflow-wrap: normal;
+  overflow-x: auto;
+}
+
+.code-editor:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.25);
+}
+
+/* ----- Action row ----- */
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+button.secondary {
+  background: #eef0f5;
+  color: #667eea;
+  box-shadow: none;
+}
+
+button.secondary:hover {
+  background: #e2e6f3;
+  box-shadow: none;
+}
+
 /* ----- Output ----- */
 .output {
   background: #f8f9fa;
@@ -138,6 +182,12 @@ h1 {
   white-space: pre-wrap;
   word-break: break-word;
   line-height: 1.5;
+}
+
+.output.has-error {
+  background: #fdf2f2;
+  border-color: #f5c6cb;
+  color: #721c24;
 }
 
 .output:empty::before {
