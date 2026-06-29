@@ -1,45 +1,87 @@
 import './style.css'
 
+// Each demo lives in src/<feature>/<feature>.html. Add a demo by adding one
+// entry here — the card grid is rendered from this list.
+const demos = [
+  {
+    icon: '🎯',
+    title: 'Learn CSS Grid',
+    desc: 'Master CSS Grid Layout with interactive examples and practice exercises',
+    href: '/src/grid/grid.html',
+    cta: 'Start Learning Grid →',
+  },
+  {
+    icon: '✨',
+    title: 'Height Animations',
+    desc: 'Components with smooth height transitions — accordions, dropdowns, and more',
+    href: '/src/height-animation/height-animation.html',
+    cta: 'View Animations →',
+  },
+  {
+    icon: '💬',
+    title: 'Tooltip',
+    desc: 'CSS-only tooltip that lazy-loads its content on hover/focus',
+    href: '/src/tooltip/tooltip.html',
+    cta: 'View Tooltip →',
+  },
+  {
+    icon: '📝',
+    title: 'Sample Inputs',
+    desc: 'A quick reference of common, accessible HTML form controls',
+    href: '/src/sample-input/sample-input.html',
+    cta: 'View Inputs →',
+  },
+  {
+    icon: '📊',
+    title: 'Progress Bar',
+    desc: 'Interactive progress bar demonstrations and examples',
+    href: '/src/progressbar/progressbar.html',
+    cta: 'View Progress Bar →',
+  },
+  {
+    icon: '📊',
+    title: 'Progress Bar With Throttle',
+    desc: 'Concurrency-limited progress bars driven by a timeout-based queue',
+    href: '/src/progress-bar-with-throttle/progress-bar-with-throttle.html',
+    cta: 'View Progress Bar →',
+  },
+  {
+    icon: '📊',
+    title: 'Progress Bar With Throttle 2',
+    desc: 'Same queue, advanced by the CSS transitionend event instead of a timeout',
+    href: '/src/progress-bar-with-throttle2/progress-bar-with-throttle2.html',
+    cta: 'View Progress Bar →',
+  },
+  {
+    icon: '💬',
+    title: 'Chat App',
+    desc: 'A small interactive chat interface demo',
+    href: '/src/chat-app/chat-app.html',
+    cta: 'Open Chat App →',
+  },
+  {
+    icon: '🧬',
+    title: 'OOP Practice',
+    desc: 'Practice JavaScript OOP concepts — classes, inheritance, getters/setters, static methods, private fields, and polymorphism',
+    href: '/src/oop-practice/oop-practice.html',
+    cta: 'Start Practicing →',
+  },
+  {
+    icon: '🧪',
+    title: 'Temp Playground',
+    desc: 'Scratch space for in-progress experiments',
+    href: '/src/temp/temp.html',
+    cta: 'View Temp Component →',
+  },
+]
+
+const card = ({ icon, title, desc, href, cta }) => `
+    <div class="card">
+      <h2>${icon} ${title}</h2>
+      <p>${desc}</p>
+      <a href="${href}">${cta}</a>
+    </div>`
+
 document.querySelector('#app').innerHTML = `
-  <div>
-    <div class="card grid-card">
-      <h2>🎯 Learn CSS Grid</h2>
-      <p>Master CSS Grid Layout with interactive examples and practice exercises</p>
-      <a href="/grid.html" class="grid-link">Start Learning Grid →</a>
-    </div>
-    <div class="card animation-card">
-      <h2>✨ Height Animations</h2>
-      <p>Explore components with smooth height transitions - accordions, dropdowns, and more</p>
-      <a href="/height-animation.html" class="animation-link">View Animations →</a>
-    </div>
-    <div class="card progressbar-card">
-      <h2>📊 Progress Bar</h2>
-      <p>Interactive progress bar demonstrations and examples</p>
-      <a href="/src/progressbar/progressbar.html" class="progressbar-link">View Progress Bars →</a>
-    </div>
-    <div class="card progressbar-card">
-      <h2>📊 Progress Bar With Throttle</h2>
-      <p>Interactive progress bar demonstrations and examples</p>
-      <a href="/src/progress-bar-with-throttle/progress-bar-with-throttle.html" class="progressbar-link">View Progress Bars →</a>
-    </div>
-    <div class="card progressbar-card">
-      <h2>📊 Progress Bar With Throttle2</h2>
-      <p>Interactive progress bar demonstrations and examples</p>
-      <a href="/src/progress-bar-with-throttle2/progress-bar-with-throttle2.html" class="progressbar-link">View Progress Bars →</a>
-    </div>
-    <div class="card">
-      <h2>Temp playground</h2>
-      <a href="/src/temp/temp.html">View temp component</a>
-    </div>
-    <div class="card progressbar-card">
-      <h2>📊 Chat app</h2>
-      <p>Interactive progress bar demonstrations and examples</p>
-      <a href="/src/chat-app/chat-app.html" class="progressbar-link">Chat app →</a>
-    </div>
-    <div class="card">
-      <h2>🧬 OOP Practice</h2>
-      <p>Practice JavaScript OOP concepts — classes, inheritance, getters/setters, static methods, private fields, and polymorphism</p>
-      <a href="/src/oop-practice/oop-practice.html">Start Practicing →</a>
-    </div>
-  </div>
+  <div>${demos.map(card).join('')}</div>
 `

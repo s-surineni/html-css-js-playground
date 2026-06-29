@@ -140,6 +140,19 @@ function randomToggle() {
     });
 }
 
+// Expose handlers as globals so inline onclick="..." attributes resolve even
+// when this file is loaded as an ES module (modules have their own scope).
+Object.assign(window, {
+    toggleAccordion,
+    toggleDropdown,
+    toggleCollapsible,
+    togglePanel,
+    toggleListItems,
+    expandAll,
+    collapseAll,
+    randomToggle,
+});
+
 // Initialize with some items visible
 document.addEventListener('DOMContentLoaded', function() {
     // Show first accordion item

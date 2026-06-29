@@ -55,6 +55,7 @@ function mapLimit(inputs, limit, iterateeFn, callback) {
 
     // 2. Capture the current index and increment global counter
     // We store the index locally so the callback knows where to put the result
+    // todo: why are we storing current index here separatedly
     const currentIndex = nextIndex;
     const currentInput = inputs[currentIndex];
     nextIndex++;

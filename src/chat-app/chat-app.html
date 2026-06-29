@@ -1,49 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  />
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Chat App</title>
-
   <link rel="stylesheet" href="chat-app.css" />
 </head>
 
 <body>
-
   <div class="chat-app">
-
     <header class="chat-header">
       Team Chat
     </header>
-
-    <main
-      class="chat-messages"
-      id="messages"
-    ></main>
-
-    <form
-      class="chat-input"
-      id="chatForm"
-    >
-      <input
-        type="text"
-        id="messageInput"
-        placeholder="Type message..."
-      />
-
+    <main class="chat-messages" id="messages"></main>
+    <form class="chat-input" id="chatForm">
+      <input type="text" id="messageInput" placeholder="Type message..." />
       <button type="submit">
         Send
       </button>
     </form>
-
   </div>
-
-  <script src="chat-app.js"></script>
-
+  <script type="module" src="chat-app.js"></script>
 </body>
 </html>

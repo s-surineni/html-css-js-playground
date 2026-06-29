@@ -57,36 +57,25 @@ h1 {
 
 .card {
   padding: 2em;
-}
-
-.grid-card {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   border: none;
+  border-radius: 12px;
   margin-top: 1em;
+  text-align: left;
 }
 
-.animation-card {
-  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
-  color: white;
-  border: none;
-  margin-top: 1em;
-}
-
-.grid-card h2,
-.animation-card h2 {
+.card h2 {
   margin: 0 0 0.5em 0;
   font-size: 1.5em;
 }
 
-.grid-card p,
-.animation-card p {
+.card p {
   margin: 0 0 1em 0;
   opacity: 0.9;
 }
 
-.grid-link,
-.animation-link {
+.card a {
   display: inline-block;
   background: rgba(255, 255, 255, 0.2);
   color: white;
@@ -98,8 +87,7 @@ h1 {
   border: 2px solid rgba(255, 255, 255, 0.3);
 }
 
-.grid-link:hover,
-.animation-link:hover {
+.card a:hover {
   background: rgba(255, 255, 255, 0.3);
   border-color: rgba(255, 255, 255, 0.5);
   transform: translateY(-2px);
