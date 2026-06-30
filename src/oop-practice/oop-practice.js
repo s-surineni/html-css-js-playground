@@ -2,11 +2,13 @@
 // 🧬 OOP PRACTICE — live editable playground
 // =====================================
 // Single source of truth: the `exercises` manifest below holds the metadata
-// (title, badge, description, hint, test) for each exercise, and the starter
-// code lives as a real lint-able file under examples/<n>-name.js (imported as
-// raw source — no escaping). Cards are generated from the manifest, so adding
-// an exercise = drop a starter file + add one manifest entry. Nothing in the
-// HTML to keep in sync.
+// (title, badge, description, hint) for each exercise. The starter code and the
+// assertion test each live as a real lint-able file — starter under
+// examples/<n>-name.js, test under tests/<n>-name.js — imported as raw source
+// (no escaping). Both are matched to an exercise by the leading number in the
+// filename. Cards are generated from the manifest, so adding an exercise = drop
+// a starter file (+ optional test file) and add one manifest entry. Nothing in
+// the HTML to keep in sync.
 //
 // Note: `desc` and `hint` are trusted, author-written HTML (the same markup
 // that used to live in oop-practice.html) — never user input — so injecting
@@ -16,22 +18,27 @@
 import { mountCodePlayground } from '../lib/code-playground.js';
 import '../lib/code-playground.css';
 
-// Load every starter file as raw source text, keyed by the leading number in
-// the filename (e.g. './examples/2-inheritance.js' -> '2').
-const starterModules = import.meta.glob('./examples/*.js', {
-  query: '?raw',
-  import: 'default',
-  eager: true,
-});
+// Load every starter / test file as raw source text, keyed by the leading
+// number in the filename (e.g. './examples/2-inheritance.js' -> '2'). Both globs
+// are eager + raw so the source ships in the bundle, not fetched at runtime.
+const rawById = (modules) => {
+  const out = {};
+  for (const [path, source] of Object.entries(modules)) {
+    const id = path.match(/\/(\d+)-/)?.[1];
+    if (id) out[id] = source.trimEnd();
+  }
+  return out;
+};
 
-const starters = {};
-for (const [path, source] of Object.entries(starterModules)) {
-  const id = path.match(/\/(\d+)-/)?.[1];
-  if (id) starters[id] = source.trimEnd();
-}
+const starters = rawById(
+  import.meta.glob('./examples/*.js', { query: '?raw', import: 'default', eager: true }),
+);
+const tests = rawById(
+  import.meta.glob('./tests/*.js', { query: '?raw', import: 'default', eager: true }),
+);
 
-// Per-exercise metadata. `desc` and `hint` are trusted authored HTML.
-// `test` runs in the same scope as the starter and returns a string to display.
+// Per-exercise metadata. `desc` and `hint` are trusted authored HTML. The
+// starter code and assertion test for each id are loaded from the files above.
 const exercises = [
   {
     id: '1',
@@ -41,7 +48,6 @@ const exercises = [
       a method, then run it.`,
     hint: `<code>Object.setPrototypeOf(child, parent)</code> makes <code>parent</code>'s
       properties available on <code>child</code> via the prototype chain.`,
-    test: '',
   },
   {
     id: '2',
@@ -52,14 +58,6 @@ const exercises = [
       <code>returnBook()</code>, and overrides <code>getInfo()</code>.`,
     hint: `Call <code>super(title, author, year)</code> in the constructor.
       Use <code>super.getInfo()</code> inside the overridden method.`,
-    test: `const lb = new LibraryBook('1984', 'George Orwell', 1949);
-expect(lb.isBorrowed, false, 'starts not borrowed');
-expect(lb.getInfo(), '1984 by George Orwell (1949) — available', 'getInfo() when available');
-lb.borrow();
-expect(lb.isBorrowed, true, 'borrow() sets the flag');
-expect(lb.getInfo(), '1984 by George Orwell (1949) — borrowed', 'getInfo() reflects borrowed');
-lb.returnBook();
-expect(lb.isBorrowed, false, 'returnBook() clears the flag');`,
   },
   {
     id: '3',
@@ -70,13 +68,6 @@ expect(lb.isBorrowed, false, 'returnBook() clears the flag');`,
       non-positive values.`,
     hint: `Use <code>_width</code> / <code>_height</code> as backing fields.
       <code>get area() { }</code>, <code>set width(v) { if (v > 0) … }</code>`,
-    test: `const r = new Rectangle(10, 5);
-expect(r.area, 50, 'area = width × height');
-expect(r.perimeter, 30, 'perimeter = 2 × (w + h)');
-r.width = 20;
-expect(r.area, 100, 'area updates after a valid width setter');
-r.width = -4;
-expect(r.width, 20, 'setter rejects non-positive width');`,
   },
   {
     id: '4',
@@ -86,10 +77,6 @@ expect(r.width, 20, 'setter rejects non-positive width');`,
       and static methods <code>celsiusToFahrenheit(c)</code> /
       <code>fahrenheitToCelsius(f)</code>.`,
     hint: `<code>static methodName() { … }</code> — call on the class, not on an instance.`,
-    test: `expect(TemperatureConverter.celsiusToFahrenheit(25), 77, '25°C → 77°F');
-expect(TemperatureConverter.celsiusToFahrenheit(0), 32, '0°C → 32°F');
-expect(TemperatureConverter.fahrenheitToCelsius(77), 25, '77°F → 25°C');
-expect(TemperatureConverter.FACTOR, 1.8, 'static FACTOR is 9/5');`,
   },
   {
     id: '5',
@@ -100,14 +87,6 @@ expect(TemperatureConverter.FACTOR, 1.8, 'static FACTOR is 9/5');`,
       below 0), and a <code>balance</code> getter.`,
     hint: `Declare <code>#balance</code> at the top of the class body.
       Access it with <code>this.#balance</code> inside methods.`,
-    test: `const acct = new BankAccount('Alice', 1000);
-expect(acct.balance, 1000, 'initial balance');
-acct.deposit(500);
-expect(acct.balance, 1500, 'deposit(500) adds to balance');
-acct.withdraw(200);
-expect(acct.balance, 1300, 'withdraw(200) subtracts from balance');
-acct.withdraw(99999);
-expect(acct.balance, 1300, 'over-withdraw is rejected');`,
   },
   {
     id: '6',
@@ -118,23 +97,20 @@ expect(acct.balance, 1300, 'over-withdraw is rejected');`,
       overriding <code>getArea()</code>.`,
     hint: `Use <code>Math.PI</code> for pi. Call <code>super()</code> in subclass constructors.
       Polymorphism lets you call the same method on different shapes.`,
-    test: `expect(new Circle(5).getArea().toFixed(2), '78.54', 'Circle area = π·r²');
-expect(new Square(4).getArea(), 16, 'Square area = s²');
-expect(new Shape().getArea(), 0, 'base Shape returns 0');
-const total = [new Circle(5), new Square(4)].reduce((sum, s) => sum + s.getArea(), 0);
-expect(total.toFixed(2), '94.54', 'polymorphic sum over a mixed array');`,
   },
 ];
 
 const BADGE_LABELS = { easy: 'Easy', medium: 'Medium', hard: 'Hard' };
 
 // Build one exercise card and mount its editable playground.
-function renderExercise({ id, title, badge, desc, hint, test }) {
+function renderExercise({ id, title, badge, desc, hint }) {
   const starter = starters[id];
   if (!starter) {
     console.warn(`[oop-practice] no starter file found for exercise ${id} — skipping.`);
     return null;
   }
+  // Tests are optional — exercise 1 is a freeform "edit and run" with no asserts.
+  const test = tests[id] ?? '';
 
   const section = document.createElement('section');
   section.className = 'exercise';
