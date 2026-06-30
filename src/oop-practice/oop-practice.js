@@ -26,7 +26,7 @@ const starterModules = import.meta.glob('./examples/*.js', {
 
 const starters = {};
 for (const [path, source] of Object.entries(starterModules)) {
-  const id = path.match(/\/(\d+)-/)?.[1];
+  const id = path.match(/\/(\d+(?:-\d+)?)-/)?.[1];
   if (id) starters[id] = source.trimEnd();
 }
 
@@ -36,6 +36,16 @@ const exercises = [
   {
     id: '1',
     title: 'Prototype based',
+    badge: 'easy',
+    desc: `OOP using prototypes on plain objects. Try changing the names or adding
+      a method, then run it.`,
+    hint: `<code>Object.setPrototypeOf(child, parent)</code> makes <code>parent</code>'s
+      properties available on <code>child</code> via the prototype chain.`,
+    test: '',
+  },
+    {
+    id: '1-1',
+    title: 'Prototype based with getter and setter',
     badge: 'easy',
     desc: `OOP using prototypes on plain objects. Try changing the names or adding
       a method, then run it.`,
