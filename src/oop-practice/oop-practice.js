@@ -15,27 +15,33 @@
 // them with innerHTML is safe here.
 // =====================================
 
+console.log('[1] oop-practice.js loading');
 import { mountCodePlayground } from '../lib/code-playground.js';
 import '../lib/code-playground.css';
+console.log('[2] imports complete');
 
-// Load every starter / test file as raw source text, keyed by the leading
-// number in the filename (e.g. './examples/2-inheritance.js' -> '2'). Both globs
-// are eager + raw so the source ships in the bundle, not fetched at runtime.
+// Load every starter / test file as raw source text, keyed by the ID part of
+// the filename: one or more digits, optionally followed by hyphen + more digits:
+//   './examples/2-inheritance.js' -> '2'
+//   './examples/1-1-prototype.js' -> '1-1'
+// Both globs are eager + raw so the source ships in the bundle, not fetched at runtime.
 const rawById = (modules) => {
   const out = {};
   for (const [path, source] of Object.entries(modules)) {
-    const id = path.match(/\/(\d+)-/)?.[1];
+    const id = path.match(/\/(\d+(?:-\d+)?)-/)?.[1];
     if (id) out[id] = source.trimEnd();
   }
   return out;
 };
 
+console.log('[3] about to load starters/tests');
 const starters = rawById(
   import.meta.glob('./examples/*.js', { query: '?raw', import: 'default', eager: true }),
 );
 const tests = rawById(
   import.meta.glob('./tests/*.js', { query: '?raw', import: 'default', eager: true }),
 );
+console.log('[4] loaded:', Object.keys(starters).length, 'starters,', Object.keys(tests).length, 'tests');
 
 // Per-exercise metadata. `desc` and `hint` are trusted authored HTML. The
 // starter code and assertion test for each id are loaded from the files above.
@@ -147,8 +153,11 @@ function renderExercise({ id, title, badge, desc, hint }) {
   return section;
 }
 
+console.log('[5] exercises:', exercises.length);
 const container = document.querySelector('.container');
+console.log('[6] container:', container);
 for (const exercise of exercises) {
   const card = renderExercise(exercise);
   if (card) container.append(card);
 }
+console.log('[7] render loop complete');

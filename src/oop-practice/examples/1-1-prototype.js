@@ -11,7 +11,7 @@ const person = {
   },
 
   set name(value) {
-    const [firstName, lastName] = value.split()
+    const [firstName, lastName] = value.split(' ')
     this.firstName = firstName;
     this.lastName = lastName;
     console.log(this.name)
