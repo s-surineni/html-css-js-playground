@@ -96,6 +96,19 @@ const exercises = [
     test: '',
   },
   {
+    id: '2-4',
+    title: 'Constructor Private Variables',
+    badge: 'medium',
+    desc: `Private variables and methods using closures in constructor functions.
+      A <strong>BankAccount</strong> with private <code>balance</code> and
+      <code>validateAmount()</code>, public <code>deposit()</code>,
+      <code>withdraw()</code>, and <code>getBalance()</code> methods.`,
+    hint: `Variables declared with <code>let</code>/<code>const</code> inside the
+      constructor are private. Methods defined with <code>this.method = function() {}</code>
+      can access them via closure, but they're not on the prototype.`,
+    test: '',
+  },
+  {
     id: '2',
     title: 'Inheritance (extends)',
     badge: 'medium',
