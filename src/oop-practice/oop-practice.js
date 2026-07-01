@@ -77,7 +77,17 @@ const exercises = [
   },
         {
     id: '2-2',
-    title: 'Constructor based oop',
+    title: 'Constructor getter setter',
+    badge: 'easy',
+    desc: `OOP using prototypes on plain objects. Try changing the names or adding
+      a method, then run it.`,
+    hint: `<code>Object.setPrototypeOf(child, parent)</code> makes <code>parent</code>'s
+      properties available on <code>child</code> via the prototype chain.`,
+    test: '',
+  },
+          {
+    id: '2-3',
+    title: 'Constructor Inheritance',
     badge: 'easy',
     desc: `OOP using prototypes on plain objects. Try changing the names or adding
       a method, then run it.`,
