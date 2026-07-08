@@ -75,6 +75,18 @@ const exercises = [
       properties available on <code>child</code> via the prototype chain.`,
     test: '',
   },
+  {
+    id: '1-3',
+    title: 'Factory Function with Encapsulation (Module Pattern)',
+    badge: 'easy',
+    desc: `Real encapsulation without classes or constructors — just a plain factory
+      function returning an object literal. Private variables live in the closure,
+      completely inaccessible from outside.`,
+    hint: `Variables declared inside the function (like <code>count</code>) are private
+      via closure. Only the returned object's methods can access them. No <code>new</code>
+      keyword needed — just call the function.`,
+    test: '',
+  },
         {
     id: '2-2',
     title: 'Constructor getter setter',
