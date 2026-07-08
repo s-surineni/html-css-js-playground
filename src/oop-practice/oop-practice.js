@@ -121,6 +121,20 @@ const exercises = [
     test: '',
   },
   {
+    id: '2-5',
+    title: 'Constructor Private Variables - Limitation',
+    badge: 'medium',
+    desc: `Demonstrates the key limitation: <strong>prototype methods cannot access
+      private variables</strong> from the constructor. Only instance methods
+      (defined with <code>this.method = function</code>) can access them via closure,
+      but this is memory-inefficient.`,
+    hint: `Prototype methods exist outside the constructor's closure, so they can't see
+      variables declared inside it. The tradeoff: true privacy (instance methods) vs
+      memory efficiency (prototype methods). Use <code>_propertyName</code> convention
+      for "private-by-convention" with prototypes.`,
+    test: '',
+  },
+  {
     id: '2',
     title: 'Inheritance (extends)',
     badge: 'medium',
