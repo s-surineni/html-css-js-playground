@@ -398,6 +398,253 @@ pre code {
 }
 /* ===== END EXAMPLE 10 ===== */
 
+/* ===== EXAMPLE 11: minmax() behavior ===== */
+/* minmax() example - enforces minimum width */
+.minmax-example {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(200px, 1fr));
+    gap: 10px;
+    margin: 1rem 0;
+    border: 2px solid #667eea;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.minmax-example .grid-item {
+    background: #667eea;
+    color: white;
+    padding: 1rem;
+    text-align: center;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.minmax-example .grid-item.small-content {
+    /* Content is small, but column will still be minimum 200px */
+    font-size: 1.2rem;
+}
+/* ===== END EXAMPLE 11 ===== */
+
+/* ===== EXAMPLE 12: fit-content() behavior ===== */
+/* fit-content() example - shrinks to content size */
+.fitcontent-example {
+    display: grid;
+    grid-template-columns: repeat(3, fit-content(200px));
+    gap: 10px;
+    margin: 1rem 0;
+    border: 2px solid #28a745;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.fitcontent-example .grid-item {
+    background: #28a745;
+    color: white;
+    padding: 1rem;
+    text-align: center;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.fitcontent-example .grid-item.small-content {
+    /* Column shrinks to fit the small content */
+    font-size: 1.2rem;
+}
+/* ===== END EXAMPLE 12 ===== */
+
+/* ===== EXAMPLE 13: Side-by-side comparison ===== */
+/* Comparison grid */
+.comparison-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin: 1rem 0;
+}
+
+.comparison-section {
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 8px;
+    border: 2px solid #e9ecef;
+}
+
+.comparison-section h4 {
+    color: #555;
+    margin-bottom: 1rem;
+    text-align: center;
+    font-size: 1rem;
+}
+
+.minmax-comparison {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(150px, 1fr));
+    gap: 10px;
+    border: 2px dashed #667eea;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.minmax-comparison .grid-item {
+    background: #667eea;
+    color: white;
+    padding: 1rem;
+    text-align: center;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    word-wrap: break-word;
+}
+
+.fitcontent-comparison {
+    display: grid;
+    grid-template-columns: repeat(3, fit-content(150px));
+    gap: 10px;
+    border: 2px dashed #28a745;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.fitcontent-comparison .grid-item {
+    background: #28a745;
+    color: white;
+    padding: 1rem;
+    text-align: center;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    word-wrap: break-word;
+}
+
+.explanation {
+    background: #fff3cd;
+    border-left: 4px solid #ffc107;
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 5px;
+    font-size: 0.95rem;
+    color: #856404;
+}
+
+.note {
+    background: #e3f2fd;
+    border-left: 3px solid #2196f3;
+    padding: 0.75rem;
+    margin: 0.5rem 0 0 0;
+    border-radius: 3px;
+    font-size: 0.85rem;
+    color: #1565c0;
+}
+
+.sizing-explanation {
+    background: #f8f9fa;
+    border: 2px solid #dee2e6;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    border-radius: 8px;
+}
+
+.sizing-explanation h4 {
+    color: #495057;
+    margin-bottom: 1rem;
+}
+
+.sizing-explanation ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sizing-explanation li {
+    padding: 0.75rem;
+    margin: 0.5rem 0;
+    background: white;
+    border-radius: 5px;
+    border-left: 4px solid #6c757d;
+}
+
+.highlight-equal {
+    background: #d4edda;
+    color: #155724;
+    padding: 0.2rem 0.5rem;
+    border-radius: 3px;
+    font-weight: bold;
+}
+
+.highlight-different {
+    background: #cce5ff;
+    color: #004085;
+    padding: 0.2rem 0.5rem;
+    border-radius: 3px;
+    font-weight: bold;
+}
+/* ===== END EXAMPLE 13 ===== */
+
+/* ===== EXAMPLE 14: Visual Proof ===== */
+.visual-proof {
+    display: grid;
+    gap: 2rem;
+    margin: 1.5rem 0;
+}
+
+.visual-proof h4 {
+    font-size: 1rem;
+    color: #495057;
+    margin-bottom: 0.75rem;
+}
+
+.minmax-visual {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(100px, 1fr));
+    gap: 10px;
+    border: 2px solid #667eea;
+    padding: 10px;
+    border-radius: 5px;
+    background: #f8f9ff;
+}
+
+.fitcontent-visual {
+    display: grid;
+    grid-template-columns: repeat(3, fit-content(200px));
+    gap: 10px;
+    border: 2px solid #28a745;
+    padding: 10px;
+    border-radius: 5px;
+    background: #f8fff9;
+}
+
+.visual-item {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 1.5rem 1rem;
+    text-align: center;
+    border-radius: 5px;
+    position: relative;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+}
+
+.fitcontent-visual .visual-item {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+}
+
+.visual-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.visual-item:hover::after {
+    content: attr(data-content) " - width: " attr(data-width);
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: white;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    z-index: 10;
+}
+/* ===== END EXAMPLE 14 ===== */
+
 /* Practice section */
 .practice-container {
     background: #f8f9fa;
@@ -473,39 +720,57 @@ footer {
     header h1 {
         font-size: 2rem;
     }
-    
+
     nav ul {
         flex-direction: column;
         gap: 0.5rem;
     }
-    
+
     main {
         padding: 1rem;
     }
-    
+
     .property-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .example-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .basic-grid {
         grid-template-columns: repeat(2, 1fr);
     }
-    
+
     .dashboard {
         grid-template-columns: repeat(2, 1fr);
         grid-template-rows: repeat(4, 100px);
     }
-    
+
     .gallery {
         grid-template-columns: repeat(2, 1fr);
     }
-    
+
     .controls {
         grid-template-columns: 1fr;
+    }
+
+    .minmax-example {
+        grid-template-columns: repeat(2, minmax(100px, 1fr));
+    }
+
+    .fitcontent-example {
+        grid-template-columns: repeat(2, fit-content(150px));
+    }
+
+    .comparison-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .minmax-comparison,
+    .fitcontent-comparison {
+        grid-template-columns: repeat(2, minmax(80px, 1fr));
     }
 }
 
@@ -513,13 +778,26 @@ footer {
     .basic-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .dashboard {
         grid-template-columns: 1fr;
         grid-template-rows: repeat(8, 100px);
     }
-    
+
     .gallery {
+        grid-template-columns: 1fr;
+    }
+
+    .minmax-example {
+        grid-template-columns: minmax(120px, 1fr);
+    }
+
+    .fitcontent-example {
+        grid-template-columns: fit-content(200px);
+    }
+
+    .minmax-comparison,
+    .fitcontent-comparison {
         grid-template-columns: 1fr;
     }
 }
