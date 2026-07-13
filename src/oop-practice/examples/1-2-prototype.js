@@ -32,3 +32,4 @@ superHero.lastName = 'Man';
 console.log(superHero.getName());
 console.log(superHero.name)
 superHero.name = "Reed Richards"
+console.log('ironman person.name', person.name);

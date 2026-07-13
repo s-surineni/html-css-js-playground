@@ -39,3 +39,37 @@ console.log(account.withdraw(30)); // Withdrew $30. New balance: $120
 // These won't work - balance and validateAmount are private:
 console.log(account.balance); // undefined
 console.log(account.validateAmount); // undefined
+
+// ============================================
+// Extending with another constructor function
+// ============================================
+
+function SavingsAccount(initialBalance, interestRate) {
+  // Call parent constructor
+  BankAccount.call(this, initialBalance);
+
+  let rate = interestRate; // Private to SavingsAccount
+
+  // Can access public methods from BankAccount
+  this.addInterest = function() {
+    const currentBalance = this.getBalance(); // ✅ Works - getBalance is public
+    const interest = currentBalance * rate;
+    return this.deposit(interest); // ✅ Works - deposit is public
+  };
+
+  // CANNOT access private variables from BankAccount
+  this.hackBalance = function() {
+    // return balance; // ❌ ReferenceError - balance is not accessible
+    // validateAmount(100); // ❌ ReferenceError - validateAmount is not accessible
+    return "Cannot access parent's private variables!";
+  };
+}
+
+// Set up prototype inheritance
+SavingsAccount.prototype = Object.create(BankAccount.prototype);
+SavingsAccount.prototype.constructor = SavingsAccount;
+
+const savings = new SavingsAccount(1000, 0.05);
+console.log(savings.getBalance()); // 1000
+console.log(savings.addInterest()); // Deposited $50. New balance: $1050
+console.log(savings.hackBalance()); // Cannot access parent's private variables!
