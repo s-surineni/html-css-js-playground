@@ -87,6 +87,18 @@ const exercises = [
       keyword needed — just call the function.`,
     test: '',
   },
+  {
+    id: '1-4',
+    title: 'Prototype Polymorphism',
+    badge: 'easy',
+    desc: `Polymorphism using object prototypes — different objects share the same
+      interface (method names) but implement different behaviors. Includes two examples:
+      Animal sounds and Shape area calculations.`,
+    hint: `Polymorphism means "many forms" — same method name, different implementations.
+      <code>describe()</code> is shared on the prototype, but calls the overridden
+      methods like <code>makeSound()</code> or <code>getArea()</code>.`,
+    test: '',
+  },
         {
     id: '2-2',
     title: 'Constructor getter setter',
