@@ -44,7 +44,10 @@ const exercises = [
     id: '1',
     title: 'Prototype based',
     badge: 'easy',
-    desc: `OOP using prototypes on plain objects. Try changing the names or adding
+    desc: `OOP using prototypes on plain objects. 
+    demonstrates oop concept of having data and function together.
+    but this example does not have encapsulation.
+    Try changing the names or adding
       a method, then run it.`,
     hint: `<code>Object.setPrototypeOf(child, parent)</code> makes <code>parent</code>'s
       properties available on <code>child</code> via the prototype chain.`,

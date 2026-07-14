@@ -4,6 +4,12 @@ body {
   font-weight: bold;
   margin: 0;
   display: grid;
+    grid-template-areas:
+    'header header header'
+    'nav main aside'
+    'footer footer footer';
+    grid-template-columns: 100px 1fr 100px;
+    grid-template-rows: auto 1fr auto;
 }
 
 * {
@@ -20,20 +26,25 @@ footer {
 
 header {
   background-color: tomato;
+  grid-area: header;
 }
 
 nav {
   background-color: coral;
+  grid-area: nav;
 }
 
 main {
   background-color: moccasin;
+  grid-area: main;
 }
 
 aside {
   background-color: sandybrown;
+  grid-area: aside;
 }
 
 footer {
   background-color: slategray;
+  grid-area: footer;
 }
