@@ -17,6 +17,7 @@
             <li><a href="#basics">Grid Basics</a></li>
             <li><a href="#properties">Grid Properties</a></li>
             <li><a href="#examples">Examples</a></li>
+            <li><a href="#minmax-fitcontent">minmax & fit-content</a></li>
             <li><a href="#practice">Practice</a></li>
         </ul>
     </nav>
@@ -144,6 +145,104 @@
                         <div class="gallery-item">Normal</div>
                     </div>
                 </div>
+            </div>
+        </section>
+
+        <section id="minmax-fitcontent" class="section">
+            <h2>minmax() and fit-content() Behavior</h2>
+            <p>Understanding how minmax() and fit-content() behave when content is smaller than the minimum width.</p>
+
+            <div class="example-container">
+                <h3>minmax() - Enforces Minimum Width</h3>
+                <p>When content is less than min value, the column still takes up the minimum width specified.</p>
+                <div class="minmax-example">
+                    <div class="grid-item small-content">Hi</div>
+                    <div class="grid-item small-content">Hey</div>
+                    <div class="grid-item small-content">Hello</div>
+                </div>
+                <pre><code>grid-template-columns: repeat(3, minmax(200px, 1fr));
+/* Each column maintains minimum 200px width
+   even though content is tiny */</code></pre>
+                <p class="explanation">Notice how each column is at least 200px wide, even though the text content is much smaller. The minmax() function enforces the minimum width constraint.</p>
+            </div>
+
+            <div class="example-container">
+                <h3>fit-content() - Shrinks to Content Size</h3>
+                <p>When content is smaller, fit-content() shrinks the column to match the content size (respecting the max argument).</p>
+                <div class="fitcontent-example">
+                    <div class="grid-item small-content">Hi</div>
+                    <div class="grid-item small-content">Hey</div>
+                    <div class="grid-item small-content">Hello</div>
+                </div>
+                <pre><code>grid-template-columns: repeat(3, fit-content(200px));
+/* Columns shrink to content width,
+   but won't exceed 200px */</code></pre>
+                <p class="explanation">The columns shrink to fit the small content. fit-content() only enforces the maximum limit, not minimum.</p>
+            </div>
+
+            <div class="example-container">
+                <h3>Column Sizing with Different Content Widths</h3>
+                <p><strong>Key Question:</strong> Will all columns be the same size when content varies?</p>
+
+                <div class="comparison-grid">
+                    <div class="comparison-section">
+                        <h4>minmax(150px, 1fr) - Equal Columns ✓</h4>
+                        <div class="minmax-comparison">
+                            <div class="grid-item">A</div>
+                            <div class="grid-item">Hello</div>
+                            <div class="grid-item">This is much longer text</div>
+                        </div>
+                        <p class="note">All columns are <strong>equal width</strong> (sharing 1fr equally), regardless of content size!</p>
+                    </div>
+                    <div class="comparison-section">
+                        <h4>fit-content(150px) - Varies by Content</h4>
+                        <div class="fitcontent-comparison">
+                            <div class="grid-item">A</div>
+                            <div class="grid-item">Hello</div>
+                            <div class="grid-item">This is much longer text</div>
+                        </div>
+                        <p class="note">Columns have <strong>different widths</strong> based on their content!</p>
+                    </div>
+                </div>
+
+                <div class="sizing-explanation">
+                    <h4>📏 The Sizing Rule:</h4>
+                    <ul>
+                        <li><strong>minmax(min, 1fr)</strong>: All columns share available space equally → <span class="highlight-equal">Same size columns</span></li>
+                        <li><strong>fit-content(max)</strong>: Each column fits its content → <span class="highlight-different">Different size columns</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="example-container">
+                <h3>Visual Proof: Column Width Comparison</h3>
+                <p>Hover over the columns to see their actual widths</p>
+
+                <div class="visual-proof">
+                    <div>
+                        <h4>minmax(100px, 1fr) - All Equal Width</h4>
+                        <div class="minmax-visual">
+                            <div class="visual-item" data-content="A">A</div>
+                            <div class="visual-item" data-content="Medium">Medium</div>
+                            <div class="visual-item" data-content="Very Long Content Here">Very Long Content Here</div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4>fit-content(200px) - Width Matches Content</h4>
+                        <div class="fitcontent-visual">
+                            <div class="visual-item" data-content="A">A</div>
+                            <div class="visual-item" data-content="Medium">Medium</div>
+                            <div class="visual-item" data-content="Very Long Content Here">Very Long Content Here</div>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="explanation">
+                    <strong>Answer:</strong><br>
+                    • <strong>minmax()</strong> with fractional units (1fr, 2fr, etc.): Columns are <strong>EQUAL SIZE</strong> - they share available space proportionally<br>
+                    • <strong>fit-content()</strong>: Columns are <strong>DIFFERENT SIZES</strong> - each column is only as wide as its content (up to the max limit)
+                </p>
             </div>
         </section>
 
