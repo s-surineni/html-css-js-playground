@@ -66,6 +66,13 @@ const demos = [
     href: '/src/oop-practice/oop-practice.html',
     cta: 'Start Practicing →',
   },
+    {
+    icon: '🧬',
+    title: 'Holy grail',
+    desc: 'Practice JavaScript OOP concepts — classes, inheritance, getters/setters, static methods, private fields, and polymorphism',
+    href: '/src/holy-grail/holy-grail.html',
+    cta: 'Start Practicing →',
+  },
 ]
 
 const card = ({ icon, title, desc, href, cta }) => `
