@@ -73,6 +73,13 @@ const demos = [
     href: '/src/holy-grail/holy-grail.html',
     cta: 'Start Practicing →',
   },
+      {
+    icon: '🧬',
+    title: 'Holy grail2',
+    desc: 'Practice JavaScript OOP concepts — classes, inheritance, getters/setters, static methods, private fields, and polymorphism',
+    href: '/src/holy-grail-2/holy-grail.html',
+    cta: 'Start Practicing →',
+  },
 ]
 
 const card = ({ icon, title, desc, href, cta }) => `
