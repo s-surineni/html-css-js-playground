@@ -9,7 +9,13 @@ body {
     'nav main aside'
     'footer footer footer';
     grid-template-columns: 100px 1fr 100px;
+    /* makes the header and footer hug their content while the middle row takes the remaining space */
     grid-template-rows: auto 1fr auto;
+    /* ensures the layout fills at least the viewport on short pages. */
+/* Putting min-height: 100vh on the wrong element.
+ It belongs on the layout container, which is the element that has display: 
+ flex or display: grid. Putting it on body alone is not enough if a wrapper element sits in between. */
+    min-height: 100vh;
 }
 
 * {
@@ -47,4 +53,16 @@ aside {
 footer {
   background-color: slategray;
   grid-area: footer;
+}
+
+@media (max-width: 768px) {
+  body {
+    grid-template-areas:
+      'header'
+      'nav'
+      'main'
+      'aside'
+      'footer';
+    grid-template-columns: 1fr;
+  }
 }
