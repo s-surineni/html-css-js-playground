@@ -1,4 +1,4 @@
-// Prototype-based OOP on plain objects.
+// Prototype delegation on plain objects.
 const person = {
   firstName: 'Tony',
   lastName: 'Stark',
@@ -8,11 +8,11 @@ const person = {
 };
 console.log('person.getName():', person.getName());
 
-// Create child object with person as prototype
-const superHero = {};
-Object.setPrototypeOf(superHero, person);
+// Prefer choosing the prototype when the object is created. Changing an
+// existing object's prototype with Object.setPrototypeOf() can be slow.
+const superHero = Object.create(person);
 
-// Override properties from prototype
+// These own properties shadow values found on person.
 superHero.firstName = 'Iron';
 superHero.lastName = 'Man';
 console.log('superHero.getName():', superHero.getName());
@@ -24,7 +24,11 @@ console.log('person.getName === superHero.getName:', person.getName === superHer
 
 // Show property lookup: own vs inherited
 console.log('\n--- Property Lookup ---');
-console.log('superHero.hasOwnProperty("firstName"):', superHero.hasOwnProperty('firstName'));
-console.log('superHero.hasOwnProperty("getName"):', superHero.hasOwnProperty('getName'));
+console.log('Object.hasOwn(superHero, "firstName"):', Object.hasOwn(superHero, 'firstName'));
+console.log('Object.hasOwn(superHero, "getName"):', Object.hasOwn(superHero, 'getName'));
 console.log('"getName" in superHero:', 'getName' in superHero);
 
+// Deleting an own property reveals the inherited value again.
+delete superHero.firstName;
+console.log('after delete, superHero.firstName:', superHero.firstName);
+console.log('person.isPrototypeOf(superHero):', person.isPrototypeOf(superHero));

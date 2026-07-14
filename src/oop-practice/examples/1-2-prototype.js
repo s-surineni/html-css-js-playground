@@ -1,35 +1,29 @@
-// Prototype-based OOP on plain objects.
-// demonstrates getter and setter
-// polymorphism
+// Method overriding and property shadowing with plain objects.
 const person = {
   firstName: 'Tony',
   lastName: 'Stark',
-  getName: function () {
+  getName() {
     return `${this.firstName} ${this.lastName}`;
   },
-  get name() {
-    return `${this.firstName} ${this.lastName}`;
-  },
-
-  set name(value) {
-    const [firstName, lastName] = value.split(' ')
-    this.firstName = firstName;
-    this.lastName = lastName;
-    console.log(this.name)
+  describe() {
+    return `Person: ${this.getName()}`;
   }
 };
-console.log(person.getName());
 
-const superHero = {
-  power: 'Suit',
-  getName: function () {
-    return `${this.firstName} ${this.lastName} ${this.power}`
-  }
-};
-Object.setPrototypeOf(superHero, person);
+const superHero = Object.create(person);
 superHero.firstName = 'Iron';
 superHero.lastName = 'Man';
-console.log(superHero.getName());
-console.log(superHero.name)
-superHero.name = "Reed Richards"
-console.log('ironman person.name', person.name);
+superHero.power = 'Suit';
+
+// An own method shadows person.describe.
+superHero.describe = function () {
+  return `Superhero: ${this.getName()} (${this.power})`;
+};
+
+console.log(person.describe());
+console.log(superHero.describe());
+console.log('Own override:', Object.hasOwn(superHero, 'describe'));
+
+// Removing the override reveals the inherited implementation.
+delete superHero.describe;
+console.log(superHero.describe());

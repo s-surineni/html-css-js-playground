@@ -13,15 +13,19 @@ const person = {
     return `${this.firstName} ${this.lastName}`;
   },
 
-  // Setter - validates and splits full name
+  // Setter - validates and preserves multi-word last names
   set name(value) {
-    if (typeof value !== 'string' || !value.includes(' ')) {
+    if (typeof value !== 'string') {
       console.log('❌ Invalid name format. Expected: "FirstName LastName"');
       return;
     }
-    const [firstName, lastName] = value.split(' ');
+    const [firstName, ...lastNameParts] = value.trim().split(/\s+/);
+    if (!firstName || lastNameParts.length === 0) {
+      console.log('❌ Invalid name format. Expected: "FirstName LastName"');
+      return;
+    }
     this.firstName = firstName;
-    this.lastName = lastName;
+    this.lastName = lastNameParts.join(' ');
   }
 };
 
@@ -40,8 +44,7 @@ person.name = "SingleName"; // Should fail validation
 console.log('person.name (unchanged):', person.name);
 
 console.log('\n--- Prototype Inheritance ---');
-const superHero = {};
-Object.setPrototypeOf(superHero, person);
+const superHero = Object.create(person);
 superHero.firstName = 'Iron';
 superHero.lastName = 'Man';
 console.log('superHero.name (inherited getter):', superHero.name);

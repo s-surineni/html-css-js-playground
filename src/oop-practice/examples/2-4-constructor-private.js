@@ -1,11 +1,15 @@
 // Private variables in constructor functions using closures
 function BankAccount(initialBalance) {
+  if (!Number.isFinite(initialBalance) || initialBalance < 0) {
+    throw new RangeError('Initial balance must be a finite non-negative number');
+  }
+
   // Private variable - only accessible within this constructor scope
   let balance = initialBalance;
 
   // Private method - not accessible from outside
   function validateAmount(amount) {
-    return amount > 0;
+    return Number.isFinite(amount) && amount > 0;
   }
 
   // Public method - has access to private variables via closure
@@ -45,6 +49,10 @@ console.log(account.validateAmount); // undefined
 // ============================================
 
 function SavingsAccount(initialBalance, interestRate) {
+  if (!Number.isFinite(interestRate) || interestRate < 0) {
+    throw new RangeError('Interest rate must be a finite non-negative number');
+  }
+
   // Call parent constructor
   BankAccount.call(this, initialBalance);
 

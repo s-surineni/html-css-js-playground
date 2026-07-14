@@ -34,7 +34,7 @@ console.log(c1.getValue());   // Cannot access 'count'
 console.log(c1.reset());
 
 // The tradeoff:
-// - Instance methods (this.method = function) → can access private vars, but memory inefficient
+// - Instance methods (this.method = function) → can access private vars, but allocate per instance
 // - Prototype methods (Constructor.prototype.method) → memory efficient, but can't access private vars
 
 console.log('\n--- Better approach for encapsulation with prototypes: ---');
@@ -57,3 +57,6 @@ const c2 = new BetterCounter(5);
 console.log(c2.increment()); // 6
 console.log(c2.getValue());  // 6
 console.log(c2._count);      // 6 - still accessible (no true privacy)
+
+// Modern alternatives include class #private fields (shown later) or a WeakMap
+// keyed by each instance when class syntax is not appropriate.

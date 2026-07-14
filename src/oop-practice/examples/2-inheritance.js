@@ -26,3 +26,9 @@ class LibraryBook extends Book {
     return `${super.getInfo()} — ${this.isBorrowed ? 'borrowed' : 'available'}`;
   }
 }
+
+// `class` is syntax over JavaScript's prototype system: methods are shared.
+console.log(
+  'LibraryBook.prototype inherits from Book.prototype:',
+  Object.getPrototypeOf(LibraryBook.prototype) === Book.prototype,
+);
