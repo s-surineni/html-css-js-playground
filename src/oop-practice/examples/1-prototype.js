@@ -5,6 +5,9 @@ const person = {
   getName() {
     return `${this.firstName} ${this.lastName}`;
   },
+  get name() {
+    return `${this.firstName} ${this.lastName}`;
+  }
 };
 console.log('person.getName():', person.getName());
 
@@ -31,4 +34,5 @@ console.log('"getName" in superHero:', 'getName' in superHero);
 // Deleting an own property reveals the inherited value again.
 delete superHero.firstName;
 console.log('after delete, superHero.firstName:', superHero.firstName);
+console.log('Object.hasOwn(superHero, "firstName"):', Object.hasOwn(superHero, 'firstName'));
 console.log('person.isPrototypeOf(superHero):', person.isPrototypeOf(superHero));

@@ -67,8 +67,10 @@ const exercises = [
     id: '1-1',
     title: 'Prototype Getters and Setters',
     badge: 'easy',
-    desc: `An inherited accessor uses the receiving object as <code>this</code>, so the
-      same getter and setter work on both a prototype and its child.`,
+    desc: `Compare a regular method with a property-style getter, then use a validating
+      setter to update a full name while preserving multi-word last names. A child
+      inherits the same accessors, but <code>this</code> refers to the child, so its name
+      changes without modifying the prototype object.`,
     hint: `Accessors are invoked like properties. Normalize input with
       <code>trim().split(/\s+/)</code> before updating state.`,
   },
