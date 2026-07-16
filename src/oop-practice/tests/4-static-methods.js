@@ -10,37 +10,8 @@ expect(
   undefined,
   'static method is not available on instances',
 );
-expect(converter1.id, 1, 'private static counter generates the first ID');
-expect(converter2.id, 2, 'private static counter generates the next ID');
-expect(
-  Object.hasOwn(TemperatureConverter, '#nextId'),
-  false,
-  'private static field is not a public string-keyed property',
-);
 expect(TemperatureConverter.isValidTemperature(25), true, 'static validator accepts numbers');
 expect(TemperatureConverter.isValidTemperature(NaN), false, 'static validator rejects NaN');
 expect(converter1.label, 'Kitchen', 'static factory creates and initializes an instance');
 expect(CustomConverter.celsiusToFahrenheit(10), 52, 'static method supports subclass customization');
 expect(TemperatureConverter.FACTOR, 1.8, 'subclass field does not change the base field');
-expect(temperatureUtils.FACTOR, 1.8, 'plain object stores a static-like property directly');
-expect(
-  temperatureUtils.celsiusToFahrenheit(25),
-  77,
-  'plain object provides a namespaced utility method',
-);
-expect(
-  LegacyTemperatureConverter.celsiusToFahrenheit(25),
-  77,
-  'constructor function holds a static method',
-);
-expect(LegacyTemperatureConverter.FACTOR, 1.8, 'constructor function holds a static field');
-expect(legacyConverter1.FACTOR, undefined, 'constructor static field is absent from instances');
-expect(
-  legacyConverter1.celsiusToFahrenheit,
-  undefined,
-  'constructor static method is absent from instances',
-);
-expect(legacyConverter1.id, 1, 'closure supplies private shared state to the constructor');
-expect(legacyConverter2.id, 2, 'constructor instances share the private closure counter');
-expect(LegacyTemperatureConverter.getNextId(), 3, 'public static method reads private state');
-expect(LegacyTemperatureConverter.nextId, undefined, 'closure state is not publicly accessible');

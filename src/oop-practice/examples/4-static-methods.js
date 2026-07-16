@@ -3,13 +3,11 @@ class TemperatureConverter {
   // Uppercase is only a naming convention; this public field is still mutable.
   static FACTOR = 9 / 5;
   static instanceCount = 0;
-  static #nextId = 1;
 
   // Instance fields belong to each object created from the class.
   unit = 'Celsius';
 
   constructor(label) {
-    this.id = TemperatureConverter.#nextId++;
     this.label = label;
     TemperatureConverter.instanceCount++;
   }
@@ -46,7 +44,6 @@ console.log('\n--- Static Factory and Shared State ---');
 const converter1 = TemperatureConverter.create('Kitchen');
 const converter2 = TemperatureConverter.create('Laboratory');
 console.log('instances created:', TemperatureConverter.instanceCount);
-console.log('private counter generated IDs:', converter1.id, converter2.id);
 
 console.log('\n--- Static vs Instance Fields ---');
 console.log('class FACTOR:', TemperatureConverter.FACTOR);
@@ -70,55 +67,3 @@ class CustomConverter extends TemperatureConverter {}
 CustomConverter.FACTOR = 2;
 console.log('custom conversion:', CustomConverter.celsiusToFahrenheit(10));
 console.log('base FACTOR is unchanged:', TemperatureConverter.FACTOR);
-
-console.log('\n--- Static-Like Members on a Plain Object ---');
-// Plain objects have no class/instance distinction. Properties and methods
-// placed directly on the object provide similar namespaced utility behavior.
-const temperatureUtils = {
-  FACTOR: 9 / 5,
-
-  celsiusToFahrenheit(celsius) {
-    return celsius * this.FACTOR + 32;
-  },
-};
-console.log('object property:', temperatureUtils.FACTOR);
-console.log('object utility method:', temperatureUtils.celsiusToFahrenheit(25));
-
-console.log('\n--- Static Members on a Constructor Function ---');
-// Functions are objects, so public static-like members can be assigned directly
-// to the constructor. A closure provides private shared state.
-const LegacyTemperatureConverter = (() => {
-  let nextId = 1;
-
-  function LegacyTemperatureConverter(unit = 'Celsius') {
-    this.id = nextId++;
-    this.unit = unit;
-  }
-
-  LegacyTemperatureConverter.FACTOR = 9 / 5;
-
-  LegacyTemperatureConverter.create = function (unit) {
-    return new LegacyTemperatureConverter(unit);
-  };
-
-  LegacyTemperatureConverter.celsiusToFahrenheit = function (celsius) {
-    return celsius * this.FACTOR + 32;
-  };
-
-  LegacyTemperatureConverter.getNextId = function () {
-    return nextId;
-  };
-
-  return LegacyTemperatureConverter;
-})();
-
-const legacyConverter1 = LegacyTemperatureConverter.create('Celsius');
-const legacyConverter2 = LegacyTemperatureConverter.create('Fahrenheit');
-console.log('constructor static field:', LegacyTemperatureConverter.FACTOR);
-console.log(
-  'constructor static method:',
-  LegacyTemperatureConverter.celsiusToFahrenheit(25),
-);
-console.log('instance IDs from private closure:', legacyConverter1.id, legacyConverter2.id);
-console.log('private next ID through public method:', LegacyTemperatureConverter.getNextId());
-console.log('static method on instance:', legacyConverter1.celsiusToFahrenheit);

@@ -106,6 +106,16 @@ const exercises = [
       methods like <code>makeSound()</code> or <code>getArea()</code>.`,
   },
   {
+    id: '1-5',
+    title: 'Plain Object Utilities',
+    badge: 'easy',
+    desc: `Group configuration, validation, and conversion methods directly on a plain
+      object. These members are static-like utilities, but are not technically static
+      because a plain object has no class/instance distinction.`,
+    hint: `Use an object as a namespace when you need one shared set of utilities and
+      do not need instances. Access its members through the object name.`,
+  },
+  {
     id: '2-1',
     title: 'Constructor Functions and new',
     badge: 'easy',
@@ -161,6 +171,17 @@ const exercises = [
       for "private-by-convention" with prototypes.`,
   },
   {
+    id: '2-6',
+    title: 'Constructor Function Static Members',
+    badge: 'medium',
+    desc: `Attach shared fields, validation, conversion, and factory methods directly
+      to a constructor function. Use a closure for private state shared by every
+      instance created through the constructor.`,
+    hint: `Functions are objects, so assign members with
+      <code>Constructor.member = value</code>. Instances do not inherit those members
+      through <code>Constructor.prototype</code>.`,
+  },
+  {
     id: '2',
     displayId: '3',
     title: 'Inheritance (extends)',
@@ -185,25 +206,26 @@ const exercises = [
   {
     id: '4',
     displayId: '5',
-    title: 'Static Members Across JavaScript Patterns',
+    title: 'Class Static Fields and Methods',
     badge: 'medium',
-    desc: `Explore static members on classes, static-like utilities on plain objects,
-      and properties attached to constructor functions. Compare instance access,
-      factories, validation, inheritance, mutability, and private shared state.`,
-    hint: `Classes use <code>static</code>; plain objects hold utilities directly; and
-      constructor functions receive static-like members as function properties. Use a
-      class <code>#field</code> or closure when shared state must remain private.`,
+    desc: `Use class-level fields for configuration and shared state, then build static
+      validation, conversion, and factory methods. Compare class and instance access,
+      public-field mutability, and inherited static behavior.`,
+    hint: `Declare class-level members with <code>static</code> and access them through
+      the class rather than an instance. Using <code>this</code> in static methods supports
+      factories and subclass customization.`,
   },
   {
     id: '5',
     displayId: '6',
-    title: 'Private Fields (#)',
+    title: 'Private Instance and Static Fields (#)',
     badge: 'hard',
-    desc: `A <strong>BankAccount</strong> with a private <code>#balance</code> field,
-      validated <code>deposit(amount)</code> / <code>withdraw(amount)</code>, and a
-      read-only <code>balance</code> getter.`,
-    hint: `Declare <code>#balance</code> at the top of the class body.
-      Access it with <code>this.#balance</code> inside methods.`,
+    desc: `A <strong>BankAccount</strong> combines a private instance
+      <code>#balance</code> with a private static ID counter and validator. Public
+      getters expose selected information without exposing the private state itself.`,
+    hint: `Use <code>#field</code> for private instance state and
+      <code>static #field</code> for private class-level state. Private names are only
+      accessible inside the class that declares them.`,
   },
   {
     id: '6',
