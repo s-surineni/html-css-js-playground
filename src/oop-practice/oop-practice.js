@@ -185,13 +185,14 @@ const exercises = [
   {
     id: '4',
     displayId: '5',
-    title: 'Static Methods',
+    title: 'Static Fields and Methods',
     badge: 'medium',
-    desc: `A <strong>TemperatureConverter</strong> with a static <code>FACTOR = 9/5</code>
-      and static methods <code>celsiusToFahrenheit(c)</code> /
-      <code>fahrenheitToCelsius(f)</code>.`,
-    hint: `<code>static methodName() { … }</code> — call on the class, not on an instance.
-      Using <code>this.FACTOR</code> allows subclasses to customize the factor.`,
+    desc: `Compare static and instance fields, track shared state with public and private
+      static counters, and use <strong>TemperatureConverter</strong> factory, validation,
+      and conversion methods. Also explore mutability and inherited static behavior.`,
+    hint: `Declare fields and methods with <code>static</code>, then access them through
+      the class rather than an instance. Prefix a private static field with <code>#</code>.
+      Using <code>this</code> in static methods supports factories and subclass customization.`,
   },
   {
     id: '5',
