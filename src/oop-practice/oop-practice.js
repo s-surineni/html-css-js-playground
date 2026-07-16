@@ -109,11 +109,13 @@ const exercises = [
     id: '2-1',
     title: 'Constructor Functions and new',
     badge: 'easy',
-    desc: `See what <code>new</code> does, compare shared prototype methods with
-      per-instance functions, and inspect <code>instanceof</code> and prototype links.`,
+    desc: `See what <code>new</code> does, compare own properties and per-instance
+      functions with shared prototype methods, inspect the complete prototype chain,
+      and safely handle constructor calls made without <code>new</code>.`,
     hint: `<code>new Person()</code> creates an object linked to
       <code>Person.prototype</code>, calls <code>Person</code> with that object as
-      <code>this</code>, and returns it.`,
+      <code>this</code>, and returns it. Use <code>Object.hasOwn()</code> to distinguish
+      instance properties from inherited methods.`,
   },
   {
     id: '2-2',
@@ -147,7 +149,7 @@ const exercises = [
   },
   {
     id: '2-5',
-    title: 'Constructor Private Variables - Limitation',
+    title: 'Constructor Closure Privacy — Prototype Method Trade-off',
     badge: 'medium',
     desc: `Demonstrates the key limitation: <strong>prototype methods cannot access
       private variables</strong> from the constructor. Only instance methods
