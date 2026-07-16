@@ -185,14 +185,14 @@ const exercises = [
   {
     id: '4',
     displayId: '5',
-    title: 'Static Fields and Methods',
+    title: 'Static Members Across JavaScript Patterns',
     badge: 'medium',
-    desc: `Compare static and instance fields, track shared state with public and private
-      static counters, and use <strong>TemperatureConverter</strong> factory, validation,
-      and conversion methods. Also explore mutability and inherited static behavior.`,
-    hint: `Declare fields and methods with <code>static</code>, then access them through
-      the class rather than an instance. Prefix a private static field with <code>#</code>.
-      Using <code>this</code> in static methods supports factories and subclass customization.`,
+    desc: `Explore static members on classes, static-like utilities on plain objects,
+      and properties attached to constructor functions. Compare instance access,
+      factories, validation, inheritance, mutability, and private shared state.`,
+    hint: `Classes use <code>static</code>; plain objects hold utilities directly; and
+      constructor functions receive static-like members as function properties. Use a
+      class <code>#field</code> or closure when shared state must remain private.`,
   },
   {
     id: '5',
