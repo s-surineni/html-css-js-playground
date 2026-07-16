@@ -1,44 +1,21 @@
-// =====================================
-// 🧬 OOP PRACTICE — live editable playground
-// =====================================
-// Single source of truth: the `exercises` manifest below holds the metadata
-// (title, badge, description, hint) for each exercise. The starter code and the
-// assertion test each live as a real lint-able file — starter under
-// examples/<n>-name.js, test under tests/<n>-name.js — imported as raw source
-// (no escaping). Both are matched to an exercise by the leading number in the
-// filename. Cards are generated from the manifest, so adding an exercise = drop
-// a starter file (+ optional test file) and add one manifest entry. Nothing in
-// the HTML to keep in sync.
-//
-// Note: `desc` and `hint` are trusted, author-written HTML (the same markup
-// that used to live in oop-practice.html) — never user input — so injecting
-// them with innerHTML is safe here.
-// =====================================
-
-console.log('[1] oop-practice.js loading');
+// OOP Practice — live editable curriculum.
+// Metadata lives below; starter and assertion files are loaded by their numeric ID.
 import { mountCodePlayground } from '../lib/code-playground.js';
 import '../lib/code-playground.css';
-console.log('[2] imports complete');
 
-// Load every starter / test file as raw source text, keyed by the ID part of
-// the filename: one or more digits, optionally followed by hyphen + more digits:
-//   './examples/2-inheritance.js' -> '2'
-//   './examples/1-1-prototype.js' -> '1-1'
-// Both globs are eager + raw so the source ships in the bundle, not fetched at runtime.
 const rawById = (modules, kind) => {
-  const out = {};
+  const sources = {};
   for (const [path, source] of Object.entries(modules)) {
-    const id = path.match(/\/(\d+(?:-\d+)?)-/)?.[1];
+    const id = path.match(/\/(\d+-\d+)-/)?.[1];
     if (!id) continue;
-    if (Object.hasOwn(out, id)) {
+    if (Object.hasOwn(sources, id)) {
       throw new Error(`[oop-practice] duplicate ${kind} id "${id}" from ${path}`);
     }
-    out[id] = source.trimEnd();
+    sources[id] = source.trimEnd();
   }
-  return out;
+  return sources;
 };
 
-console.log('[3] about to load starters/tests');
 const starters = rawById(
   import.meta.glob('./examples/*.js', { query: '?raw', import: 'default', eager: true }),
   'starter',
@@ -47,228 +24,251 @@ const tests = rawById(
   import.meta.glob('./tests/*.js', { query: '?raw', import: 'default', eager: true }),
   'test',
 );
-console.log('[4] loaded:', Object.keys(starters).length, 'starters,', Object.keys(tests).length, 'tests');
 
-// Per-exercise metadata. `desc` and `hint` are trusted authored HTML. The
-// starter code and assertion test for each id are loaded from the files above.
-const exercises = [
+const curriculum = [
   {
-    id: '1',
-    title: 'Object Prototypes and Property Lookup',
-    badge: 'easy',
-    desc: `Create a child with <code>Object.create()</code>, inspect its prototype,
-      and observe own properties, inherited properties, shadowing, and <code>delete</code>.
-          demonstrates oop concept of having data and function together.
-    but this example does not have encapsulation.`,
-    hint: `<code>Object.create(parent)</code> chooses the prototype at creation time.
-      <code>Object.hasOwn()</code> distinguishes own properties from inherited ones.`,
+    id: 'objects',
+    title: '1. Objects and Prototypes',
+    desc: 'Start with method receivers, then add delegation, overriding, polymorphism, and closure privacy.',
+    exercises: [
+      {
+        id: '1-1',
+        title: 'Object Methods and this',
+        badge: 'easy',
+        desc: `See how a method receives <code>this</code> from its caller, supply a
+          receiver with <code>call()</code>/<code>apply()</code>/<code>bind()</code>,
+          and compare regular methods with arrow functions.`,
+        hint: `For a regular function, <code>this</code> depends on how it is called.
+          An arrow function captures <code>this</code> from its surrounding scope.`,
+      },
+      {
+        id: '1-2',
+        title: 'Prototype Delegation and Property Lookup',
+        badge: 'easy',
+        desc: `Create a child with <code>Object.create()</code> and observe own properties,
+          inherited methods, shadowing, lookup with <code>in</code>, and <code>delete</code>.`,
+        hint: `<code>Object.hasOwn()</code> checks only the object; <code>in</code> searches
+          the complete prototype chain.`,
+      },
+      {
+        id: '1-3',
+        title: 'Prototype Getters and Setters',
+        badge: 'easy',
+        desc: `Inherit a validating accessor and observe that <code>this</code> refers to
+          the receiving child, leaving the prototype object's state unchanged.`,
+        hint: `An inherited setter can create or update ordinary properties on its receiver
+          without creating an own accessor property.`,
+      },
+      {
+        id: '1-4',
+        title: 'Prototype Method Overriding',
+        badge: 'easy',
+        desc: `Override an inherited method with an own property, then delete the override
+          to reveal the original prototype behavior.`,
+        hint: `Property lookup stops at the first matching property in the chain.`,
+      },
+      {
+        id: '1-5',
+        title: 'Prototype Polymorphism',
+        badge: 'medium',
+        desc: `Call the same operation on different child objects while each supplies its
+          own implementation and shares common behavior through a prototype.`,
+        hint: `Polymorphism means one interface with multiple implementations.`,
+      },
+      {
+        id: '1-6',
+        title: 'Factory Functions and Closure Privacy',
+        badge: 'medium',
+        desc: `Return an object from a factory while keeping per-object state private in
+          a closure—without <code>new</code> or class syntax.`,
+        hint: `Only functions created inside the factory can access its local variables.`,
+      },
+    ],
   },
   {
-    id: '1-1',
-    title: 'Prototype Getters and Setters',
-    badge: 'easy',
-    desc: `Compare a regular method with a property-style getter, then use a validating
-      setter to update a full name while preserving multi-word last names. A child
-      inherits the same accessors, but <code>this</code> refers to the child, so its name
-      changes without modifying the prototype object.`,
-    hint: `Accessors are invoked like properties. Normalize input with
-      <code>trim().split(/\s+/)</code> before updating state.`,
+    id: 'constructors',
+    title: '2. Constructor Functions',
+    desc: 'Build instances with new, share behavior through prototypes, and compare privacy strategies.',
+    exercises: [
+      {
+        id: '2-1',
+        title: 'Constructor Basics and new',
+        badge: 'easy',
+        desc: `Initialize instance state with a constructor and inspect the prototype and
+          <code>constructor</code> links established by <code>new</code>.`,
+        hint: `<code>new</code> creates an object, links it to
+          <code>Constructor.prototype</code>, calls the constructor as <code>this</code>,
+          and returns the object.`,
+      },
+      {
+        id: '2-2',
+        title: 'Instance Methods vs Prototype Methods',
+        badge: 'easy',
+        desc: `Compare a function recreated by the constructor with one shared by every
+          instance through the constructor's prototype.`,
+        hint: `Use <code>Object.hasOwn()</code> and function identity to see where methods live.`,
+      },
+      {
+        id: '2-3',
+        title: 'Constructor Prototype Accessors',
+        badge: 'medium',
+        desc: `Add a non-enumerable getter and setter to an existing prototype with
+          <code>Object.defineProperty()</code>.`,
+        hint: `A property descriptor controls accessor functions and flags such as
+          <code>enumerable</code> and <code>configurable</code>.`,
+      },
+      {
+        id: '2-4',
+        title: 'Constructor Function Inheritance',
+        badge: 'medium',
+        desc: `Combine parent initialization with prototype delegation so a child receives
+          both instance state and shared parent methods.`,
+        hint: `Call the parent with <code>Parent.call(this, ...)</code>, link prototypes,
+          then restore the child prototype's <code>constructor</code>.`,
+      },
+      {
+        id: '2-5',
+        title: 'Constructor Closure Privacy',
+        badge: 'medium',
+        desc: `Keep per-instance state private with a constructor closure and observe that
+          methods using that state are recreated for every instance.`,
+        hint: `Closure privacy is real privacy, but its privileged methods are instance properties.`,
+      },
+      {
+        id: '2-6',
+        title: 'WeakMap Privacy with Shared Methods',
+        badge: 'hard',
+        desc: `Store private per-instance state in a <code>WeakMap</code> while sharing the
+          methods that access it through the prototype.`,
+        hint: `Use each instance as a <code>WeakMap</code> key and keep the map outside the
+          public object surface.`,
+      },
+      {
+        id: '2-7',
+        title: 'Constructor Static Members',
+        badge: 'medium',
+        desc: `Attach shared fields, utility methods, and factories directly to a constructor
+          function rather than its prototype.`,
+        hint: `Functions are objects, so constructor-level members are ordinary properties
+          on the function and are not inherited by instances.`,
+      },
+    ],
   },
   {
-    id: '1-2',
-    title: 'Prototype Method Overriding',
-    badge: 'easy',
-    desc: `A child shadows an inherited method while continuing to inherit other
-      behavior from its prototype.`,
-    hint: `Property lookup stops at the first match. Deleting the child's override
-      reveals the inherited method again.`,
+    id: 'classes',
+    title: '3. Classes',
+    desc: 'Apply dedicated syntax for instances, accessors, inheritance, polymorphism, statics, and privacy.',
+    exercises: [
+      {
+        id: '3-1',
+        title: 'Class Fundamentals',
+        badge: 'easy',
+        desc: `Create class instances, compare public fields with shared methods, and inspect
+          the prototype behavior behind class syntax.`,
+        hint: `Class methods live on the prototype and are non-enumerable; public fields are
+          initialized as own instance properties.`,
+      },
+      {
+        id: '3-2',
+        title: 'Class Getters and Setters',
+        badge: 'medium',
+        desc: `Expose computed properties and route assignments through validating setters.`,
+        hint: `Assign through setters in the constructor so initial and later values follow
+          the same validation path.`,
+      },
+      {
+        id: '3-3',
+        title: 'Class Inheritance and super',
+        badge: 'medium',
+        desc: `Extend a base class, initialize parent state with <code>super()</code>, and
+          enhance an overridden method with <code>super.method()</code>.`,
+        hint: `A derived constructor must call <code>super()</code> before using <code>this</code>.`,
+      },
+      {
+        id: '3-4',
+        title: 'Abstraction, Duck Typing, and Polymorphism',
+        badge: 'hard',
+        desc: `Define an abstract-style method contract and process class instances and a
+          plain object uniformly through their shared <code>getArea()</code> interface.`,
+        hint: `JavaScript does not require a formal interface: compatible behavior is often
+          enough—commonly called duck typing.`,
+      },
+      {
+        id: '3-5',
+        title: 'Class Static Fields and Methods',
+        badge: 'medium',
+        desc: `Use class-level configuration, shared counters, factories, and inherited
+          static behavior that remains unavailable on instances.`,
+        hint: `Inside a static method, <code>this</code> refers to the class used for the call.`,
+      },
+      {
+        id: '3-6',
+        title: 'Private Instance and Static Fields',
+        badge: 'hard',
+        desc: `Combine a private instance balance with a private static ID counter and expose
+          only selected information through public methods and getters.`,
+        hint: `Use <code>#field</code> for instance privacy and
+          <code>static #field</code> for class-level privacy.`,
+      },
+    ],
   },
   {
-    id: '1-3',
-    title: 'Factory Function with Encapsulation (Module Pattern)',
-    badge: 'easy',
-    desc: `Real encapsulation without classes or constructors — just a plain factory
-      function returning an object literal. Private variables live in the closure,
-      completely inaccessible from outside.`,
-    hint: `Variables declared inside the function (like <code>count</code>) are private
-      via closure. Only the returned object's methods can access them. No <code>new</code>
-      keyword needed — just call the function.`,
-  },
-  {
-    id: '1-4',
-    title: 'Prototype Polymorphism',
-    badge: 'easy',
-    desc: `Polymorphism using object prototypes — different objects share the same
-      interface (method names) but implement different behaviors. Includes two examples:
-      Animal sounds and Shape area calculations.`,
-    hint: `Polymorphism means "many forms" — same method name, different implementations.
-      <code>describe()</code> is shared on the prototype, but calls the overridden
-      methods like <code>makeSound()</code> or <code>getArea()</code>.`,
-  },
-  {
-    id: '1-5',
-    title: 'Plain Object Utilities',
-    badge: 'easy',
-    desc: `Group configuration, validation, and conversion methods directly on a plain
-      object. These members are static-like utilities, but are not technically static
-      because a plain object has no class/instance distinction.`,
-    hint: `Use an object as a namespace when you need one shared set of utilities and
-      do not need instances. Access its members through the object name.`,
-  },
-  {
-    id: '2-1',
-    title: 'Constructor Functions and new',
-    badge: 'easy',
-    desc: `See what <code>new</code> does, compare own properties and per-instance
-      functions with shared prototype methods, inspect the complete prototype chain,
-      and safely handle constructor calls made without <code>new</code>.`,
-    hint: `<code>new Person()</code> creates an object linked to
-      <code>Person.prototype</code>, calls <code>Person</code> with that object as
-      <code>this</code>, and returns it. Use <code>Object.hasOwn()</code> to distinguish
-      instance properties from inherited methods.`,
-  },
-  {
-    id: '2-2',
-    title: 'Constructor Prototype Accessors',
-    badge: 'easy',
-    desc: `Add a getter and setter to an existing constructor prototype without
-      replacing the prototype or breaking its <code>constructor</code> property.`,
-    hint: `Use <code>Object.defineProperty()</code>. Accessors defined this way can
-      be non-enumerable, like methods created by class syntax.`,
-  },
-  {
-    id: '2-3',
-    title: 'Constructor Function Inheritance',
-    badge: 'easy',
-    desc: `Combine constructor stealing with prototype delegation so a
-      <strong>SuperHero</strong> inherits both instance state and shared methods.`,
-    hint: `Call <code>Person.call(this, ...)</code>, link prototypes with
-      <code>Object.create(Person.prototype)</code>, then restore <code>constructor</code>.`,
-  },
-  {
-    id: '2-4',
-    title: 'Constructor Private Variables',
-    badge: 'medium',
-    desc: `Private variables and methods using closures in constructor functions.
-      A <strong>BankAccount</strong> with private <code>balance</code> and
-      <code>validateAmount()</code>, public <code>deposit()</code>,
-      <code>withdraw()</code>, and <code>getBalance()</code> methods.`,
-    hint: `Variables declared with <code>let</code>/<code>const</code> inside the
-      constructor are private. Methods defined with <code>this.method = function() {}</code>
-      can access them via closure, but they're not on the prototype.`,
-  },
-  {
-    id: '2-5',
-    title: 'Constructor Closure Privacy — Prototype Method Trade-off',
-    badge: 'medium',
-    desc: `Demonstrates the key limitation: <strong>prototype methods cannot access
-      private variables</strong> from the constructor. Only instance methods
-      (defined with <code>this.method = function</code>) can access them via closure,
-      but this is memory-inefficient.`,
-    hint: `Prototype methods exist outside the constructor's closure, so they can't see
-      variables declared inside it. The tradeoff: true privacy (instance methods) vs
-      memory efficiency (prototype methods). Use <code>_propertyName</code> convention
-      for "private-by-convention" with prototypes.`,
-  },
-  {
-    id: '2-6',
-    title: 'Constructor Function Static Members',
-    badge: 'medium',
-    desc: `Attach shared fields, validation, conversion, and factory methods directly
-      to a constructor function. Use a closure for private state shared by every
-      instance created through the constructor.`,
-    hint: `Functions are objects, so assign members with
-      <code>Constructor.member = value</code>. Instances do not inherit those members
-      through <code>Constructor.prototype</code>.`,
-  },
-  {
-    id: '2',
-    displayId: '3',
-    title: 'Inheritance (extends)',
-    badge: 'medium',
-    desc: `Class syntax is prototype-backed. A <strong>LibraryBook</strong> extends <strong>Book</strong>,
-      adds an <code>isBorrowed</code> flag with <code>borrow()</code> /
-      <code>returnBook()</code>, and overrides <code>getInfo()</code>.`,
-    hint: `Call <code>super(title, author, year)</code> in the constructor.
-      Use <code>super.getInfo()</code> inside the overridden method, then inspect
-      <code>LibraryBook.prototype</code> to see the underlying chain.`,
-  },
-  {
-    id: '3',
-    displayId: '4',
-    title: 'Getters & Setters',
-    badge: 'medium',
-    desc: `A <strong>Rectangle</strong> with getters for <code>area</code> /
-      <code>perimeter</code> and setters that reject invalid dimensions.`,
-    hint: `Route constructor assignments through setters so initial values and later
-      updates follow the same validation rules.`,
-  },
-  {
-    id: '4',
-    displayId: '5',
-    title: 'Class Static Fields and Methods',
-    badge: 'medium',
-    desc: `Use class-level fields for configuration and shared state, then build static
-      validation, conversion, and factory methods. Compare class and instance access,
-      public-field mutability, and inherited static behavior.`,
-    hint: `Declare class-level members with <code>static</code> and access them through
-      the class rather than an instance. Using <code>this</code> in static methods supports
-      factories and subclass customization.`,
-  },
-  {
-    id: '5',
-    displayId: '6',
-    title: 'Private Instance and Static Fields (#)',
-    badge: 'hard',
-    desc: `A <strong>BankAccount</strong> combines a private instance
-      <code>#balance</code> with a private static ID counter and validator. Public
-      getters expose selected information without exposing the private state itself.`,
-    hint: `Use <code>#field</code> for private instance state and
-      <code>static #field</code> for private class-level state. Private names are only
-      accessible inside the class that declares them.`,
-  },
-  {
-    id: '6',
-    displayId: '7',
-    title: 'Polymorphism',
-    badge: 'hard',
-    desc: `A base <strong>Shape</strong> with <code>getArea()</code>, extended by
-      <strong>Circle</strong> (π·r²) and <strong>Square</strong> (s²), each
-      fulfilling the base method contract by overriding <code>getArea()</code>.`,
-    hint: `Use <code>Math.PI</code> for pi. Call <code>super()</code> in subclass constructors.
-      Polymorphism lets you call the same method on different shapes.`,
+    id: 'design',
+    title: '4. Object Design Patterns',
+    desc: 'Choose between reusable capabilities, inheritance, and simple utility namespaces.',
+    exercises: [
+      {
+        id: '4-1',
+        title: 'Composition Over Inheritance',
+        badge: 'hard',
+        desc: `Build objects from small reusable capabilities so unrelated objects can share
+          selected behavior without joining the same inheritance hierarchy.`,
+        hint: `Composition answers “what can this object do?” instead of only “what is it?”`,
+      },
+      {
+        id: '4-2',
+        title: 'Plain Object Utility Namespace',
+        badge: 'easy',
+        desc: `Group configuration and stateless utility behavior on one object when instances,
+          inheritance, and private per-instance state are unnecessary.`,
+        hint: `These members are static-like, but plain objects have no class/instance distinction.`,
+      },
+      {
+        id: '4-3',
+        title: 'Choosing an Object-Creation Pattern',
+        badge: 'medium',
+        desc: `Compare a plain object, closure-based factory, constructor function, and
+          class after learning each pattern independently.`,
+        hint: `Choose the simplest pattern that provides the identity, sharing, privacy,
+          and inheritance requirements your objects actually need.`,
+      },
+    ],
   },
 ];
 
+const exercises = curriculum.flatMap(({ exercises: sectionExercises }) => sectionExercises);
 const exerciseIds = exercises.map(({ id }) => id);
+
 if (new Set(exerciseIds).size !== exerciseIds.length) {
-  throw new Error('[oop-practice] duplicate id in exercise manifest');
+  throw new Error('[oop-practice] duplicate id in curriculum');
 }
-for (const id of Object.keys(starters)) {
-  if (!exerciseIds.includes(id)) {
-    throw new Error(`[oop-practice] starter ${id} is not listed in the exercise manifest`);
-  }
+for (const id of exerciseIds) {
+  if (!Object.hasOwn(starters, id)) throw new Error(`[oop-practice] missing starter ${id}`);
+  if (!Object.hasOwn(tests, id)) throw new Error(`[oop-practice] missing test ${id}`);
+}
+for (const id of [...Object.keys(starters), ...Object.keys(tests)]) {
+  if (!exerciseIds.includes(id)) throw new Error(`[oop-practice] unlisted source ${id}`);
 }
 
 const BADGE_LABELS = { easy: 'Easy', medium: 'Medium', hard: 'Hard' };
 
-// Build one exercise card and mount its editable playground.
-function renderExercise({ id, displayId = id, title, badge, desc, hint }) {
-  const starter = starters[id];
-  if (!starter) {
-    console.warn(`[oop-practice] no starter file found for exercise ${id} — skipping.`);
-    return null;
-  }
-  // Tests are optional, though every current exercise has assertion coverage.
-  const test = tests[id] ?? '';
-
-  const section = document.createElement('section');
-  section.className = 'exercise';
-  section.dataset.exercise = id;
-  // Trusted authored HTML (see file header) — not user input.
-  section.innerHTML = `
+function renderExercise({ id, title, badge, desc, hint }) {
+  const card = document.createElement('article');
+  card.className = 'exercise';
+  card.dataset.exercise = id;
+  card.innerHTML = `
     <div class="exercise-header">
-      <span class="number">${displayId}</span>
+      <span class="number">${id}</span>
       <span class="title">${title}</span>
       <span class="badge ${badge}">${BADGE_LABELS[badge] ?? badge}</span>
     </div>
@@ -278,20 +278,26 @@ function renderExercise({ id, displayId = id, title, badge, desc, hint }) {
       <p>${hint}</p>
     </details>`;
 
-  mountCodePlayground(section, {
-    code: starter,
-    test,
-    label: `Code editor for exercise ${id}`,
+  mountCodePlayground(card, {
+    code: starters[id],
+    test: tests[id],
+    label: `Code editor for exercise ${id}: ${title}`,
   });
-
-  return section;
+  return card;
 }
 
-console.log('[5] exercises:', exercises.length);
+function renderSection({ id, title, desc }) {
+  const heading = document.createElement('header');
+  heading.className = 'curriculum-section';
+  heading.id = `section-${id}`;
+  heading.innerHTML = `<h2>${title}</h2><p>${desc}</p>`;
+  return heading;
+}
+
 const container = document.querySelector('.container');
-console.log('[6] container:', container);
-for (const exercise of exercises) {
-  const card = renderExercise(exercise);
-  if (card) container.append(card);
+for (const curriculumSection of curriculum) {
+  container.append(renderSection(curriculumSection));
+  for (const exercise of curriculumSection.exercises) {
+    container.append(renderExercise(exercise));
+  }
 }
-console.log('[7] render loop complete');
