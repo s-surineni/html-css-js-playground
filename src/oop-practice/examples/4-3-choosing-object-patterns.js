@@ -1,46 +1,61 @@
-// Plain object: one shared value or utility namespace.
-const appSettings = {
-  theme: 'dark',
+console.log('--- 1. Plain Object: One Person ---');
+const objectPerson = {
+  name: 'Tony',
+  greet() {
+    return `Hello, ${this.name}`;
+  },
 };
+console.log(objectPerson.greet());
 
-// Factory: many objects with closure-private state and no `new`.
-function createSession(user) {
-  let active = true;
-  return {
-    user,
-    close() {
-      active = false;
-    },
-    get isActive() {
-      return active;
-    },
-  };
-}
-
-// Constructor function: useful when working with prototype-based legacy APIs.
-function LegacyUser(name) {
+console.log('\n--- 2. Constructor: Repeatable Person Instances ---');
+function ConstructorPerson(name) {
   this.name = name;
 }
-LegacyUser.prototype.greet = function () {
+
+ConstructorPerson.instanceCount = 0;
+ConstructorPerson.create = function (name) {
+  ConstructorPerson.instanceCount++;
+  return new ConstructorPerson(name);
+};
+ConstructorPerson.prototype.greet = function () {
   return `Hello, ${this.name}`;
 };
 
-// Class: concise syntax for instances, shared methods, inheritance, and privacy.
-class User {
+const constructorTony = ConstructorPerson.create('Tony');
+const constructorBruce = ConstructorPerson.create('Bruce');
+console.log(constructorTony.greet());
+console.log('method shared:', constructorTony.greet === constructorBruce.greet);
+console.log('instanceof:', constructorTony instanceof ConstructorPerson);
+console.log('instances:', ConstructorPerson.instanceCount);
+
+console.log('\n--- 3. Class: Equivalent Model with Dedicated Syntax ---');
+class ClassPerson {
+  static instanceCount = 0;
+  #name;
+
   constructor(name) {
-    this.name = name;
+    this.#name = name;
+    ClassPerson.instanceCount++;
   }
+
+  get name() {
+    return this.#name;
+  }
+
   greet() {
-    return `Hello, ${this.name}`;
+    return `Hello, ${this.#name}`;
   }
 }
 
-const session = createSession('Tony');
-const legacyUser = new LegacyUser('Bruce');
-const modernUser = new User('Natasha');
+const classTony = new ClassPerson('Tony');
+const classBruce = new ClassPerson('Bruce');
+console.log(classTony.greet());
+console.log('method shared:', classTony.greet === classBruce.greet);
+console.log('instanceof:', classTony instanceof ClassPerson);
+console.log('instances:', ClassPerson.instanceCount);
+console.log('private name property:', classTony.name);
 
-console.log('--- Choosing an Object Pattern ---');
-console.log('shared settings:', appSettings.theme);
-console.log('factory privacy:', session.isActive);
-console.log('constructor instance:', legacyUser.greet());
-console.log('class instance:', modernUser.greet());
+console.log('\n--- Choosing ---');
+console.log('Plain object: one simple value or namespace.');
+console.log('Constructor: repeatable instances using explicit prototype setup.');
+console.log('Class: the same prototype model with dedicated syntax and #private fields.');

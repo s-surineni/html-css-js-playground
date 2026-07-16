@@ -235,12 +235,14 @@ const curriculum = [
       },
       {
         id: '4-3',
-        title: 'Choosing an Object-Creation Pattern',
+        title: 'From Plain Objects to Constructors and Classes',
         badge: 'medium',
-        desc: `Compare a plain object, closure-based factory, constructor function, and
-          class after learning each pattern independently.`,
-        hint: `Choose the simplest pattern that provides the identity, sharing, privacy,
-          and inheritance requirements your objects actually need.`,
+        desc: `Implement the same <strong>Person</strong> model as a plain object,
+          constructor function, and class. Compare repeatable instances, shared methods,
+          <code>instanceof</code>, static members, and private fields.`,
+        hint: `No pattern is universally better. Move to constructors when you need many
+          identifiable instances, and prefer class syntax when its clearer methods,
+          inheritance, static members, or <code>#private</code> fields help your design.`,
       },
     ],
   },
