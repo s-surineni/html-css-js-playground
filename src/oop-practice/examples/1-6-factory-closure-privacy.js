@@ -1,23 +1,25 @@
-function createCounter(initial = 0) {
-  let count = initial;
+function createBankAccount(owner, initialBalance = 0) {
+  let balance = initialBalance;
 
   return {
-    increment() {
-      count++;
-      return count;
+    owner,
+    deposit(amount) {
+      if (amount > 0) balance += amount;
+      return balance;
     },
-    decrement() {
-      count--;
-      return count;
+    withdraw(amount) {
+      if (amount > 0 && amount <= balance) balance -= amount;
+      return balance;
     },
-    get value() {
-      return count;
+    get balance() {
+      return balance;
     },
   };
 }
 
 console.log('--- Factory Function with Closure Privacy ---');
-const counter = createCounter(10);
-console.log('increment:', counter.increment());
-console.log('public value:', counter.value);
-console.log('private property:', counter.count);
+const account = createBankAccount('Asha', 1000);
+console.log('deposit:', account.deposit(500));
+console.log('withdraw:', account.withdraw(200));
+console.log('public balance:', account.balance);
+console.log('private property:', account._balance);
