@@ -1,26 +1,26 @@
-const person = {
-  firstName: 'Tony',
-  lastName: 'Stark',
-  getName() {
-    return `${this.firstName} ${this.lastName}`;
+const bankAccount = {
+  owner: 'Bank customer',
+  balance: 0,
+  getBalance() {
+    return `₹${this.balance}`;
   },
   describe() {
-    return `Person: ${this.getName()}`;
+    return `${this.owner}'s account balance is ${this.getBalance()}`;
   },
 };
 
-const superHero = Object.create(person);
-superHero.firstName = 'Iron';
-superHero.lastName = 'Man';
-superHero.power = 'Suit';
+const savingsAccount = Object.create(bankAccount);
+savingsAccount.owner = 'Asha';
+savingsAccount.balance = 5000;
+savingsAccount.interestRate = 5;
 
-superHero.describe = function () {
-  return `Superhero: ${this.getName()} (${this.power})`;
+savingsAccount.describe = function () {
+  return `${this.owner}'s savings balance is ${this.getBalance()} (${this.interestRate}% interest)`;
 };
 
 console.log('--- Method Overriding ---');
-console.log(superHero.describe());
-console.log('own override:', Object.hasOwn(superHero, 'describe'));
+console.log(savingsAccount.describe());
+console.log('own override:', Object.hasOwn(savingsAccount, 'describe'));
 
-delete superHero.describe;
-console.log('inherited after delete:', superHero.describe());
+delete savingsAccount.describe;
+console.log('inherited after delete:', savingsAccount.describe());
