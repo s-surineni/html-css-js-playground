@@ -1,27 +1,23 @@
-const person = {
-  firstName: 'Tony',
-  lastName: 'Stark',
+const bankAccount = {
+  _balance: 0,
 
-  get name() {
-    return `${this.firstName} ${this.lastName}`;
+  get balance() {
+    return `₹${this._balance}`;
   },
 
-  set name(value) {
-    if (typeof value !== 'string') return;
-    const [firstName, ...lastNameParts] = value.trim().split(/\s+/);
-    if (!firstName || lastNameParts.length === 0) return;
-    this.firstName = firstName;
-    this.lastName = lastNameParts.join(' ');
+  set balance(amount) {
+    if (typeof amount !== 'number' || amount < 0) return;
+    this._balance = amount;
   },
 };
 
-const superHero = Object.create(person);
-superHero.firstName = 'Iron';
-superHero.lastName = 'Man';
+const savingsAccount = Object.create(bankAccount);
+savingsAccount.owner = 'Asha';
+savingsAccount._balance = 5000;
 
 console.log('--- Inherited Accessors ---');
-console.log('before:', superHero.name);
-superHero.name = 'Miles Gonzalo Morales';
-console.log('after:', superHero.name);
-console.log('prototype unchanged:', person.name);
-console.log('accessor remains inherited:', Object.hasOwn(superHero, 'name'));
+console.log('before:', savingsAccount.balance);
+savingsAccount.balance = 7500;
+console.log('after:', savingsAccount.balance);
+console.log('prototype unchanged:', bankAccount.balance);
+console.log('accessor remains inherited:', Object.hasOwn(savingsAccount, 'balance'));
