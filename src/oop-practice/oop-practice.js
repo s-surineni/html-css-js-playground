@@ -29,20 +29,10 @@ const curriculum = [
   {
     id: 'objects',
     title: '1. Objects and Prototypes',
-    desc: 'Start with method receivers, then add delegation, overriding, polymorphism, and closure privacy.',
+    desc: 'Start with prototype delegation, then add accessors, overriding, polymorphism, and closure privacy.',
     exercises: [
       {
         id: '1-1',
-        title: 'Object Methods and this',
-        badge: 'easy',
-        desc: `See how a method receives <code>this</code> from its caller, supply a
-          receiver with <code>call()</code>/<code>apply()</code>/<code>bind()</code>,
-          and compare regular methods with arrow functions.`,
-        hint: `For a regular function, <code>this</code> depends on how it is called.
-          An arrow function captures <code>this</code> from its surrounding scope.`,
-      },
-      {
-        id: '1-2',
         title: 'Prototype Delegation and Property Lookup',
         badge: 'easy',
         desc: `Create a child with <code>Object.create()</code> and observe own properties,
@@ -51,7 +41,7 @@ const curriculum = [
           the complete prototype chain.`,
       },
       {
-        id: '1-3',
+        id: '1-2',
         title: 'Prototype Getters and Setters',
         badge: 'easy',
         desc: `Inherit a validating accessor and observe that <code>this</code> refers to
@@ -60,7 +50,7 @@ const curriculum = [
           without creating an own accessor property.`,
       },
       {
-        id: '1-4',
+        id: '1-3',
         title: 'Prototype Method Overriding',
         badge: 'easy',
         desc: `Override an inherited method with an own property, then delete the override
@@ -68,7 +58,7 @@ const curriculum = [
         hint: `Property lookup stops at the first matching property in the chain.`,
       },
       {
-        id: '1-5',
+        id: '1-4',
         title: 'Prototype Polymorphism',
         badge: 'medium',
         desc: `Call the same operation on different child objects while each supplies its
@@ -76,7 +66,7 @@ const curriculum = [
         hint: `Polymorphism means one interface with multiple implementations.`,
       },
       {
-        id: '1-6',
+        id: '1-5',
         title: 'Factory Functions and Closure Privacy',
         badge: 'medium',
         desc: `Return an object from a factory while keeping per-object state private in
