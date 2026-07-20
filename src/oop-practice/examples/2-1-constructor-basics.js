@@ -1,12 +1,12 @@
-function Person(firstName, lastName) {
-  this.firstName = firstName;
-  this.lastName = lastName;
+function BankAccount(owner, balance = 0) {
+  this.owner = owner;
+  this.balance = balance;
 }
 
 console.log('--- Constructor Basics ---');
-const tony = new Person('Tony', 'Stark');
-const bruce = new Person('Bruce', 'Banner');
-console.log(tony.firstName, tony.lastName);
-console.log('instanceof Person:', tony instanceof Person);
-console.log('prototype link:', Object.getPrototypeOf(tony) === Person.prototype);
-console.log('constructor link:', tony.constructor === Person);
+const ashaAccount = new BankAccount('Asha', 1000);
+const raviAccount = new BankAccount('Ravi', 2500);
+console.log(ashaAccount.owner, ashaAccount.balance);
+console.log('instanceof BankAccount:', ashaAccount instanceof BankAccount);
+console.log('prototype link:', Object.getPrototypeOf(ashaAccount) === BankAccount.prototype);
+console.log('constructor link:', ashaAccount.constructor === BankAccount);
