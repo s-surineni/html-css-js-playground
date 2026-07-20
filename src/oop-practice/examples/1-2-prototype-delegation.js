@@ -1,23 +1,23 @@
-const person = {
-  firstName: 'Tony',
-  lastName: 'Stark',
-  getName() {
-    return `${this.firstName} ${this.lastName}`;
+const bankAccount = {
+  owner: 'Bank customer',
+  balance: 0,
+  showBalance() {
+    return `${this.owner}'s balance is ₹${this.balance}`;
   },
 };
 
 // Choose the prototype when creating the child object.
-const superHero = Object.create(person);
-superHero.firstName = 'Iron';
-superHero.lastName = 'Man';
+const savingsAccount = Object.create(bankAccount);
+savingsAccount.owner = 'Asha';
+savingsAccount.balance = 5000;
 
 console.log('--- Prototype Delegation ---');
-console.log('name:', superHero.getName());
-console.log('prototype link:', Object.getPrototypeOf(superHero) === person);
-console.log('own firstName:', Object.hasOwn(superHero, 'firstName'));
-console.log('own getName:', Object.hasOwn(superHero, 'getName'));
-console.log('getName found in chain:', 'getName' in superHero);
+console.log('account:', savingsAccount.showBalance());
+console.log('prototype link:', Object.getPrototypeOf(savingsAccount) === bankAccount);
+console.log('own owner:', Object.hasOwn(savingsAccount, 'owner'));
+console.log('own showBalance:', Object.hasOwn(savingsAccount, 'showBalance'));
+console.log('showBalance found in chain:', 'showBalance' in savingsAccount);
 
 // Deleting an own property reveals the inherited value.
-delete superHero.firstName;
-console.log('after delete:', superHero.firstName);
+delete savingsAccount.owner;
+console.log('owner after delete:', savingsAccount.owner);
