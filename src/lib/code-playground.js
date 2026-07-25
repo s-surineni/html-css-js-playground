@@ -15,6 +15,7 @@
 // Format a console argument the way a dev console would.
 function format(value) {
   if (typeof value === 'string') return value;
+  if (typeof value === 'function') return value.toString();
   if (value instanceof Error) return value.toString();
   try {
     return JSON.stringify(value);
