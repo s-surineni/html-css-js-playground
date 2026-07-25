@@ -10,3 +10,5 @@ console.log(ashaAccount.owner, ashaAccount.balance);
 console.log('instanceof BankAccount:', ashaAccount instanceof BankAccount);
 console.log('prototype link:', Object.getPrototypeOf(ashaAccount) === BankAccount.prototype);
 console.log('constructor link:', ashaAccount.constructor === BankAccount);
+console.log('prototype keys:', Object.keys(BankAccount.prototype));
+console.log('constructor:', BankAccount.prototype.constructor);
