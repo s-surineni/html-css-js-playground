@@ -1,23 +1,24 @@
-function Person(firstName, lastName) {
-  this.firstName = firstName;
-  this.lastName = lastName;
+function BankAccount(owner, balance = 0) {
+  this.owner = owner;
+  this.balance = balance;
 
   // Intentionally recreated for every instance.
-  this.greet = function () {
-    return `Hello, ${this.firstName}`;
+  this.deposit = function (amount) {
+    this.balance += amount;
+    return this.balance;
   };
 }
 
-// Created once and shared through Person.prototype.
-Person.prototype.getName = function () {
-  return `${this.firstName} ${this.lastName}`;
+// Created once and shared through BankAccount.prototype.
+BankAccount.prototype.getSummary = function () {
+  return `${this.owner}: $${this.balance}`;
 };
 
-const tony = new Person('Tony', 'Stark');
-const bruce = new Person('Bruce', 'Banner');
+const ashaAccount = new BankAccount('Asha', 1000);
+const raviAccount = new BankAccount('Ravi', 2500);
 
 console.log('--- Instance vs Prototype Methods ---');
-console.log('own greet:', Object.hasOwn(tony, 'greet'));
-console.log('own getName:', Object.hasOwn(tony, 'getName'));
-console.log('greet shared:', tony.greet === bruce.greet);
-console.log('getName shared:', tony.getName === bruce.getName);
+console.log('own deposit:', Object.hasOwn(ashaAccount, 'deposit'));
+console.log('own getSummary:', Object.hasOwn(ashaAccount, 'getSummary'));
+console.log('deposit shared:', ashaAccount.deposit === raviAccount.deposit);
+console.log('getSummary shared:', ashaAccount.getSummary === raviAccount.getSummary);
