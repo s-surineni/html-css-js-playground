@@ -66,6 +66,13 @@ const demos = [
     href: '/src/oop-practice/oop-practice.html',
     cta: 'Start Practicing →',
   },
+  {
+    icon: '⏳',
+    title: 'Promise Practice',
+    desc: 'Practice JavaScript promise and async patterns — Promise API, async/await, error handling, and composition',
+    href: '/src/promise-practice/promise-practice.html',
+    cta: 'Start Practicing →',
+  },
     {
     icon: '🧬',
     title: 'Holy grail',
