@@ -1,30 +1,30 @@
-function Person(firstName, lastName) {
-  this.firstName = firstName;
-  this.lastName = lastName;
+function BankAccount(owner, balance = 0) {
+  this.owner = owner;
+  this.balance = balance;
 }
 
-Person.prototype.getName = function () {
-  return `${this.firstName} ${this.lastName}`;
+BankAccount.prototype.getSummary = function () {
+  return `${this.owner}: $${this.balance}`;
 };
 
-function SuperHero(firstName, lastName, power) {
-  Person.call(this, firstName, lastName);
-  this.power = power;
+function SavingsAccount(owner, balance = 0, interestRate = 0.01) {
+  BankAccount.call(this, owner, balance);
+  this.interestRate = interestRate;
 }
 
-SuperHero.prototype = Object.create(Person.prototype);
-Object.defineProperty(SuperHero.prototype, 'constructor', {
-  value: SuperHero,
+SavingsAccount.prototype = Object.create(BankAccount.prototype);
+Object.defineProperty(SavingsAccount.prototype, 'constructor', {
+  value: SavingsAccount,
   writable: true,
   configurable: true,
 });
 
-SuperHero.prototype.describe = function () {
-  return `${this.getName()} uses ${this.power}`;
+SavingsAccount.prototype.getAccountInfo = function () {
+  return `${this.getSummary()} at ${this.interestRate * 100}% interest`;
 };
 
-const hero = new SuperHero('Tony', 'Stark', 'Suit');
+const ashaSavings = new SavingsAccount('Asha', 1000, 0.02);
 console.log('--- Constructor Inheritance ---');
-console.log(hero.describe());
-console.log('SuperHero instance:', hero instanceof SuperHero);
-console.log('Person instance:', hero instanceof Person);
+console.log(ashaSavings.getAccountInfo());
+console.log('SavingsAccount instance:', ashaSavings instanceof SavingsAccount);
+console.log('BankAccount instance:', ashaSavings instanceof BankAccount);
