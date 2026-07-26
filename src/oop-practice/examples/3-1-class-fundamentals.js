@@ -1,22 +1,22 @@
-class Person {
-  role = 'person';
+class BankAccount {
+  type = 'account';
 
-  constructor(firstName, lastName) {
-    this.firstName = firstName;
-    this.lastName = lastName;
+  constructor(accountHolder, accountNumber) {
+    this.accountHolder = accountHolder;
+    this.accountNumber = accountNumber;
   }
 
-  getName() {
-    return `${this.firstName} ${this.lastName}`;
+  getHolderName() {
+    return this.accountHolder;
   }
 }
 
-const tony = new Person('Tony', 'Stark');
-const bruce = new Person('Bruce', 'Banner');
+const alice = new BankAccount('Alice', 'ACC001');
+const bob = new BankAccount('Bob', 'ACC002');
 
 console.log('--- Class Fundamentals ---');
-console.log(tony.getName());
-console.log('instance field is own:', Object.hasOwn(tony, 'role'));
-console.log('method is own:', Object.hasOwn(tony, 'getName'));
-console.log('method shared:', tony.getName === bruce.getName);
-console.log('instanceof Person:', tony instanceof Person);
+console.log(alice.getHolderName());
+console.log('instance field is own:', Object.hasOwn(alice, 'type'));
+console.log('method is own:', Object.hasOwn(alice, 'getHolderName'));
+console.log('method shared:', alice.getHolderName === bob.getHolderName);
+console.log('instanceof BankAccount:', alice instanceof BankAccount);
