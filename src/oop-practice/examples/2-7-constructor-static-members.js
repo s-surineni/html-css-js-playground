@@ -1,24 +1,24 @@
-function TemperatureConverter(unit = 'Celsius') {
-  this.unit = unit;
-  TemperatureConverter.instanceCount++;
+function BankAccount(accountType = 'Checking') {
+  this.accountType = accountType;
+  BankAccount.accountCount++;
 }
 
-TemperatureConverter.FACTOR = 9 / 5;
-TemperatureConverter.instanceCount = 0;
+BankAccount.INTEREST_RATE = 0.03;
+BankAccount.accountCount = 0;
 
-TemperatureConverter.create = function (unit) {
-  return new this(unit);
+BankAccount.create = function (accountType) {
+  return new this(accountType);
 };
 
-TemperatureConverter.celsiusToFahrenheit = function (celsius) {
-  return celsius * this.FACTOR + 32;
+BankAccount.calculateMonthlyInterest = function (balance) {
+  return balance * this.INTEREST_RATE / 12;
 };
 
-const kitchenConverter = TemperatureConverter.create('Celsius');
-const labConverter = TemperatureConverter.create('Fahrenheit');
+const primaryAccount = BankAccount.create('Checking');
+const savingsAccount = BankAccount.create('Savings');
 
 console.log('--- Constructor Static Members ---');
-console.log('field:', TemperatureConverter.FACTOR);
-console.log('method:', TemperatureConverter.celsiusToFahrenheit(25));
-console.log('instances:', TemperatureConverter.instanceCount);
-console.log('static method on instance:', kitchenConverter.celsiusToFahrenheit);
+console.log('field:', BankAccount.INTEREST_RATE);
+console.log('method:', BankAccount.calculateMonthlyInterest(1000));
+console.log('accounts:', BankAccount.accountCount);
+console.log('static method on instance:', primaryAccount.calculateMonthlyInterest);
