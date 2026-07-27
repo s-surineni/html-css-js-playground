@@ -1,5 +1,5 @@
-expect(hero.describe(), 'Tony Stark uses Suit', 'child combines inherited and own behavior');
-expect(hero instanceof SuperHero, true, 'instance uses child prototype');
-expect(hero instanceof Person, true, 'parent prototype is also in the chain');
-expect(hero.constructor, SuperHero, 'child constructor link is restored');
-expect(Object.getPrototypeOf(SuperHero.prototype), Person.prototype, 'prototype chains are linked');
+expect(ashaSavings.getAccountInfo(), 'Asha: $1000 at 2% interest', 'child combines inherited and own behavior');
+expect(ashaSavings instanceof SavingsAccount, true, 'instance uses child prototype');
+expect(ashaSavings instanceof BankAccount, true, 'parent prototype is also in the chain');
+expect(ashaSavings.constructor, SavingsAccount, 'child constructor link is restored');
+expect(Object.getPrototypeOf(SavingsAccount.prototype), BankAccount.prototype, 'prototype chains are linked');

@@ -8,6 +8,7 @@ const root = fileURLToPath(new URL('../src/promise-practice/', import.meta.url))
 async function sourcesById(directory) {
   const sources = new Map();
   for (const filename of await readdir(join(root, directory))) {
+    if (filename.includes('-without-promises.')) continue;
     const id = filename.match(/^(\d+(?:-\d+)?)-.*\.js$/)?.[1];
     if (!id) continue;
     if (sources.has(id)) throw new Error(`Duplicate ${directory} id: ${id}`);
@@ -37,7 +38,7 @@ for (const [id, test] of [...tests].sort(([a], [b]) => a.localeCompare(b, undefi
     continue;
   }
 
-  let { logs, assertions, result, error } = runResult;
+  let { assertions, result, error } = runResult;
 
   if (result instanceof Promise) {
     try {
@@ -61,6 +62,15 @@ for (const [id, test] of [...tests].sort(([a], [b]) => a.localeCompare(b, undefi
   }
 
   const failedAssertions = assertions.filter(({ passed }) => !passed);
+  if (failedAssertions.length > 0) {
+    console.error(`❌ ${id}: ${failedAssertions.length} assertion(s) failed`);
+    for (const assertion of failedAssertions) {
+      console.error(`   ${assertion.label}: expected`, assertion.expected, 'but got', assertion.actual);
+    }
+    failures++;
+  } else {
+    console.log(`✅ ${id}: ${assertions.length} assertions`);
+  }
 }
 
 const untested = [...examples.keys()].filter((id) => !tests.has(id));

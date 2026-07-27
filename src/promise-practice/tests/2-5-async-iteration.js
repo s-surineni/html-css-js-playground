@@ -11,4 +11,4 @@ async function main() {
   }
   expect(values, [1, 2, 3], 'for await...of collects all yielded values');
 }
-main();
+return main();

@@ -8,4 +8,4 @@ async function run() {
     expect(error.message, 'oops', 'catch receives the rejection reason');
   }
 }
-run();
+return run();

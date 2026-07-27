@@ -7,4 +7,4 @@ async function parallel() {
   ]);
   expect([a, b, c], ['a', 'b', 'c'], 'Promise.all collects all results');
 }
-parallel();
+return parallel();

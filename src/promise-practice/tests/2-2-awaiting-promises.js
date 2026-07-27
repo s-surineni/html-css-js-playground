@@ -4,4 +4,4 @@ async function main() {
   const result = await p;
   expect(result, 'done', 'await receives the resolved value');
 }
-main();
+return main();
