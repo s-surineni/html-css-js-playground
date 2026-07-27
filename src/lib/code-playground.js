@@ -74,10 +74,25 @@ function formatAssertion({ passed, label, actual, expected }) {
 }
 
 // Build the combined log + assertion + result lines and render them into
-// `outputEl`. The panel shows the error state when the code throws OR when any
-// assertion fails.
-function renderOutput(outputEl, userCode, test) {
-  const { logs, assertions, result, error } = runCode(userCode, test);
+// `outputEl`. If a test returns a promise, wait for it so asynchronous logs and
+// assertions are included before the final output is painted.
+async function renderOutput(outputEl, userCode, test, isCurrent = () => true) {
+  const runResult = runCode(userCode, test);
+  const { logs, assertions } = runResult;
+  let { result, error } = runResult;
+
+  if (!error && result && typeof result.then === 'function') {
+    outputEl.classList.remove('has-error');
+    outputEl.textContent = 'Running asynchronous example…';
+    try {
+      result = await result;
+    } catch (caughtError) {
+      error = caughtError;
+    }
+  }
+
+  if (!isCurrent()) return;
+
   const lines = [...logs, ...assertions.map(formatAssertion)];
   if (typeof result === 'string' && result.length) lines.push(result);
 
@@ -112,7 +127,7 @@ const IDLE_MESSAGE = 'Click Run to execute your code.';
  *                                           and/or return a string to display.
  * @param {string} [options.label]          aria-label for the editor textarea.
  * @param {boolean} [options.autoRun=false] Run once immediately after mounting.
- * @returns {{ getCode: () => string, setCode: (c: string) => void, run: () => void, reset: () => void, elements: object }}
+ * @returns {{ getCode: () => string, setCode: (c: string) => void, run: () => Promise<void>, reset: () => void, elements: object }}
  */
 export function mountCodePlayground(target, options = {}) {
   const { code = '', test = '', label = 'Code editor', autoRun = false } = options;
@@ -135,8 +150,13 @@ export function mountCodePlayground(target, options = {}) {
   output.className = 'output';
   output.textContent = IDLE_MESSAGE;
 
-  const run = () => renderOutput(output, editor.value, test);
+  let runId = 0;
+  const run = () => {
+    const currentRunId = ++runId;
+    return renderOutput(output, editor.value, test, () => currentRunId === runId);
+  };
   const reset = () => {
+    runId++;
     editor.value = code;
     output.classList.remove('has-error');
     output.textContent = IDLE_MESSAGE;
