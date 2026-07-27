@@ -4,11 +4,11 @@ function resolveAfter(ms, value) {
   });
 }
 
-const result = resolveAfter(100, 'hello');
+const greetingPromise = resolveAfter(100, 'hello');
 
-console.log('promise created:', result);
-console.log('state before then:', result);
+console.log('promise created:', greetingPromise instanceof Promise);
+console.log('waiting for resolution...');
 
-result.then((value) => {
-  console.log('resolved value:', value);
+greetingPromise.then((greeting) => {
+  console.log('promise resolved:', greeting);
 });

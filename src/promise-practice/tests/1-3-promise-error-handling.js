@@ -1,5 +1,5 @@
-// .catch handles rejections and returns a new promise.
-const p = Promise.reject(new Error('test'));
-const caught = p.catch((e) => e.message);
-expect(caught instanceof Promise, true, 'catch returns a promise');
-expect(typeof caught.then, 'function', 'caught result has then method');
+expect(handledPromises instanceof Promise, true, 'handled operations remain awaitable');
+
+return handledPromises.then((outcomes) => {
+  expect(outcomes, ['success', 'something went wrong'], 'catch converts the rejection into a handled value');
+});

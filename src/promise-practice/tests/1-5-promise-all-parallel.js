@@ -1,4 +1,5 @@
-// Promise.all takes an iterable of promises and returns a single promise.
-const all = Promise.all([Promise.resolve(1), Promise.resolve(2), Promise.resolve(3)]);
-expect(all instanceof Promise, true, 'Promise.all returns a promise');
-expect(typeof all.then, 'function', 'Promise.all result has then method');
+expect(resultsPromise instanceof Promise, true, 'Promise.all returns a single Promise');
+
+return resultsPromise.then((values) => {
+  expect(values, ['first', 'second', 'third'], 'results preserve input order, not completion order');
+});

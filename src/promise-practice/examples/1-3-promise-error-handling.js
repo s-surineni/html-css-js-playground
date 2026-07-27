@@ -10,18 +10,24 @@ function mightFail(shouldFail) {
   });
 }
 
-mightFail(false)
+const successPromise = mightFail(false)
   .then((result) => {
     console.log('result:', result);
+    return result;
   })
   .catch((error) => {
     console.log('caught error:', error.message);
+    return error.message;
   });
 
-mightFail(true)
+const failurePromise = mightFail(true)
   .then((result) => {
     console.log('result:', result);
+    return result;
   })
   .catch((error) => {
     console.log('caught error:', error.message);
+    return error.message;
   });
+
+const handledPromises = Promise.all([successPromise, failurePromise]);

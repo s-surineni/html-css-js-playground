@@ -10,11 +10,12 @@ function fetchOrders(userId) {
   });
 }
 
-fetchUser(1)
+const ordersPromise = fetchUser(1)
   .then((user) => {
     console.log('user:', user.name);
     return fetchOrders(user.id);
   })
   .then((orders) => {
     console.log('orders:', orders.length);
+    return orders;
   });

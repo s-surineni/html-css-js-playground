@@ -2,10 +2,10 @@ async function greet(name) {
   return `Hello, ${name}!`;
 }
 
-const result = greet('World');
+const greetingPromise = greet('World');
 
-console.log('returned:', result);
+console.log('async function returned a Promise:', greetingPromise instanceof Promise);
 
-result.then((value) => {
-  console.log('resolved:', value);
+greetingPromise.then((greeting) => {
+  console.log('resolved greeting:', greeting);
 });

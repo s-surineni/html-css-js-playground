@@ -12,15 +12,16 @@ async function parse(data) {
   return data.raw.trim().toUpperCase();
 }
 
-async function log(result) {
+async function logResult(result) {
   await delay(10, 'logging');
   console.log('final result:', result);
+  return result;
 }
 
 async function pipeline() {
   const data = await fetchData();
   const parsed = await parse(data);
-  await log(parsed);
+  return logResult(parsed);
 }
 
-pipeline();
+const pipelinePromise = pipeline();

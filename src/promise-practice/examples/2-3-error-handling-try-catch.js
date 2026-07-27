@@ -10,13 +10,15 @@ function mightFail(shouldFail) {
   });
 }
 
-async function run() {
+async function run(shouldFail) {
   try {
-    const result = await mightFail(true);
+    const result = await mightFail(shouldFail);
     console.log('result:', result);
+    return result;
   } catch (error) {
     console.log('caught:', error.message);
+    return error.message;
   }
 }
 
-run();
+const runPromise = run(true);

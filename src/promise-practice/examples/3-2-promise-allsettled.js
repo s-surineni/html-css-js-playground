@@ -7,14 +7,13 @@ function delay(ms, value, shouldFail = false) {
   });
 }
 
-const results = Promise.allSettled([
+const outcomesPromise = Promise.allSettled([
   delay(40, 'success-a'),
   delay(60, 'fail-b', true),
   delay(30, 'success-c'),
-]);
-
-results.then((outcomes) => {
+]).then((outcomes) => {
   outcomes.forEach((outcome, i) => {
     console.log(`task ${i}:`, outcome.status === 'fulfilled' ? outcome.value : outcome.reason.message);
   });
+  return outcomes;
 });

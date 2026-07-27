@@ -15,9 +15,11 @@ async function main() {
       delay(60, 'medium', true),
     ]);
     console.log('first success:', result);
+    return result;
   } catch (error) {
     console.log('all failed:', error.message);
+    return error.message;
   }
 }
 
-main();
+const firstSuccessPromise = main();

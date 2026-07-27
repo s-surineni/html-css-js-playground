@@ -15,9 +15,11 @@ async function fetchWithTimeout() {
       timeout(100),
     ]);
     console.log('result:', result);
+    return result;
   } catch (error) {
     console.log('error:', error.message);
+    return error.message;
   }
 }
 
-fetchWithTimeout();
+const timeoutPromise = fetchWithTimeout();

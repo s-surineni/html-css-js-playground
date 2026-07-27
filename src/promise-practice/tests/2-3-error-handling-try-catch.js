@@ -1,11 +1,5 @@
-// try/catch works with await for error handling.
-async function run() {
-  const p = Promise.reject(new Error('oops'));
-  try {
-    await p;
-    expect(false, true, 'should not reach here');
-  } catch (error) {
-    expect(error.message, 'oops', 'catch receives the rejection reason');
-  }
-}
-return run();
+expect(runPromise instanceof Promise, true, 'the guarded async operation returns a Promise');
+
+return runPromise.then((message) => {
+  expect(message, 'operation failed', 'try/catch handles the actual rejected operation');
+});

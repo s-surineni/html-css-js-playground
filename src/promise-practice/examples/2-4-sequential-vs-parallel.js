@@ -6,7 +6,9 @@ async function sequential() {
   const a = await delay(50, 'a');
   const b = await delay(50, 'b');
   const c = await delay(50, 'c');
-  console.log('sequential:', [a, b, c]);
+  const values = [a, b, c];
+  console.log('sequential:', values);
+  return values;
 }
 
 async function parallel() {
@@ -15,8 +17,9 @@ async function parallel() {
     delay(50, 'b'),
     delay(50, 'c'),
   ]);
-  console.log('parallel:', [a, b, c]);
+  const values = [a, b, c];
+  console.log('parallel:', values);
+  return values;
 }
 
-sequential();
-parallel();
+const comparisonPromise = Promise.all([sequential(), parallel()]);

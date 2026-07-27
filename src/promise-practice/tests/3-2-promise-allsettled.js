@@ -1,7 +1,10 @@
-// Promise.allSettled waits for all promises and returns their outcomes.
-const results = Promise.allSettled([
-  Promise.resolve('ok'),
-  Promise.reject(new Error('fail')),
-]);
-expect(results instanceof Promise, true, 'Promise.allSettled returns a promise');
-expect(typeof results.then, 'function', 'allSettled result has then method');
+expect(outcomesPromise instanceof Promise, true, 'Promise.allSettled returns a Promise');
+
+return outcomesPromise.then((outcomes) => {
+  expect(
+    outcomes.map(({ status }) => status),
+    ['fulfilled', 'rejected', 'fulfilled'],
+    'all outcomes are reported in input order',
+  );
+  expect(outcomes[1].reason.message, 'fail-b', 'the rejection reason is preserved');
+});

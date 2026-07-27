@@ -6,9 +6,12 @@ async function* asyncNumbers() {
 }
 
 async function main() {
+  const values = [];
   for await (const n of asyncNumbers()) {
+    values.push(n);
     console.log('number:', n);
   }
+  return values;
 }
 
-main();
+const iterationPromise = main();

@@ -1,7 +1,5 @@
-// await can only be used inside async functions or top-level modules.
-async function main() {
-  const p = Promise.resolve('done');
-  const result = await p;
-  expect(result, 'done', 'await receives the resolved value');
-}
-return main();
+expect(mainPromise instanceof Promise, true, 'calling the async main function returns a Promise');
+
+return mainPromise.then((status) => {
+  expect(status, 'done', 'await receives and returns the resolved value');
+});

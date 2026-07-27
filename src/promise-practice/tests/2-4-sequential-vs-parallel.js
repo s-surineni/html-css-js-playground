@@ -1,10 +1,6 @@
-// Promise.all runs promises in parallel and collects results.
-async function parallel() {
-  const [a, b, c] = await Promise.all([
-    Promise.resolve('a'),
-    Promise.resolve('b'),
-    Promise.resolve('c'),
-  ]);
-  expect([a, b, c], ['a', 'b', 'c'], 'Promise.all collects all results');
-}
-return parallel();
+expect(comparisonPromise instanceof Promise, true, 'both strategies can be awaited together');
+
+return comparisonPromise.then(([sequentialValues, parallelValues]) => {
+  expect(sequentialValues, ['a', 'b', 'c'], 'sequential awaits preserve the operation order');
+  expect(parallelValues, ['a', 'b', 'c'], 'parallel awaits collect the same results');
+});

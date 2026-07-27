@@ -4,8 +4,9 @@ function delay(ms, value) {
 
 async function main() {
   console.log('starting...');
-  const result = await delay(50, 'done');
-  console.log('after await:', result);
+  const status = await delay(50, 'done');
+  console.log('after await:', status);
+  return status;
 }
 
-main();
+const mainPromise = main();

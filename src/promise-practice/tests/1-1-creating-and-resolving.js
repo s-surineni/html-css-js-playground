@@ -1,4 +1,5 @@
-// Creating a promise returns a Promise instance.
-const p = new Promise((resolve) => resolve('hello'));
-expect(p instanceof Promise, true, 'new Promise returns a Promise');
-expect(typeof p.then, 'function', 'promise has a then method');
+expect(greetingPromise instanceof Promise, true, 'resolveAfter returns a Promise');
+
+return greetingPromise.then((greeting) => {
+  expect(greeting, 'hello', 'promise resolves with the supplied value');
+});

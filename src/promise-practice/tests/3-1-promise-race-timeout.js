@@ -1,6 +1,5 @@
-// Promise.race settles as soon as any input promise settles.
-const fast = Promise.resolve('fast');
-const slow = new Promise((resolve) => setTimeout(() => resolve('slow'), 200));
-const race = Promise.race([fast, slow]);
-expect(race instanceof Promise, true, 'Promise.race returns a promise');
-expect(typeof race.then, 'function', 'race result has then method');
+expect(timeoutPromise instanceof Promise, true, 'the raced operation returns a Promise');
+
+return timeoutPromise.then((outcome) => {
+  expect(outcome, 'timeout', 'the timeout rejects before the slower data operation resolves');
+});

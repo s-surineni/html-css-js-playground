@@ -1,6 +1,8 @@
-// Returning a value from .then passes it to the next handler.
-const chain = Promise.resolve(1)
-  .then((v) => v + 1)
-  .then((v) => v + 1);
-expect(chain instanceof Promise, true, 'chaining returns a promise');
-expect(typeof chain.then, 'function', 'chained promise has then method');
+expect(ordersPromise instanceof Promise, true, 'the dependent request chain returns a Promise');
+
+return ordersPromise.then((orders) => {
+  expect(orders, [
+    { orderId: 1, userId: 1 },
+    { orderId: 2, userId: 1 },
+  ], 'the second request receives the resolved user id');
+});
