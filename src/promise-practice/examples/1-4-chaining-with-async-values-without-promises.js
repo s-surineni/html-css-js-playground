@@ -1,14 +1,21 @@
-function fetchUser(id, callback) {
-  setTimeout(() => callback({ id, name: 'Alice' }), 50);
+function fetchUser(userId, callback) {
+  setTimeout(() => {
+    callback({ id: userId, name: 'Asha' });
+  }, 50);
 }
 
 function fetchOrders(userId, callback) {
-  setTimeout(() => callback([{ orderId: 1, userId }, { orderId: 2, userId }]), 50);
+  setTimeout(() => {
+    callback([
+      { id: 101, userId, total: 40 },
+      { id: 102, userId, total: 75 },
+    ]);
+  }, 50);
 }
 
 fetchUser(1, (user) => {
-  console.log('user:', user.name);
+  console.log('loaded user:', user.name);
   fetchOrders(user.id, (orders) => {
-    console.log('orders:', orders.length);
+    console.log('loaded orders:', orders.length);
   });
 });

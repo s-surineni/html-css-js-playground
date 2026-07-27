@@ -1,21 +1,32 @@
-function fetchUser(id) {
+function fetchUser(userId) {
   return new Promise((resolve) => {
-    setTimeout(() => resolve({ id, name: 'Alice' }), 50);
+    setTimeout(() => {
+      resolve({ id: userId, name: 'Asha' });
+    }, 50);
   });
 }
 
 function fetchOrders(userId) {
   return new Promise((resolve) => {
-    setTimeout(() => resolve([{ orderId: 1, userId }, { orderId: 2, userId }]), 50);
+    setTimeout(() => {
+      resolve([
+        { id: 101, userId, total: 40 },
+        { id: 102, userId, total: 75 },
+      ]);
+    }, 50);
   });
 }
 
-const ordersPromise = fetchUser(1)
+const userOrdersPromise = fetchUser(1)
   .then((user) => {
-    console.log('user:', user.name);
+    console.log('loaded user:', user.name);
     return fetchOrders(user.id);
   })
   .then((orders) => {
-    console.log('orders:', orders.length);
+    console.log('loaded orders:', orders.length);
     return orders;
+  })
+  .catch((error) => {
+    console.error('unable to load orders:', error.message);
+    throw error;
   });
