@@ -1,20 +1,24 @@
+const users = new Map([
+  [1, { id: 1, name: 'Asha' }],
+]);
+
+const orders = [
+  { id: 101, userId: 1, total: 40 },
+  { id: 102, userId: 1, total: 75 },
+];
+
 function fetchUser(userId) {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({ id: userId, name: 'Asha' });
-    }, 50);
-  });
+  const user = users.get(userId);
+
+  return user
+    ? Promise.resolve(user)
+    : Promise.reject(new Error(`User ${userId} not found`));
 }
 
 function fetchOrders(userId) {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve([
-        { id: 101, userId, total: 40 },
-        { id: 102, userId, total: 75 },
-      ]);
-    }, 50);
-  });
+  return Promise.resolve(
+    orders.filter((order) => order.userId === userId),
+  );
 }
 
 const userOrdersPromise = fetchUser(1)
@@ -22,9 +26,9 @@ const userOrdersPromise = fetchUser(1)
     console.log('loaded user:', user.name);
     return fetchOrders(user.id);
   })
-  .then((orders) => {
-    console.log('loaded orders:', orders.length);
-    return orders;
+  .then((userOrders) => {
+    console.log('loaded orders:', userOrders.length);
+    return userOrders;
   })
   .catch((error) => {
     console.error('unable to load orders:', error.message);
