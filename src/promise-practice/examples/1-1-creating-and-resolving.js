@@ -1,10 +1,10 @@
-function resolveAfter(ms, value) {
+function resolveSoon(value) {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(value), ms);
+    queueMicrotask(() => resolve(value));
   });
 }
 
-const greetingPromise = resolveAfter(100, 'hello');
+const greetingPromise = resolveSoon('hello');
 
 console.log('promise created:', greetingPromise instanceof Promise);
 console.log('waiting for resolution...');

@@ -1,10 +1,10 @@
-function delay(ms, value, callback) {
-  setTimeout(() => callback(value), ms);
+function loadStatus(callback) {
+  queueMicrotask(() => callback('done'));
 }
 
 function main(callback) {
   console.log('starting...');
-  delay(50, 'done', (result) => {
+  loadStatus((result) => {
     console.log('after await:', result);
     callback();
   });

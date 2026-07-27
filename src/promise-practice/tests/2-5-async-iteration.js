@@ -1,5 +1,9 @@
 expect(iterationPromise instanceof Promise, true, 'consuming the async iterable returns a Promise');
 
-return iterationPromise.then((values) => {
-  expect(values, [1, 2, 3], 'for await...of collects every yielded value');
+return iterationPromise.then((allOrders) => {
+  expect(
+    allOrders.map(({ id }) => id),
+    [101, 102, 103],
+    'for await...of collects records from every page',
+  );
 });

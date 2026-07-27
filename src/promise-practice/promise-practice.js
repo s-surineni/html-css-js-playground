@@ -128,8 +128,8 @@ const curriculum = [
         id: '2-5',
         title: 'Async Iteration with for await...of',
         badge: 'hard',
-        desc: `Use <code>for await...of</code> to iterate over an async
-          iterable and process each value as it becomes available.`,
+        desc: `Use <code>for await...of</code> to consume pages of records
+          from an async generator as they become available.`,
         hint: `An async generator function (<code>async function*</code>)
           produces an async iterable that <code>for await...of</code> can consume.`,
       },

@@ -1,12 +1,12 @@
-function resolveAfter(ms, value, callback) {
-  setTimeout(() => callback(value), ms);
+function resolveSoon(value, callback) {
+  queueMicrotask(() => callback(value));
 }
 
 const callback = (value) => {
   console.log('resolved value:', value);
 };
 
-console.log('created:', callback);
-console.log('state before call:', 'pending');
+console.log('callback registered');
+console.log('waiting for callback...');
 
-resolveAfter(100, 'hello', callback);
+resolveSoon('hello', callback);

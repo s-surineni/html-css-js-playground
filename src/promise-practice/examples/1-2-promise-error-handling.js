@@ -1,33 +1,17 @@
-function mightFail(shouldFail) {
+function saveProfile(profile) {
   return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (shouldFail) {
-        reject(new Error('something went wrong'));
-      } else {
-        resolve('success');
+    queueMicrotask(() => {
+      if (!profile.name?.trim()) {
+        reject(new Error('Name is required'));
+        return;
       }
-    }, 50);
+      resolve({ ...profile, saved: true });
+    });
   });
 }
 
-const successPromise = mightFail(false)
-  .then((result) => {
-    console.log('result:', result);
-    return result;
-  })
+const savePromise = saveProfile({ id: 1, name: '' })
   .catch((error) => {
-    console.log('caught error:', error.message);
+    console.log('unable to save profile:', error.message);
     return error.message;
   });
-
-const failurePromise = mightFail(true)
-  .then((result) => {
-    console.log('result:', result);
-    return result;
-  })
-  .catch((error) => {
-    console.log('caught error:', error.message);
-    return error.message;
-  });
-
-const handledPromises = Promise.all([successPromise, failurePromise]);

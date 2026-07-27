@@ -1,24 +1,29 @@
-function mightFail(shouldFail) {
+const records = new Map([
+  [1, { id: 1, title: 'Promise notes' }],
+]);
+
+function loadRecord(recordId) {
   return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (shouldFail) {
-        reject(new Error('operation failed'));
-      } else {
-        resolve('ok');
+    queueMicrotask(() => {
+      const record = records.get(recordId);
+      if (!record) {
+        reject(new Error(`Record ${recordId} not found`));
+        return;
       }
-    }, 50);
+      resolve(record);
+    });
   });
 }
 
-async function run(shouldFail) {
+async function run(recordId) {
   try {
-    const result = await mightFail(shouldFail);
-    console.log('result:', result);
-    return result;
+    const record = await loadRecord(recordId);
+    console.log('loaded:', record.title);
+    return record;
   } catch (error) {
     console.log('caught:', error.message);
     return error.message;
   }
 }
 
-const runPromise = run(true);
+const runPromise = run(99);

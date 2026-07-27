@@ -1,22 +1,27 @@
-function mightFail(shouldFail, callback) {
-  setTimeout(() => {
-    if (shouldFail) {
-      callback(new Error('operation failed'));
-    } else {
-      callback(null, 'ok');
+const records = new Map([
+  [1, { id: 1, title: 'Promise notes' }],
+]);
+
+function loadRecord(recordId, callback) {
+  queueMicrotask(() => {
+    const record = records.get(recordId);
+    if (!record) {
+      callback(new Error(`Record ${recordId} not found`));
+      return;
     }
-  }, 50);
+    callback(null, record);
+  });
 }
 
-function run(callback) {
-  mightFail(true, (error, result) => {
+function run(recordId, callback) {
+  loadRecord(recordId, (error, record) => {
     if (error) {
       console.log('caught:', error.message);
     } else {
-      console.log('result:', result);
+      console.log('loaded:', record.title);
     }
     callback();
   });
 }
 
-run();
+run(99, () => {});

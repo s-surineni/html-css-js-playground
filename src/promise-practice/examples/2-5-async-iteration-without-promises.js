@@ -1,20 +1,20 @@
-function asyncNumbers(callback) {
-  let i = 0;
-  function next() {
-    i++;
-    if (i > 3) {
-      callback(null);
-      return;
-    }
-    setTimeout(() => {
-      callback(i);
-    }, 30);
-  }
-  next();
+const orderPages = new Map([
+  [1, [{ id: 101 }, { id: 102 }]],
+  [2, [{ id: 103 }]],
+]);
+
+function loadOrderPage(pageNumber, callback) {
+  queueMicrotask(() => {
+    callback(orderPages.get(pageNumber) ?? []);
+  });
 }
 
-asyncNumbers(function iterate(n) {
-  if (n === null) return;
-  console.log('number:', n);
-  asyncNumbers(iterate);
-});
+function processOrderPages(pageNumber = 1) {
+  loadOrderPage(pageNumber, (page) => {
+    if (page.length === 0) return;
+    console.log('loaded page:', page.map(({ id }) => id));
+    processOrderPages(pageNumber + 1);
+  });
+}
+
+processOrderPages();

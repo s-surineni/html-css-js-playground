@@ -1,25 +1,17 @@
-function mightFail(shouldFail, callback) {
-  setTimeout(() => {
-    if (shouldFail) {
-      callback(new Error('something went wrong'));
-    } else {
-      callback(null, 'success');
+function saveProfile(profile, callback) {
+  queueMicrotask(() => {
+    if (!profile.name?.trim()) {
+      callback(new Error('Name is required'));
+      return;
     }
-  }, 50);
+    callback(null, { ...profile, saved: true });
+  });
 }
 
-mightFail(false, (error, result) => {
+saveProfile({ id: 1, name: '' }, (error, profile) => {
   if (error) {
-    console.log('caught error:', error.message);
-  } else {
-    console.log('result:', result);
+    console.log('unable to save profile:', error.message);
+    return;
   }
-});
-
-mightFail(true, (error, result) => {
-  if (error) {
-    console.log('caught error:', error.message);
-  } else {
-    console.log('result:', result);
-  }
+  console.log('saved profile:', profile);
 });

@@ -8,17 +8,24 @@ const orders = [
 ];
 
 function fetchUser(userId) {
-  const user = users.get(userId);
-
-  return user
-    ? Promise.resolve(user)
-    : Promise.reject(new Error(`User ${userId} not found`));
+  return new Promise((resolve, reject) => {
+    queueMicrotask(() => {
+      const user = users.get(userId);
+      if (!user) {
+        reject(new Error(`User ${userId} not found`));
+        return;
+      }
+      resolve(user);
+    });
+  });
 }
 
 function fetchOrders(userId) {
-  return Promise.resolve(
-    orders.filter((order) => order.userId === userId),
-  );
+  return new Promise((resolve) => {
+    queueMicrotask(() => {
+      resolve(orders.filter((order) => order.userId === userId));
+    });
+  });
 }
 
 const userOrdersPromise = fetchUser(1)
@@ -29,8 +36,4 @@ const userOrdersPromise = fetchUser(1)
   .then((userOrders) => {
     console.log('loaded orders:', userOrders.length);
     return userOrders;
-  })
-  .catch((error) => {
-    console.error('unable to load orders:', error.message);
-    throw error;
   });

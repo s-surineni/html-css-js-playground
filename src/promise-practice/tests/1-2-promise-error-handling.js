@@ -1,5 +1,11 @@
-expect(handledPromises instanceof Promise, true, 'handled operations remain awaitable');
+expect(savePromise instanceof Promise, true, 'the handled operation remains awaitable');
 
-return handledPromises.then((outcomes) => {
-  expect(outcomes, ['success', 'something went wrong'], 'catch converts the rejection into a handled value');
+const failureTest = savePromise.then((message) => {
+  expect(message, 'Name is required', 'catch receives and handles the rejection');
 });
+
+const successTest = saveProfile({ id: 2, name: 'Asha' }).then((profile) => {
+  expect(profile, { id: 2, name: 'Asha', saved: true }, 'valid input still resolves normally');
+});
+
+return Promise.all([failureTest, successTest]);

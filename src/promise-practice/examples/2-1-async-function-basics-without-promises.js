@@ -1,5 +1,5 @@
 function greet(name, callback) {
-  setTimeout(() => callback(`Hello, ${name}!`), 50);
+  queueMicrotask(() => callback(`Hello, ${name}!`));
 }
 
 greet('World', (value) => {

@@ -1,10 +1,12 @@
-function delay(ms, value) {
-  return new Promise((resolve) => setTimeout(() => resolve(value), ms));
+function loadStatus() {
+  return new Promise((resolve) => {
+    queueMicrotask(() => resolve('done'));
+  });
 }
 
 async function main() {
   console.log('starting...');
-  const status = await delay(50, 'done');
+  const status = await loadStatus();
   console.log('after await:', status);
   return status;
 }
