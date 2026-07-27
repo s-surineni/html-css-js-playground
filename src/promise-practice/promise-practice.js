@@ -17,7 +17,10 @@ const rawById = (modules, kind) => {
 };
 
 const starters = rawById(
-  import.meta.glob('./examples/*.js', { query: '?raw', import: 'default', eager: true }),
+  import.meta.glob(
+    ['./examples/*.js', '!./examples/*-without-promises.js'],
+    { query: '?raw', import: 'default', eager: true },
+  ),
   'starter',
 );
 const tests = rawById(
