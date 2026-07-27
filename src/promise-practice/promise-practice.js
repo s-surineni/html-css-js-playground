@@ -32,7 +32,7 @@ const curriculum = [
   {
     id: 'promises',
     title: '1. Promise Fundamentals',
-    desc: 'Start with creating promises, observe states, and learn basic chaining and error handling.',
+    desc: 'Start with creating promises, handling errors, and coordinating dependent or parallel work.',
     exercises: [
       {
         id: '1-1',
@@ -42,15 +42,6 @@ const curriculum = [
           <code>then</code> receives the resolved result.`,
         hint: `<code>new Promise((resolve, reject) => ...)</code> executor
           controls when and with what value the promise settles.`,
-      },
-      {
-        id: '1-2',
-        title: 'Promise States and Chaining',
-        badge: 'easy',
-        desc: `Chain multiple <code>then</code> calls and see how the return
-          value of each handler flows into the next.`,
-        hint: `Returning a value from <code>then</code> wraps it in a resolved
-          promise for the next handler.`,
       },
       {
         id: '1-3',
