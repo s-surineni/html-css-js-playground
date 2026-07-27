@@ -142,6 +142,30 @@ h1 {
   color: #856404;
 }
 
+.comparison {
+  margin: 0 0 16px;
+}
+
+.comparison summary {
+  color: #667eea;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.comparison pre {
+  max-height: 24rem;
+  margin: 10px 0 0;
+  overflow: auto;
+  padding: 16px;
+  border-radius: 8px;
+  color: #e8edf2;
+  background: #17211b;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  white-space: pre;
+}
+
 /* Editor, action row, and output panel styling come from the shared
    src/lib/code-playground.css (imported by promise-practice.js). */
 

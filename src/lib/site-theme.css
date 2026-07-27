@@ -163,7 +163,8 @@ body.lab-page {
 .lab-page .property-card h3,
 .lab-page .component-title,
 .lab-page .title,
-.lab-page .hint summary {
+.lab-page .hint summary,
+.lab-page .comparison summary {
   color: var(--lab-accent);
 }
 

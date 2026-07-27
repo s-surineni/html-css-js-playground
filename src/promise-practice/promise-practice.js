@@ -23,6 +23,13 @@ const starters = rawById(
   ),
   'starter',
 );
+const comparisons = rawById(
+  import.meta.glob(
+    './examples/*-without-promises.js',
+    { query: '?raw', import: 'default', eager: true },
+  ),
+  'comparison',
+);
 const tests = rawById(
   import.meta.glob('./tests/*.js', { query: '?raw', import: 'default', eager: true }),
   'test',
@@ -44,7 +51,7 @@ const curriculum = [
           controls when and with what value the promise settles.`,
       },
       {
-        id: '1-3',
+        id: '1-2',
         title: 'Promise Error Handling',
         badge: 'easy',
         desc: `Handle rejections with <code>catch</code> and observe how
@@ -53,7 +60,7 @@ const curriculum = [
           until it reaches a <code>catch</code>.`,
       },
       {
-        id: '1-4',
+        id: '1-3',
         title: 'Chaining with Async Values',
         badge: 'medium',
         desc: `Return a new promise from a <code>then</code> handler and
@@ -63,7 +70,7 @@ const curriculum = [
           to wait for it before proceeding.`,
       },
       {
-        id: '1-5',
+        id: '1-4',
         title: 'Promise.all for Parallel Execution',
         badge: 'medium',
         desc: `Run multiple independent promises in parallel with
@@ -182,9 +189,10 @@ if (new Set(exerciseIds).size !== exerciseIds.length) {
 }
 for (const id of exerciseIds) {
   if (!Object.hasOwn(starters, id)) throw new Error(`[promise-practice] missing starter ${id}`);
+  if (!Object.hasOwn(comparisons, id)) throw new Error(`[promise-practice] missing comparison ${id}`);
   if (!Object.hasOwn(tests, id)) throw new Error(`[promise-practice] missing test ${id}`);
 }
-for (const id of [...Object.keys(starters), ...Object.keys(tests)]) {
+for (const id of [...Object.keys(starters), ...Object.keys(comparisons), ...Object.keys(tests)]) {
   if (!exerciseIds.includes(id)) throw new Error(`[promise-practice] unlisted source ${id}`);
 }
 
@@ -205,6 +213,20 @@ function renderExercise({ id, title, badge, desc, hint }) {
       <summary>💡 Hint</summary>
       <p>${hint}</p>
     </details>`;
+
+  const comparison = document.createElement('details');
+  comparison.className = 'comparison';
+
+  const comparisonSummary = document.createElement('summary');
+  comparisonSummary.textContent = 'Compare with callbacks';
+
+  const comparisonCode = document.createElement('code');
+  comparisonCode.textContent = comparisons[id];
+
+  const comparisonPre = document.createElement('pre');
+  comparisonPre.append(comparisonCode);
+  comparison.append(comparisonSummary, comparisonPre);
+  card.append(comparison);
 
   mountCodePlayground(card, {
     code: starters[id],
