@@ -1,14 +1,16 @@
+@import "./lib/site-theme.css";
+
 :root {
-  --ink: #17211b;
-  --muted: #5f6962;
-  --paper: #f4f0e8;
-  --surface: #fffdf8;
-  --line: #d8d1c4;
-  --accent: #216044;
-  --accent-strong: #174732;
-  --highlight: #d9edc7;
-  --shadow: 0 18px 45px rgba(42, 48, 39, 0.08);
-  --radius: 1.25rem;
+  --ink: var(--lab-ink);
+  --muted: var(--lab-muted);
+  --paper: var(--lab-paper);
+  --surface: var(--lab-surface);
+  --line: var(--lab-line);
+  --accent: var(--lab-accent);
+  --accent-strong: var(--lab-accent-strong);
+  --highlight: var(--lab-highlight);
+  --shadow: var(--lab-shadow);
+  --radius: var(--lab-radius);
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   line-height: 1.5;
   font-weight: 400;
