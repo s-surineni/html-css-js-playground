@@ -7,13 +7,25 @@ function delay(ms, value, shouldFail = false) {
   });
 }
 
-const outcomesPromise = Promise.allSettled([
-  delay(40, 'success-a'),
-  delay(60, 'fail-b', true),
-  delay(30, 'success-c'),
-]).then((outcomes) => {
-  outcomes.forEach((outcome, i) => {
-    console.log(`task ${i}:`, outcome.status === 'fulfilled' ? outcome.value : outcome.reason.message);
+const tasks = [
+  { name: 'profile', promise: delay(40, { name: 'Asha' }) },
+  { name: 'recommendations', promise: delay(60, 'service unavailable', true) },
+  { name: 'orders', promise: delay(30, [{ id: 101 }]) },
+];
+
+const outcomesPromise = Promise.allSettled(
+  tasks.map(({ promise }) => promise),
+).then((outcomes) => {
+  const reports = outcomes.map((outcome, index) => ({
+    name: tasks[index].name,
+    ...outcome,
+  }));
+
+  reports.forEach((report) => {
+    const result = report.status === 'fulfilled'
+      ? report.value
+      : report.reason.message;
+    console.log(`${report.name}:`, report.status, result);
   });
-  return outcomes;
+  return reports;
 });

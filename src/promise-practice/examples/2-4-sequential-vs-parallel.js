@@ -1,11 +1,19 @@
-function delay(ms, value) {
-  return new Promise((resolve) => setTimeout(() => resolve(value), ms));
+const executionLog = [];
+
+function runTask(group, label, ms = 20) {
+  executionLog.push(`start:${group}:${label}`);
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      executionLog.push(`end:${group}:${label}`);
+      resolve(label);
+    }, ms);
+  });
 }
 
 async function sequential() {
-  const a = await delay(50, 'a');
-  const b = await delay(50, 'b');
-  const c = await delay(50, 'c');
+  const a = await runTask('sequential', 'a');
+  const b = await runTask('sequential', 'b');
+  const c = await runTask('sequential', 'c');
   const values = [a, b, c];
   console.log('sequential:', values);
   return values;
@@ -13,13 +21,20 @@ async function sequential() {
 
 async function parallel() {
   const [a, b, c] = await Promise.all([
-    delay(50, 'a'),
-    delay(50, 'b'),
-    delay(50, 'c'),
+    runTask('parallel', 'a'),
+    runTask('parallel', 'b'),
+    runTask('parallel', 'c'),
   ]);
   const values = [a, b, c];
   console.log('parallel:', values);
   return values;
 }
 
-const comparisonPromise = Promise.all([sequential(), parallel()]);
+async function compareStrategies() {
+  const sequentialValues = await sequential();
+  const parallelValues = await parallel();
+  console.log('execution order:', executionLog);
+  return { sequentialValues, parallelValues };
+}
+
+const comparisonPromise = compareStrategies();

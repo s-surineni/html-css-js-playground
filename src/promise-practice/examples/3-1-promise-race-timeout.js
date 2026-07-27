@@ -11,6 +11,7 @@ function timeout(ms) {
 async function fetchWithTimeout() {
   try {
     const result = await Promise.race([
+      // Promise.race chooses the first outcome; it does not cancel the loser.
       delay(200, 'data loaded'),
       timeout(100),
     ]);

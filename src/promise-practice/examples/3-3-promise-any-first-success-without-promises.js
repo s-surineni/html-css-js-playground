@@ -1,9 +1,9 @@
-function delay(ms, value, shouldFail, callback) {
+function requestProvider(ms, provider, shouldFail, callback) {
   setTimeout(() => {
     if (shouldFail) {
-      callback(new Error(value));
+      callback(new Error(`${provider} failed`));
     } else {
-      callback(null, value);
+      callback(null, { provider, quote: 42 });
     }
   }, ms);
 }
@@ -32,13 +32,13 @@ function any(tasks, callback) {
 }
 
 any([
-  (cb) => delay(80, 'slow', true, cb),
-  (cb) => delay(40, 'fast', false, cb),
-  (cb) => delay(60, 'medium', true, cb),
+  (cb) => requestProvider(80, 'primary', true, cb),
+  (cb) => requestProvider(40, 'cache', false, cb),
+  (cb) => requestProvider(60, 'replica', true, cb),
 ], (error, result) => {
   if (error) {
     console.log('all failed:', error.message);
   } else {
-    console.log('first success:', result);
+    console.log('first success:', result.provider, result.quote);
   }
 });

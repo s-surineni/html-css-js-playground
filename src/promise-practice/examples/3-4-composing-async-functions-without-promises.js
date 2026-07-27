@@ -1,32 +1,62 @@
-function delay(ms, value, callback) {
-  setTimeout(() => callback(value), ms);
-}
+const orderStore = new Map([
+  [101, {
+    id: 101,
+    items: [
+      { price: 20, quantity: 2 },
+      { price: 15, quantity: 1 },
+    ],
+  }],
+]);
 
-function fetchData(callback) {
-  delay(30, 'fetching', () => {
-    callback({ raw: '  hello world  ' });
+const summaryStore = new Map();
+
+function runInRepository(operation, callback) {
+  queueMicrotask(() => {
+    try {
+      callback(null, operation());
+    } catch (error) {
+      callback(error);
+    }
   });
 }
 
-function parse(data, callback) {
-  delay(20, 'parsing', () => {
-    callback(data.raw.trim().toUpperCase());
-  });
+function loadOrder(orderId, callback) {
+  runInRepository(() => {
+    const order = orderStore.get(orderId);
+    if (!order) throw new Error(`Order ${orderId} not found`);
+    return order;
+  }, callback);
 }
 
-function log(result, callback) {
-  delay(10, 'logging', () => {
-    console.log('final result:', result);
-    callback();
-  });
+function calculateSummary(order, callback) {
+  runInRepository(() => ({
+    orderId: order.id,
+    itemCount: order.items.reduce((count, item) => count + item.quantity, 0),
+    total: order.items.reduce((total, item) => total + item.price * item.quantity, 0),
+  }), callback);
 }
 
-function pipeline(callback) {
-  fetchData((data) => {
-    parse(data, (parsed) => {
-      log(parsed, callback);
+function saveSummary(summary, callback) {
+  runInRepository(() => {
+    summaryStore.set(summary.orderId, summary);
+    return summary;
+  }, callback);
+}
+
+function pipeline(orderId, callback) {
+  loadOrder(orderId, (loadError, order) => {
+    if (loadError) return callback(loadError);
+    calculateSummary(order, (summaryError, summary) => {
+      if (summaryError) return callback(summaryError);
+      saveSummary(summary, callback);
     });
   });
 }
 
-pipeline();
+pipeline(101, (error, savedSummary) => {
+  if (error) {
+    console.error('pipeline failed:', error.message);
+    return;
+  }
+  console.log('saved summary:', savedSummary);
+});

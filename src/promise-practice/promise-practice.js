@@ -147,7 +147,7 @@ const curriculum = [
         desc: `Use <code>Promise.race</code> to implement a timeout that
           rejects if a promise does not settle within a given duration.`,
         hint: `<code>Promise.race</code> settles as soon as any of the
-          input promises settles, whether fulfilled or rejected.`,
+          input promises settles, but it does not cancel the remaining work.`,
       },
       {
         id: '3-2',
@@ -171,9 +171,8 @@ const curriculum = [
         id: '3-4',
         title: 'Composing Async Functions',
         badge: 'hard',
-        desc: `Build a pipeline of async functions that each transform data,
-          demonstrating how async/await simplifies composing asynchronous
-          operations.`,
+        desc: `Build a load, summarize, and save pipeline where each
+          asynchronous stage consumes the previous stage's result.`,
         hint: `Each async function in the pipeline can await the result of
           the previous one, making the flow easy to read and debug.`,
       },

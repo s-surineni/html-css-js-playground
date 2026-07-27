@@ -26,12 +26,17 @@ function allSettled(tasks, callback) {
   }
 }
 
-allSettled([
-  (cb) => delay(40, 'success-a', false, cb),
-  (cb) => delay(60, 'fail-b', true, cb),
-  (cb) => delay(30, 'success-c', false, cb),
-], (outcomes) => {
-  outcomes.forEach((outcome, i) => {
-    console.log(`task ${i}:`, outcome.status === 'fulfilled' ? outcome.value : outcome.reason.message);
+const tasks = [
+  { name: 'profile', run: (cb) => delay(40, { name: 'Asha' }, false, cb) },
+  { name: 'recommendations', run: (cb) => delay(60, 'service unavailable', true, cb) },
+  { name: 'orders', run: (cb) => delay(30, [{ id: 101 }], false, cb) },
+];
+
+allSettled(tasks.map(({ run }) => run), (outcomes) => {
+  outcomes.forEach((outcome, index) => {
+    const result = outcome.status === 'fulfilled'
+      ? outcome.value
+      : outcome.reason.message;
+    console.log(`${tasks[index].name}:`, outcome.status, result);
   });
 });

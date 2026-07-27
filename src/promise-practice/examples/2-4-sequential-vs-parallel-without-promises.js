@@ -1,11 +1,17 @@
-function delay(ms, value, callback) {
-  setTimeout(() => callback(value), ms);
+const executionLog = [];
+
+function runTask(group, label, callback) {
+  executionLog.push(`start:${group}:${label}`);
+  setTimeout(() => {
+    executionLog.push(`end:${group}:${label}`);
+    callback(label);
+  }, 20);
 }
 
 function sequential(callback) {
-  delay(50, 'a', (a) => {
-    delay(50, 'b', (b) => {
-      delay(50, 'c', (c) => {
+  runTask('sequential', 'a', (a) => {
+    runTask('sequential', 'b', (b) => {
+      runTask('sequential', 'c', (c) => {
         console.log('sequential:', [a, b, c]);
         callback();
       });
@@ -18,7 +24,7 @@ function parallel(callback) {
   let completed = 0;
   const items = ['a', 'b', 'c'];
   for (let i = 0; i < items.length; i++) {
-    delay(50, items[i], (result) => {
+    runTask('parallel', items[i], (result) => {
       results[i] = result;
       completed++;
       if (completed === items.length) {
@@ -29,5 +35,8 @@ function parallel(callback) {
   }
 }
 
-sequential(() => {});
-parallel(() => {});
+sequential(() => {
+  parallel(() => {
+    console.log('execution order:', executionLog);
+  });
+});
