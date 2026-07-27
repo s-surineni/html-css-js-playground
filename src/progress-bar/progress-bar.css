@@ -22,7 +22,7 @@
 }
 
 .progress-container {
-    width: 300px;
+    width: min(100%, 300px);
     height: 20px;
     border: 1px solid #333;
     margin-bottom: 10px;
@@ -43,4 +43,34 @@
     background: #0070d2;
     /* Salesforce blue for luck! */
     transition: width 3s linear;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .add-btn,
+    .progress-fill,
+    .progress-bar {
+        transition-duration: 0.01ms;
+    }
+}
+.add-btn,
+body {
+    font-family: system-ui, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    margin: 0;
+    padding: 2rem;
+    color: #17211b;
+    background: #f4f0e8;
+}
+
+main {
+    width: min(100%, 42rem);
+    margin: 0 auto;
+}
+
+.add-btn:focus-visible {
+    outline: 3px solid #8a4d00;
+    outline-offset: 3px;
 }

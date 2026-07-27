@@ -32,47 +32,43 @@ class ChatRenderer {
   }
 
   render(messages) {
-    this.container.innerHTML = ""
+    this.container.replaceChildren()
 
     messages.forEach(msg => {
-      const div = document.createElement("div")
+      const message = document.createElement("article")
+      message.className = msg.isSelf ? "message self" : "message"
 
-      div.className = msg.isSelf
-        ? "message self"
-        : "message"
+      const avatar = document.createElement("div")
+      avatar.className = "avatar"
+      avatar.setAttribute("aria-hidden", "true")
+      avatar.textContent = msg.senderName[0].toUpperCase()
 
-      div.innerHTML = `
-        <div class="avatar">
-          ${msg.senderName[0].toUpperCase()}
-        </div>
+      const content = document.createElement("div")
+      content.className = "message-content"
 
-        <div class="message-content">
+      const header = document.createElement("div")
+      header.className = "message-header"
 
-          <div class="message-header">
+      const sender = document.createElement("span")
+      sender.className = "sender"
+      sender.textContent = msg.senderName
 
-            <span class="sender">
-              ${msg.senderName}
-            </span>
+      const timestamp = document.createElement("time")
+      timestamp.className = "timestamp"
+      timestamp.dateTime = new Date(msg.timestamp).toISOString()
+      timestamp.textContent = new Date(msg.timestamp).toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit"
+      })
 
-            <span class="timestamp">
-              ${new Date(
-                msg.timestamp
-              ).toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit"
-              })}
-            </span>
+      const text = document.createElement("p")
+      text.className = "text"
+      text.textContent = msg.text
 
-          </div>
-
-          <p class="text">
-            ${msg.text}
-          </p>
-
-        </div>
-      `
-
-      this.container.appendChild(div)
+      header.append(sender, timestamp)
+      content.append(header, text)
+      message.append(avatar, content)
+      this.container.appendChild(message)
     })
 
     this.scrollToBottom()

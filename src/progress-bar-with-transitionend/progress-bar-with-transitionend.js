@@ -25,12 +25,15 @@ function processQueue() {
 }
 
 function startWork(bar) {
+  bar.setAttribute('aria-valuetext', 'In progress');
   requestAnimationFrame(() => {
     bar.style.width = '100%';
   });
   
-// Level 3: No setTimeout. Use the DOM event.
+  // Level 3: No setTimeout. Use the DOM event.
   bar.addEventListener('transitionend', () => {
+    bar.setAttribute('aria-valuenow', '100');
+    bar.setAttribute('aria-valuetext', 'Complete');
     activeCount--;
     processQueue(); // Slot opened up! Check the queue.
   }, { once: true });
@@ -42,6 +45,12 @@ function createBarUI() {
   
   const bar = document.createElement('div');
   bar.className = 'progress-bar';
+  bar.setAttribute('role', 'progressbar');
+  bar.setAttribute('aria-label', 'Queued job progress');
+  bar.setAttribute('aria-valuemin', '0');
+  bar.setAttribute('aria-valuemax', '100');
+  bar.setAttribute('aria-valuenow', '0');
+  bar.setAttribute('aria-valuetext', 'Waiting');
   
   container.appendChild(bar);
   wrapper.appendChild(container);

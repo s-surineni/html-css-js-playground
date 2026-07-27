@@ -13,9 +13,10 @@
     <header class="chat-header">
       Team Chat
     </header>
-    <main class="chat-messages" id="messages"></main>
+    <main class="chat-messages" id="messages" role="log" aria-live="polite" aria-relevant="additions text"></main>
     <form class="chat-input" id="chatForm">
-      <input type="text" id="messageInput" placeholder="Type message..." />
+      <label class="visually-hidden" for="messageInput">Message</label>
+      <input type="text" id="messageInput" placeholder="Type message..." autocomplete="off" />
       <button type="submit">
         Send
       </button>

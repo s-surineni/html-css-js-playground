@@ -1,83 +1,145 @@
-<style>
-    .tooltip-wrapper { position: relative; display: inline-block; }
-    .tooltip-trigger { position: relative; }
-    .tooltip-trigger::after {
-        content: attr(data-tooltip);
-        position: absolute;
-        top: calc(100% + 8px);
-        left: 50%;
-        transform: translateX(-50%) translateY(4px);
-        background: #111;
-        color: #fff;
-        padding: 6px 8px;
-        border-radius: 4px;
-        font-size: 14px;
-        line-height: 1.2;
-        white-space: nowrap;
-        opacity: 0;
-        visibility: hidden;
-        pointer-events: none;
-        transition: opacity .15s ease, transform .15s ease, visibility .15s ease;
-        z-index: 10;
-    }
-    .tooltip-trigger::before {
-        content: "";
-        position: absolute;
-        top: calc(100% + 2px);
-        left: 50%;
-        transform: translateX(-50%) translateY(4px);
-        border: 6px solid transparent;
-        border-bottom-color: #111;
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity .15s ease, transform .15s ease, visibility .15s ease;
-        z-index: 10;
-    }
-    .tooltip-wrapper:hover .tooltip-trigger::after,
-    .tooltip-wrapper:focus-within .tooltip-trigger::after,
-    .tooltip-wrapper:hover .tooltip-trigger::before,
-    .tooltip-wrapper:focus-within .tooltip-trigger::before {
-        opacity: 1;
-        visibility: visible;
-        transform: translateX(-50%) translateY(0);
-    }
-    button { cursor: pointer; }
-</style>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Accessible Lazy-Loaded Tooltip</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
 
-<div class="tooltip-wrapper">
-    <button type="button" class="tooltip-trigger" data-tooltip="Hover to load tooltip…"
-        aria-label="Hover me, shows tooltip">Hover me</button>
-</div>
-<script>
-    (function () {
-        const btn = document.querySelector('.tooltip-trigger');
-        if (!btn) return;
+      body {
+        min-height: 100vh;
+        margin: 0;
+        display: grid;
+        place-items: center;
+        padding: 2rem;
+        color: #17211b;
+        background: #f4f0e8;
+        font-family: system-ui, sans-serif;
+      }
+
+      main {
+        max-width: 34rem;
+        text-align: center;
+      }
+
+      h1 {
+        margin: 0 0 0.75rem;
+      }
+
+      main > p {
+        margin: 0 0 2rem;
+        color: #59635c;
+      }
+
+      .tooltip-wrapper {
+        position: relative;
+        display: inline-block;
+      }
+
+      .tooltip-trigger {
+        padding: 0.7rem 1rem;
+        border: 0;
+        border-radius: 0.5rem;
+        color: #fff;
+        background: #216044;
+        cursor: pointer;
+        font: inherit;
+        font-weight: 700;
+      }
+
+      .tooltip-trigger:focus-visible {
+        outline: 3px solid #be641d;
+        outline-offset: 3px;
+      }
+
+      .tooltip {
+        position: absolute;
+        top: calc(100% + 0.7rem);
+        left: 50%;
+        z-index: 10;
+        width: max-content;
+        max-width: min(18rem, 80vw);
+        padding: 0.5rem 0.7rem;
+        border-radius: 0.35rem;
+        color: #fff;
+        background: #111;
+        font-size: 0.875rem;
+        line-height: 1.3;
+        opacity: 0;
+        pointer-events: none;
+        transform: translateX(-50%) translateY(0.25rem);
+        transition: opacity 150ms ease, transform 150ms ease, visibility 150ms ease;
+        visibility: hidden;
+      }
+
+      .tooltip::before {
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        border: 0.4rem solid transparent;
+        border-bottom-color: #111;
+        content: "";
+        transform: translateX(-50%);
+      }
+
+      .tooltip-wrapper:hover .tooltip,
+      .tooltip-wrapper:focus-within .tooltip {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+        visibility: visible;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .tooltip {
+          transition: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Lazy-loaded tooltip</h1>
+      <p>Hover over the button or focus it with the keyboard to request the tooltip content.</p>
+      <div class="tooltip-wrapper">
+        <button type="button" class="tooltip-trigger" aria-describedby="tooltip-content">
+          Show a thought
+        </button>
+        <span class="tooltip" id="tooltip-content" role="tooltip" aria-live="polite">Hover or focus to load…</span>
+      </div>
+    </main>
+    <script>
+      (() => {
+        const button = document.querySelector('.tooltip-trigger');
+        const tooltip = document.querySelector('.tooltip');
+        if (!button || !tooltip) return;
 
         let loaded = false;
         let inFlight = false;
 
         async function loadTooltip() {
-            if (loaded || inFlight) return;
-            inFlight = true;
-            const original = btn.getAttribute('data-tooltip') || '';
-            btn.setAttribute('data-tooltip', 'Loading…');
-            try {
-                const res = await fetch('https://api.github.com/zen', { cache: 'no-store' });
-                if (!res.ok) throw new Error('Network error');
-                const text = (await res.text()).trim();
-                btn.setAttribute('data-tooltip', text || 'No data returned');
-                loaded = true;
-            } catch (e) {
-                btn.setAttribute('data-tooltip', 'Unable to load tooltip');
-                setTimeout(() => {
-                    if (!loaded) btn.setAttribute('data-tooltip', original);
-                }, 2000);
-            } finally {
-                inFlight = false;
-            }
+          if (loaded || inFlight) return;
+          inFlight = true;
+          tooltip.textContent = 'Loading…';
+
+          try {
+            const response = await fetch('https://api.github.com/zen', { cache: 'no-store' });
+            if (!response.ok) throw new Error('Network error');
+            const text = (await response.text()).trim();
+            tooltip.textContent = text || 'No data returned';
+            loaded = true;
+          } catch {
+            tooltip.textContent = 'Unable to load tooltip. Try again.';
+          } finally {
+            inFlight = false;
+          }
         }
 
-        btn.addEventListener('mouseenter', loadTooltip);
-        btn.addEventListener('focus', loadTooltip);
-    })();
-</script>
+        button.addEventListener('mouseenter', loadTooltip);
+        button.addEventListener('focus', loadTooltip);
+      })();
+    </script>
+  </body>
+</html>

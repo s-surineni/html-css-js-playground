@@ -25,12 +25,15 @@ function processQueue() {
 }
 
 function startWork(bar) {
+  bar.setAttribute('aria-valuetext', 'In progress');
   requestAnimationFrame(() => {
     bar.style.width = '100%';
   });
   
   // Use timeout to simulate work completion
   setTimeout(() => {
+    bar.setAttribute('aria-valuenow', '100');
+    bar.setAttribute('aria-valuetext', 'Complete');
     activeCount--;
     processQueue(); // Try to start the next one in the queue
   }, 3000); // Must match CSS transition time
@@ -42,6 +45,12 @@ function createBarUI() {
   
   const bar = document.createElement('div');
   bar.className = 'progress-bar';
+  bar.setAttribute('role', 'progressbar');
+  bar.setAttribute('aria-label', 'Queued job progress');
+  bar.setAttribute('aria-valuemin', '0');
+  bar.setAttribute('aria-valuemax', '100');
+  bar.setAttribute('aria-valuenow', '0');
+  bar.setAttribute('aria-valuetext', 'Waiting');
   
   container.appendChild(bar);
   wrapper.appendChild(container);
