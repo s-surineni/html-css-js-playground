@@ -17,3 +17,5 @@ function asyncWork() {
         console.log("inside set timeout");
     }, 10)
 }
+
+function waitForTimeout2 
