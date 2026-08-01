@@ -1,9 +1,11 @@
 function asyncExample() {
     setTimeout(() => {
         console.log("inside set timeout");
+        waitForTiemout()
     }, 10)
-    function 
+    function waitForTiemout()  {
     console.log("outside setttimeout");
+    }
     
 }
 asyncExample()
