@@ -13,11 +13,18 @@ function waitForTiemout() {
 asyncExample(waitForTiemout)
 
 function asyncExample2() {
-    
-    setTimeout(() => {
-        console.log("inside set timeout");
-    }, 10)
+    return new Promise(resolve => {
+        setTimeout(() => {
+            console.log("inside set timeout");
+            resolve()
+        }, 10)
+    })
+
 }
 
 function waitForTimeout2() {
+    const prom = asyncExample2();
+    prom.then(()=> console.log("after set timeout");
 }
+
+waitForTimeout2()
