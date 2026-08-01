@@ -12,10 +12,12 @@ function waitForTiemout() {
 }
 asyncExample(waitForTiemout)
 
-function asyncWork() {
+function asyncExample2() {
+    
     setTimeout(() => {
         console.log("inside set timeout");
     }, 10)
 }
 
-function waitForTimeout2 
+function waitForTimeout2() {
+}
