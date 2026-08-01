@@ -24,7 +24,7 @@ function asyncExample2() {
 
 function waitForTimeout2() {
     const prom = asyncExample2();
-    prom.then(()=> console.log("after set timeout");
+    prom.then(()=> console.log("after set timeout"));
 }
 
 waitForTimeout2()
