@@ -15,6 +15,5 @@ asyncExample(waitForTiemout)
 function asyncWork() {
     setTimeout(() => {
         console.log("inside set timeout");
-        callback()
     }, 10)
 }
