@@ -1,8 +1,7 @@
-function asyncSample() {
+function asyncExample() {
     setTimeout(() => {
-        console.log('inside timeout')
-    }, 100);
-    console.log('after timeout')
+        console.log("inside set timeout");
+    }, 10)
+    console.log("outside setttimeout");
+    
 }
-
-asyncSample()
