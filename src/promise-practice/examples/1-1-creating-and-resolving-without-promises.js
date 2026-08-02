@@ -1,20 +1,20 @@
 function resolveSoon(todoId, callback) {
-  const xhr = new XMLHttpRequest();
-  xhr.open('GET', `https://jsonplaceholder.typicode.com/todos/${todoId}`);
-  xhr.onload = () => {
-    if (xhr.status < 200 || xhr.status >= 300) {
-      callback(new Error(`HTTP ${xhr.status}: ${xhr.statusText}`));
-      return;
-    }
-    try {
-      const todo = JSON.parse(xhr.responseText);
-      callback(null, todo);
-    } catch (error) {
-      callback(error);
-    }
-  };
-  xhr.onerror = () => callback(new Error('Network error'));
-  xhr.send();
+  const https = require('node:https');
+  https.get(`https://jsonplaceholder.typicode.com/todos/${todoId}`, (res) => {
+    let body = '';
+    res.on('data', (chunk) => { body += chunk; });
+    res.on('end', () => {
+      if (res.statusCode < 200 || res.statusCode >= 300) {
+        callback(new Error(`HTTP ${res.statusCode}: ${res.statusMessage}`));
+        return;
+      }
+      try {
+        callback(null, JSON.parse(body));
+      } catch (error) {
+        callback(error);
+      }
+    });
+  }).on('error', (error) => callback(error));
 }
 
 console.log('callback registered');
