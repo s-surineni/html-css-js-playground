@@ -1,13 +1,21 @@
+import https from 'node:https';
+
 function resolveSoon(todoId, callback) {
-  fetch(`https://jsonplaceholder.typicode.com/todos/${todoId}`)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+  https.get(`https://jsonplaceholder.typicode.com/todos/${todoId}`, (res) => {
+    let body = '';
+    res.on('data', (chunk) => { body += chunk; });
+    res.on('end', () => {
+      if (res.statusCode < 200 || res.statusCode >= 300) {
+        callback(new Error(`HTTP ${res.statusCode}: ${res.statusMessage}`));
+        return;
       }
-      return response.json();
-    })
-    .then((todo) => callback(null, todo))
-    .catch((error) => callback(error));
+      try {
+        callback(null, JSON.parse(body));
+      } catch (error) {
+        callback(error);
+      }
+    });
+  }).on('error', (error) => callback(error));
 }
 
 console.log('callback registered');
