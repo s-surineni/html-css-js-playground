@@ -41,6 +41,8 @@ function resolveSoonWithPromise() {
 }
 
 const promise = resolveSoonWithPromise()
-promise.then(() => {
-  console.log()
+promise.then((result) => {
+  console.log('inside then')
+  console.log(result)
 })
+console.log('after then')
