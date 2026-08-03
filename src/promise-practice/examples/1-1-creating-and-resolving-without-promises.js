@@ -20,7 +20,7 @@ function resolveSoon(callback) {
   });
 }
 
-resolveSoon(()=> {
+resolveSoon(() => {
   console.log('after request in the callback')
 })
 console.log('outside async call')
@@ -28,23 +28,19 @@ console.log('outside async call')
 
 
 function resolveSoonWithPromise() {
-  new Promise((resolve, reject) => {})
-  needle.get(`https://official-joke-api.appspot.com/random_joke`, (error, response, body) => {
-    if (error) {
-      return;
-    }
-    if (response.statusCode < 200 || response.statusCode >= 300) {
-      return;
-    }
-    try {
-      console.log("inside async");
-      console.log(body);
-    } catch (err) {
-    }
-  });
+  return new Promise((resolve, reject) => {
+    needle.get(`https://official-joke-api.appspot.com/random_joke`, (error, response, body) => {
+      if (error) {
+        reject(error)
+      }
+      else {
+        resolve(body)
+      }
+    })
+  })
 }
 
-resolveSoon(()=> {
-  console.log('after request in the callback')
+const promise = resolveSoonWithPromise()
+promise.then(() => {
+  console.log()
 })
-console.log('outside async call')
