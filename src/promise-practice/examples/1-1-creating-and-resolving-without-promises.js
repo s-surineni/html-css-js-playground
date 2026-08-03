@@ -1,7 +1,7 @@
 import needle from 'needle';
 
 function resolveSoon(todoId, callback) {
-  needle.get(`https://jsonplaceholder.typicode.com/todos/${todoId}`, (error, response) => {
+  needle.get(`https://official-joke-api.appspot.com/random_joke`, (error, response) => {
     if (error) {
       callback(error);
       return;
@@ -21,10 +21,10 @@ function resolveSoon(todoId, callback) {
 console.log('callback registered');
 console.log('waiting for callback...');
 
-resolveSoon(1, (error, todo) => {
+resolveSoon(1, (error, joke) => {
   if (error) {
-    console.error('unable to load todo:', error.message);
+    console.error('unable to load joke:', error.message);
     return;
   }
-  console.log('resolved value:', todo.title);
+  console.log('resolved value:', `${joke.setup} — ${joke.punchline}`);
 });
