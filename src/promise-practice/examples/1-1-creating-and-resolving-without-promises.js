@@ -1,7 +1,7 @@
 import needle from 'needle';
 
-function resolveSoon(todoId, callback) {
-  needle.get(`https://official-joke-api.appspot.com/random_joke`, (error, response) => {
+function resolveSoon(callback) {
+  needle.get(`https://official-joke-api.appspot.com/random_joke`, (error, response, body) => {
     if (error) {
       callback(error);
       return;
@@ -11,20 +11,10 @@ function resolveSoon(todoId, callback) {
       return;
     }
     try {
-      callback(null, response.body);
+      callback(null, body);
     } catch (err) {
       callback(err);
     }
   });
 }
-
-console.log('callback registered');
-console.log('waiting for callback...');
-
-resolveSoon(1, (error, joke) => {
-  if (error) {
-    console.error('unable to load joke:', error.message);
-    return;
-  }
-  console.log('resolved value:', `${joke.setup} — ${joke.punchline}`);
-});
+resolveSoon()
