@@ -1,21 +1,21 @@
-import https from 'node:https';
+import needle from 'needle';
 
 function resolveSoon(todoId, callback) {
-  https.get(`https://jsonplaceholder.typicode.com/todos/${todoId}`, (res) => {
-    let body = '';
-    res.on('data', (chunk) => { body += chunk; });
-    res.on('end', () => {
-      if (res.statusCode < 200 || res.statusCode >= 300) {
-        callback(new Error(`HTTP ${res.statusCode}: ${res.statusMessage}`));
-        return;
-      }
-      try {
-        callback(null, JSON.parse(body));
-      } catch (error) {
-        callback(error);
-      }
-    });
-  }).on('error', (error) => callback(error));
+  needle.get(`https://jsonplaceholder.typicode.com/todos/${todoId}`, (error, response) => {
+    if (error) {
+      callback(error);
+      return;
+    }
+    if (response.statusCode < 200 || response.statusCode >= 300) {
+      callback(new Error(`HTTP ${response.statusCode}: ${response.statusMessage}`));
+      return;
+    }
+    try {
+      callback(null, response.body);
+    } catch (err) {
+      callback(err);
+    }
+  });
 }
 
 console.log('callback registered');

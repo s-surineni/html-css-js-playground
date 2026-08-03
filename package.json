@@ -16,5 +16,8 @@
   },
   "devDependencies": {
     "vite": "^7.1.7"
+  },
+  "dependencies": {
+    "needle": "^3.5.0"
   }
 }
