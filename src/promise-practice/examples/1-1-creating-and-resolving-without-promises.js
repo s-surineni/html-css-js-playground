@@ -11,10 +11,13 @@ function resolveSoon(callback) {
       return;
     }
     try {
-      callback(null, body);
+      callback(body);
     } catch (err) {
       callback(err);
     }
   });
 }
-resolveSoon()
+resolveSoon((resp)=> {
+  console.log(resp)
+  console.log('after request')
+})
