@@ -1,6 +1,6 @@
 import needle from 'needle';
 export function resolveSoon(callback) {
-  needle.get(`https://official-jokap.appspot.com/random_joke`, (error, response, body) => {
+  needle.get(`null`, (error, response, body) => {
     if (error) {
       callback(error);
     }
