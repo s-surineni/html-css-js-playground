@@ -25,5 +25,5 @@ export function resolveSoonWithPromise() {
 
 resolveSoon((resp) => {
   console.log("inside callback");
-  console.log()
+  console.log('ironman resp', JSON.stringify(resp));
 })
