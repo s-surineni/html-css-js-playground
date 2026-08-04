@@ -1,6 +1,6 @@
 import needle from 'needle';
 export function resolveSoon(callback) {
-  needle.get(`null`, (error, response, body) => {
+  needle.get(null, (error, response, body) => {
     if (error) {
       callback(error);
     }
@@ -12,18 +12,19 @@ export function resolveSoon(callback) {
 
 export function resolveSoonWithPromise() {
   return new Promise((resolve, reject) => {
-    needle.get(`https://official-joke-api.appspot.com/random_joke`, (error, response, body) => {
+    needle.get(null, (error, response, body) => {
       if (error) {
-        reject(error)
+        callback(error);
       }
       else {
-        resolve(body)
+        callback(body)
       }
-    })
+    });
   })
 }
 
-resolveSoon((resp) => {
-  console.log("inside callback");
-  console.log('ironman resp', JSON.stringify(resp));
+const prom = resolveSoonWithPromise()
+prom.then(() => {
+  console.log();
+  
 })
