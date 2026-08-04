@@ -23,16 +23,44 @@ runAfterTimeout(() => {
 });
 
 function runAfterTimeoutPromise() {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     setTimeout(() => {
-      console.log("inside timeout")
-      resolve()
-    }, 10)
-  })
-
+      console.log('Inside the promise timeout');
+      resolve();
+    }, 10);
+  });
 }
 
 const promise = runAfterTimeoutPromise();
 promise.then(() => {
-  console.log('after promise resolve')
-})
+  console.log('After the promise resolves');
+});
+
+function asyncExample(callback) {
+  setTimeout(() => {
+    console.log('Inside the callback timeout');
+    callback();
+  }, 10);
+}
+
+function waitForTimeout() {
+  console.log('After the callback timeout');
+}
+
+asyncExample(waitForTimeout);
+
+function asyncExample2() {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      console.log('Inside the second promise timeout');
+      resolve();
+    }, 10);
+  });
+}
+
+function waitForTimeout2() {
+  const timeoutPromise = asyncExample2();
+  timeoutPromise.then(() => console.log('After the second promise timeout'));
+}
+
+waitForTimeout2();

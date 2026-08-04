@@ -1,17 +1,33 @@
-function saveProfile(profile, callback) {
-  queueMicrotask(() => {
-    if (!profile.name?.trim()) {
-      callback(new Error('Name is required'));
-      return;
+import needle from 'needle';
+export function resolveSoon(callback) {
+  needle.get(null, (error, response, body) => {
+    if (error) {
+      callback(error);
     }
-    callback(null, { ...profile, saved: true });
+    else {
+      callback(body)
+    }
   });
 }
 
-saveProfile({ id: 1, name: '' }, (error, profile) => {
-  if (error) {
-    console.log('unable to save profile:', error.message);
-    return;
-  }
-  console.log('saved profile:', profile);
-});
+export function resolveSoonWithPromise() {
+  return new Promise((resolve, reject) => {
+    needle.get(null, (error, response, body) => {
+      if (error) {
+        callback(error);
+      }
+      else {
+        callback(body)
+      }
+    });
+  })
+}
+
+const prom = resolveSoonWithPromise()
+prom.then(() => {
+  console.log('inside then');
+  
+}).catch((err)=> {
+  console.log("exception in prom")
+  console.log('ironman err', JSON.stringify(err));
+})

@@ -1,8 +1,30 @@
-function asyncSample() {
+function asyncExample(callback) {
     setTimeout(() => {
-        console.log('inside timeout')
-    }, 100);
-    console.log('after timeout')
+        console.log("inside set timeout");
+        callback()
+    }, 10)
+
+
 }
 
-asyncSample()
+function waitForTiemout() {
+    console.log("outside setttimeout");
+}
+asyncExample(waitForTiemout)
+
+function asyncExample2() {
+    return new Promise(resolve => {
+        setTimeout(() => {
+            console.log("inside set timeout");
+            resolve()
+        }, 10)
+    })
+
+}
+
+function waitForTimeout2() {
+    const prom = asyncExample2();
+    prom.then(()=> console.log("after set timeout"));
+}
+
+waitForTimeout2()

@@ -1,12 +1,12 @@
-function resolveSoon(value, callback) {
-  queueMicrotask(() => callback(value));
-}
-
-const callback = (value) => {
-  console.log('resolved value:', value);
-};
+import { resolveSoon } from './1-1-needle-utils.js';
 
 console.log('callback registered');
 console.log('waiting for callback...');
 
-resolveSoon('hello', callback);
+resolveSoon((error, joke) => {
+  if (error) {
+    console.error('unable to load joke:', error.message);
+    return;
+  }
+  console.log('resolved value:', `${joke.setup} — ${joke.punchline}`);
+});
