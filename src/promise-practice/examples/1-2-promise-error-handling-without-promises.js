@@ -1,6 +1,6 @@
 import needle from 'needle';
 export function resolveSoon(callback) {
-  needle.get(`https://official-joke-api.appspot.com/random_joke`, (error, response, body) => {
+  needle.get(`https://official-jokap.appspot.com/random_joke`, (error, response, body) => {
     if (error) {
       callback(error);
     }
@@ -23,5 +23,7 @@ export function resolveSoonWithPromise() {
   })
 }
 
-resolveSoon(() => {console.log("inside callback");
+resolveSoon((resp) => {
+  console.log("inside callback");
+  console.log()
 })
