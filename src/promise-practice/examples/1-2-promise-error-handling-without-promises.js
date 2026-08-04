@@ -25,6 +25,9 @@ export function resolveSoonWithPromise() {
 
 const prom = resolveSoonWithPromise()
 prom.then(() => {
-  console.log();
+  console.log('inside then');
   
+}).catch((err)=> {
+  console.log("exception in prom")
+  console.log('ironman err', JSON.stringify(err));
 })
