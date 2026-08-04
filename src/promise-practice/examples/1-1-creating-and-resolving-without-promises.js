@@ -1,13 +1,12 @@
-import { resolveSoon, resolveSoonWithPromise } from './1-1-needle-utils.js';
+import { resolveSoon } from './1-1-needle-utils.js';
 
-resolveSoon(() => {
-  console.log('after request in the callback')
-})
-console.log('outside async call')
+console.log('callback registered');
+console.log('waiting for callback...');
 
-const promise = resolveSoonWithPromise()
-promise.then((result) => {
-  console.log('inside then')
-  console.log(result)
-})
-console.log('after then')
+resolveSoon((error, joke) => {
+  if (error) {
+    console.error('unable to load joke:', error.message);
+    return;
+  }
+  console.log('resolved value:', `${joke.setup} — ${joke.punchline}`);
+});
