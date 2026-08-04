@@ -21,3 +21,18 @@ function runAfterTimeout(callback) {
 runAfterTimeout(() => {
   console.log('4. After the second timeout');
 });
+
+function runAfterTimeoutPromise() {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      console.log("inside timeout")
+      resolve()
+    }, 10)
+  })
+
+}
+
+const promise = runAfterTimeoutPromise();
+promise.then(() => {
+  console.log('after promise resolve')
+})
