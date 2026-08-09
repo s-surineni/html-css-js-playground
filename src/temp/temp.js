@@ -1,30 +1,33 @@
-function asyncExample(callback) {
-    setTimeout(() => {
-        console.log("inside set timeout");
-        callback()
-    }, 10)
-
-
+const bank = {
+    name: 'Tree',
+    balance: 100,
+    getBalance () {
+        // console.log(this.balance)
+        return this.balance
+    }
+    
 }
+const car = {balance: 50}
+car.getBalance = bank.getBalance
+console.log('ironman bank.getBalance()', JSON.stringify(bank.getBalance()));
+console.log('ironman car.getBalance()', JSON.stringify(car.getBalance()));
 
-function waitForTiemout() {
-    console.log("outside setttimeout");
+function bankFun () {
+    let balance = 100;
+    function getBalance() {
+        return balance;
+    }
+
+    function setBalance(val) {
+        balance = val;
+    }
+
+    return {
+        getBalance,
+        setBalance
+    }
 }
-asyncExample(waitForTiemout)
-
-function asyncExample2() {
-    return new Promise(resolve => {
-        setTimeout(() => {
-            console.log("inside set timeout");
-            resolve()
-        }, 10)
-    })
-
-}
-
-function waitForTimeout2() {
-    const prom = asyncExample2();
-    prom.then(()=> console.log("after set timeout"));
-}
-
-waitForTimeout2()
+const savings = bankFun()
+console.log('ironman savings.getBalance()', JSON.stringify(savings.getBalance()));
+console.log('ironman savings.setBalance(150', JSON.stringify(savings.setBalance(150)));
+console.log('ironman savings.getBalance()', JSON.stringify(savings.getBalance()));

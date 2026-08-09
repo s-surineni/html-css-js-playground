@@ -1,17 +1,14 @@
-function saveProfile(profile) {
-  return new Promise((resolve, reject) => {
-    queueMicrotask(() => {
-      if (!profile.name?.trim()) {
-        reject(new Error('Name is required'));
-        return;
-      }
-      resolve({ ...profile, saved: true });
-    });
-  });
-}
+import { resolveSoonWithPromise } from './1-1-needle-utils.js';
 
-const savePromise = saveProfile({ id: 1, name: '' })
+// Port 1 is intentionally unreachable, making Needle report a connection
+// error so this example can demonstrate Promise rejection without relying on
+// a public API or an internet connection.
+const requestPromise = resolveSoonWithPromise('http://127.0.0.1:1/profile');
+
+requestPromise
+  .then((body) => {
+    console.log('request succeeded:', body);
+  })
   .catch((error) => {
-    console.log('unable to save profile:', error.message);
-    return error.message;
+    console.error('request failed:', error.message);
   });
