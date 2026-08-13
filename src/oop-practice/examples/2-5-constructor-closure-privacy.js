@@ -1,23 +1,39 @@
-function BankAccount(initialBalance) {
-  if (!Number.isFinite(initialBalance) || initialBalance < 0) {
-    throw new RangeError('Initial balance must be non-negative');
-  }
+function BankAccount(name, balance) {
+  this.name = name;
 
-  let balance = initialBalance;
-
-  this.deposit = function (amount) {
-    if (!Number.isFinite(amount) || amount <= 0) return false;
-    balance += amount;
-    return true;
-  };
+  // This variable is private because it belongs to the constructor's closure.
+  // It is not stored as a property on the account object.
+  let privateBalance = balance;
 
   this.getBalance = function () {
-    return balance;
+    return privateBalance;
+  };
+
+  this.deposit = function (amount) {
+    if (amount > 0) {
+      privateBalance += amount;
+    }
+  };
+
+  this.withdraw = function (amount) {
+    if (amount > 0 && amount <= privateBalance) {
+      privateBalance -= amount;
+    }
   };
 }
 
-const account = new BankAccount(100);
-account.deposit(50);
-console.log('--- Constructor Closure Privacy ---');
-console.log('balance through API:', account.getBalance());
-console.log('balance property:', account.balance);
+const myAccount = new BankAccount('Mine', 500);
+const dAccount = new BankAccount('Dol', 50000);
+
+console.log('ironman myAccount.name', JSON.stringify(myAccount.name));
+console.log('ironman myAccount.balance', JSON.stringify(myAccount.balance)); // undefined
+console.log('ironman myAccount.getBalance()', JSON.stringify(myAccount.getBalance()));
+
+myAccount.deposit(100);
+console.log('ironman myAccount.getBalance()', JSON.stringify(myAccount.getBalance()));
+
+myAccount.withdraw(200);
+console.log('ironman myAccount.getBalance()', JSON.stringify(myAccount.getBalance()));
+
+console.log('ironman dAccount.name', JSON.stringify(dAccount.name));
+console.log('ironman dAccount.getBalance()', JSON.stringify(dAccount.getBalance()));

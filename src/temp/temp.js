@@ -1,33 +1,35 @@
-const bank = {
-    name: 'Tree',
-    balance: 100,
-    getBalance () {
-        // console.log(this.balance)
+class BankAccount {
+    constructor(name, balance) {
+        this.name = name
+        this.balance = balance
+    }
+
+     getBalance() {
         return this.balance
     }
-    
-}
-const car = {balance: 50}
-car.getBalance = bank.getBalance
-console.log('ironman bank.getBalance()', JSON.stringify(bank.getBalance()));
-console.log('ironman car.getBalance()', JSON.stringify(car.getBalance()));
 
-function bankFun () {
-    let balance = 100;
-    function getBalance() {
-        return balance;
+    deposit(amount) {
+        this.balance += amount;
     }
 
-    function setBalance(val) {
-        balance = val;
-    }
-
-    return {
-        getBalance,
-        setBalance
+    withdraw(amount) {
+        this.balance -= amount
     }
 }
-const savings = bankFun()
-console.log('ironman savings.getBalance()', JSON.stringify(savings.getBalance()));
-console.log('ironman savings.setBalance(150', JSON.stringify(savings.setBalance(150)));
-console.log('ironman savings.getBalance()', JSON.stringify(savings.getBalance()));
+
+const myAccount = new BankAccount('Mine', 500);
+const dAccount = new BankAccount('Dol', 50000);
+
+console.log('ironman myAccount.name', JSON.stringify(myAccount.name));
+console.log('ironman myAccount.balance', JSON.stringify(myAccount.balance)); // undefined
+myAccount.balance = 100;
+console.log('ironman myAccount.getBalance()', JSON.stringify(myAccount.getBalance()));
+
+myAccount.deposit(100);
+console.log('ironman myAccount.getBalance()', JSON.stringify(myAccount.getBalance()));
+
+myAccount.withdraw(200);
+console.log('ironman myAccount.getBalance()', JSON.stringify(myAccount.getBalance()));
+
+console.log('ironman dAccount.name', JSON.stringify(dAccount.name));
+console.log('ironman dAccount.getBalance()', JSON.stringify(dAccount.getBalance()));
