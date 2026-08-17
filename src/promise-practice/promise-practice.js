@@ -78,6 +78,17 @@ const curriculum = [
         hint: `<code>Promise.all</code> resolves when every input promise
           resolves, or rejects immediately on the first failure.`,
       },
+      {
+        id: '1-5',
+        title: 'One Catch for the Whole Chain',
+        badge: 'medium',
+        desc: `See how a single trailing <code>catch</code> handles a
+          rejection from any earlier <code>then</code> step — cleaner than
+          checking <code>error</code> in every nested callback.`,
+        hint: `A rejection skips remaining <code>then</code> handlers and
+          lands in the next <code>catch</code>. Compare with the callback
+          version, where each nest must check <code>error</code> itself.`,
+      },
     ],
   },
   {
