@@ -2,13 +2,22 @@ import { readdir, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { runCode } from '../src/lib/code-playground.js';
+import * as needleUtils from '../src/promise-practice/examples/needle-utils.js';
 
 const root = fileURLToPath(new URL('../src/promise-practice/', import.meta.url));
+
+const needleBindings = {
+  JOKE_URL: needleUtils.JOKE_URL,
+  FAIL_URL: needleUtils.FAIL_URL,
+  resolveSoon: needleUtils.resolveSoon,
+  resolveSoonWithPromise: needleUtils.resolveSoonWithPromise,
+};
 
 async function sourcesById(directory) {
   const sources = new Map();
   for (const filename of await readdir(join(root, directory))) {
     if (filename.includes('-without-promises.')) continue;
+    if (filename === 'needle-utils.js') continue;
     const id = filename.match(/^(\d+(?:-\d+)?)-.*\.js$/)?.[1];
     if (!id) continue;
     if (sources.has(id)) throw new Error(`Duplicate ${directory} id: ${id}`);
@@ -31,7 +40,7 @@ for (const [id, test] of [...tests].sort(([a], [b]) => a.localeCompare(b, undefi
 
   let runResult;
   try {
-    runResult = runCode(example, test);
+    runResult = runCode(example, test, needleBindings);
   } catch (e) {
     console.error(`❌ ${id}: ${e.message}`);
     failures++;

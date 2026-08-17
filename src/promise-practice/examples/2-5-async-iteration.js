@@ -1,31 +1,30 @@
-const orderPages = new Map([
-  [1, [{ id: 101 }, { id: 102 }]],
-  [2, [{ id: 103 }]],
-]);
+import { resolveSoonWithPromise } from './needle-utils.js';
 
-function loadOrderPage(pageNumber) {
-  return new Promise((resolve) => {
-    queueMicrotask(() => {
-      resolve(orderPages.get(pageNumber) ?? []);
-    });
-  });
+function loadJokePage(pageNumber) {
+  if (pageNumber > 2) {
+    return resolveSoonWithPromise().then(() => []);
+  }
+
+  return resolveSoonWithPromise().then((joke) => [
+    { id: 100 + pageNumber, setup: joke.setup },
+  ]);
 }
 
-async function* fetchOrderPages() {
+async function* fetchJokePages() {
   for (let pageNumber = 1; ; pageNumber++) {
-    const orders = await loadOrderPage(pageNumber);
-    if (orders.length === 0) return;
-    yield orders;
+    const jokes = await loadJokePage(pageNumber);
+    if (jokes.length === 0) return;
+    yield jokes;
   }
 }
 
 async function main() {
-  const allOrders = [];
-  for await (const page of fetchOrderPages()) {
-    allOrders.push(...page);
+  const allJokes = [];
+  for await (const page of fetchJokePages()) {
+    allJokes.push(...page);
     console.log('loaded page:', page.map(({ id }) => id));
   }
-  return allOrders;
+  return allJokes;
 }
 
 const iterationPromise = main();

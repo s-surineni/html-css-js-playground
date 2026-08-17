@@ -1,35 +1,19 @@
-import needle from 'needle';
-
-const JOKE_URL = 'https://official-joke-api.appspot.com/random_joke';
-
-// Convert Needle's callback API into a Promise so both examples below can use
-// the same real asynchronous HTTP operation.
-function requestRandomJoke() {
-  return new Promise((resolve, reject) => {
-    needle.get(JOKE_URL, (error, response) => {
-      if (error) {
-        reject(error);
-        return;
-      }
-
-      resolve(response);
-    });
-  });
-}
+import { resolveSoonWithPromise } from './needle-utils.js';
 
 // Version 1: consume the Promise with async/await.
 async function loadRandomJokeWithAsyncAwait() {
-  const response = await requestRandomJoke();
-  return response.body;
+  const joke = await resolveSoonWithPromise();
+  return joke;
 }
 
 // Version 2: do the same work with a Promise chain and no async/await.
 function loadRandomJokeWithPromiseChain() {
-  return requestRandomJoke().then((response) => response.body);
+  return resolveSoonWithPromise();
 }
 
 const asyncAwaitPromise = loadRandomJokeWithAsyncAwait();
 const promiseChain = loadRandomJokeWithPromiseChain();
+const greetingPromise = asyncAwaitPromise;
 
 console.log(
   'async function returned a Promise:',

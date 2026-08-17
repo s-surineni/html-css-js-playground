@@ -1,15 +1,19 @@
-const records = new Map([
-  [1, { id: 1, title: 'Promise notes' }],
-]);
+import { FAIL_URL, resolveSoon } from './needle-utils.js';
 
 function loadRecord(recordId, callback) {
-  queueMicrotask(() => {
-    const record = records.get(recordId);
-    if (!record) {
-      callback(new Error(`Record ${recordId} not found`));
+  if (recordId === 99) {
+    resolveSoon((error) => {
+      callback(error ?? new Error(`Record ${recordId} not found`));
+    }, FAIL_URL);
+    return;
+  }
+
+  resolveSoon((error, joke) => {
+    if (error) {
+      callback(error);
       return;
     }
-    callback(null, record);
+    callback(null, { id: recordId, title: joke.setup });
   });
 }
 

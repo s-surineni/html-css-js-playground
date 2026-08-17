@@ -1,37 +1,19 @@
-const orderStore = new Map([
-  [101, {
-    id: 101,
-    items: [
-      { price: 20, quantity: 2 },
-      { price: 15, quantity: 1 },
-    ],
-  }],
-]);
+import { resolveSoonWithPromise } from './needle-utils.js';
 
 const summaryStore = new Map();
 
-function runInRepository(operation) {
-  return new Promise((resolve, reject) => {
-    queueMicrotask(() => {
-      try {
-        resolve(operation());
-      } catch (error) {
-        reject(error);
-      }
-    });
-  });
-}
-
 function loadOrder(orderId) {
-  return runInRepository(() => {
-    const order = orderStore.get(orderId);
-    if (!order) throw new Error(`Order ${orderId} not found`);
-    return order;
-  });
+  return resolveSoonWithPromise().then((joke) => ({
+    id: orderId,
+    items: [
+      { price: joke.setup.length, quantity: 2 },
+      { price: joke.punchline.length, quantity: 1 },
+    ],
+  }));
 }
 
 function calculateSummary(order) {
-  return runInRepository(() => ({
+  return resolveSoonWithPromise().then(() => ({
     orderId: order.id,
     itemCount: order.items.reduce((count, item) => count + item.quantity, 0),
     total: order.items.reduce((total, item) => total + item.price * item.quantity, 0),
@@ -39,7 +21,7 @@ function calculateSummary(order) {
 }
 
 function saveSummary(summary) {
-  return runInRepository(() => {
+  return resolveSoonWithPromise().then(() => {
     summaryStore.set(summary.orderId, summary);
     return summary;
   });

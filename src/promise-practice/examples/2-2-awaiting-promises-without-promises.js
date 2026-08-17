@@ -1,13 +1,26 @@
+import { resolveSoon } from './needle-utils.js';
+
 function loadStatus(callback) {
-  queueMicrotask(() => callback('done'));
+  resolveSoon((error) => {
+    if (error) {
+      callback(error);
+      return;
+    }
+    callback(null, 'done');
+  });
 }
 
 function main(callback) {
   console.log('starting...');
-  loadStatus((result) => {
+  loadStatus((error, result) => {
+    if (error) {
+      console.error('failed:', error.message);
+      callback(error);
+      return;
+    }
     console.log('after await:', result);
-    callback();
+    callback(null, result);
   });
 }
 
-main();
+main(() => {});

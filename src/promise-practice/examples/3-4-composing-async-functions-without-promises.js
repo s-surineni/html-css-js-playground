@@ -1,46 +1,46 @@
-const orderStore = new Map([
-  [101, {
-    id: 101,
-    items: [
-      { price: 20, quantity: 2 },
-      { price: 15, quantity: 1 },
-    ],
-  }],
-]);
+import { resolveSoon } from './needle-utils.js';
 
 const summaryStore = new Map();
 
-function runInRepository(operation, callback) {
-  queueMicrotask(() => {
-    try {
-      callback(null, operation());
-    } catch (error) {
+function loadOrder(orderId, callback) {
+  resolveSoon((error, joke) => {
+    if (error) {
       callback(error);
+      return;
     }
+    callback(null, {
+      id: orderId,
+      items: [
+        { price: joke.setup.length, quantity: 2 },
+        { price: joke.punchline.length, quantity: 1 },
+      ],
+    });
   });
 }
 
-function loadOrder(orderId, callback) {
-  runInRepository(() => {
-    const order = orderStore.get(orderId);
-    if (!order) throw new Error(`Order ${orderId} not found`);
-    return order;
-  }, callback);
-}
-
 function calculateSummary(order, callback) {
-  runInRepository(() => ({
-    orderId: order.id,
-    itemCount: order.items.reduce((count, item) => count + item.quantity, 0),
-    total: order.items.reduce((total, item) => total + item.price * item.quantity, 0),
-  }), callback);
+  resolveSoon((error) => {
+    if (error) {
+      callback(error);
+      return;
+    }
+    callback(null, {
+      orderId: order.id,
+      itemCount: order.items.reduce((count, item) => count + item.quantity, 0),
+      total: order.items.reduce((total, item) => total + item.price * item.quantity, 0),
+    });
+  });
 }
 
 function saveSummary(summary, callback) {
-  runInRepository(() => {
+  resolveSoon((error) => {
+    if (error) {
+      callback(error);
+      return;
+    }
     summaryStore.set(summary.orderId, summary);
-    return summary;
-  }, callback);
+    callback(null, summary);
+  });
 }
 
 function pipeline(orderId, callback) {

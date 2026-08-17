@@ -1,45 +1,35 @@
-const users = new Map([
-  [1, { id: 1, name: 'Asha' }],
-]);
+import { resolveSoon } from './needle-utils.js';
 
-const orders = [
-  { id: 101, userId: 1, total: 40 },
-  { id: 102, userId: 1, total: 75 },
-];
+function fetchJoke(callback) {
+  resolveSoon(callback);
+}
 
-function fetchUser(userId, callback) {
-  queueMicrotask(() => {
-    const user = users.get(userId);
-    if (!user) {
-      callback(new Error(`User ${userId} not found`));
+function describeJoke(joke, callback) {
+  resolveSoon((error, secondJoke) => {
+    if (error) {
+      callback(error);
       return;
     }
-    callback(null, user);
+    callback(null, {
+      first: `${joke.setup} — ${joke.punchline}`,
+      second: `${secondJoke.setup} — ${secondJoke.punchline}`,
+    });
   });
 }
 
-function fetchOrders(userId, callback) {
-  queueMicrotask(() => {
-    callback(
-      null,
-      orders.filter((order) => order.userId === userId),
-    );
-  });
-}
-
-fetchUser(1, (userError, user) => {
-  if (userError) {
-    console.error('unable to load user:', userError.message);
+fetchJoke((jokeError, joke) => {
+  if (jokeError) {
+    console.error('unable to load joke:', jokeError.message);
     return;
   }
 
-  console.log('loaded user:', user.name);
-  fetchOrders(user.id, (ordersError, userOrders) => {
-    if (ordersError) {
-      console.error('unable to load orders:', ordersError.message);
+  console.log('loaded joke:', joke.setup);
+  describeJoke(joke, (pairError, pair) => {
+    if (pairError) {
+      console.error('unable to chain jokes:', pairError.message);
       return;
     }
 
-    console.log('loaded orders:', userOrders.length);
+    console.log('chained jokes ready:', pair);
   });
 });

@@ -1,11 +1,14 @@
 expect(summaryPromise instanceof Promise, true, 'the chain remains awaitable after catch');
 
 const failureTest = summaryPromise.then((message) => {
-  expect(message, 'User 99 not found', 'one catch handles a rejection from an earlier then step');
+  expect(typeof message, 'string', 'one catch handles a rejection from an earlier then step');
+  expect(message.length > 0, true, 'the caught rejection message is non-empty');
 });
 
-const successTest = loadSummary(1).then((summary) => {
-  expect(summary, { count: 2, total: 115 }, 'a successful chain still resolves normally');
+const successTest = loadSummary(false).then((summary) => {
+  expect(summary.count, 2, 'a successful chain still resolves normally');
+  expect(typeof summary.preview, 'string', 'later then steps still transform the result');
+  expect(typeof summary.bonus, 'string', 'each step can issue another Needle request');
 });
 
 return Promise.all([failureTest, successTest]);

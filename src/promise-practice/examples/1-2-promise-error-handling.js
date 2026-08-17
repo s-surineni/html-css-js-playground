@@ -1,14 +1,13 @@
-import { resolveSoonWithPromise } from './1-1-needle-utils.js';
+import { FAIL_URL, resolveSoonWithPromise } from './needle-utils.js';
 
-// Port 1 is intentionally unreachable, making Needle report a connection
-// error so this example can demonstrate Promise rejection without relying on
-// a public API or an internet connection.
-const requestPromise = resolveSoonWithPromise('http://127.0.0.1:1/profile');
-
-requestPromise
+// FAIL_URL points at an unreachable local port so Needle reports a connection
+// error without relying on a public API or internet connection.
+const requestPromise = resolveSoonWithPromise(FAIL_URL)
   .then((body) => {
     console.log('request succeeded:', body);
+    return body;
   })
   .catch((error) => {
     console.error('request failed:', error.message);
+    return error.message;
   });

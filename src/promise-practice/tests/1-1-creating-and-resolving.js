@@ -1,5 +1,6 @@
-expect(greetingPromise instanceof Promise, true, 'resolveSoon returns a Promise');
+expect(greetingPromise instanceof Promise, true, 'resolveSoonWithPromise returns a Promise');
 
-return greetingPromise.then((greeting) => {
-  expect(greeting, 'hello', 'promise resolves with the supplied value');
+return greetingPromise.then((joke) => {
+  expect(typeof joke.setup, 'string', 'promise resolves with a joke setup');
+  expect(typeof joke.punchline, 'string', 'promise resolves with a joke punchline');
 });

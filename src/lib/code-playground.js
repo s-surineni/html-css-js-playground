@@ -38,12 +38,19 @@ function deepEqual(a, b) {
   return keysA.every((k) => deepEqual(a[k], b[k]));
 }
 
+// Strip ES module import lines so playground code can document imports while
+// still running inside `Function` with injected bindings.
+function stripImports(source) {
+  return source.replace(/^\s*import\s.+?;?\s*$/gm, '');
+}
+
 // Evaluate `userCode`, then run `test` in the same scope so it can see whatever
 // the code declares. The test gets two helpers in scope:
 //   console.{log,error,warn} — captured into `logs`
 //   expect(actual, expected, label?) — recorded into `assertions`
+// Optional `bindings` are injected as named locals (e.g. resolveSoonWithPromise).
 // Returns { logs, assertions, result, error }.
-export function runCode(userCode, test = '') {
+export function runCode(userCode, test = '', bindings = {}) {
   const logs = [];
   const capture = (...args) => logs.push(args.map(format).join(' '));
   const sandboxConsole = { log: capture, error: capture, warn: capture };
@@ -55,10 +62,17 @@ export function runCode(userCode, test = '') {
     return passed;
   };
 
+  const bindingNames = Object.keys(bindings);
+  const bindingValues = Object.values(bindings);
+
   try {
-    const body = `${userCode}\n;return (function () {\n${test}\n})();`;
+    const body = `${stripImports(userCode)}\n;return (function () {\n${test}\n})();`;
     const compile = Function; // dynamic compile — see security note in header
-    const result = new compile('console', 'expect', body)(sandboxConsole, expect);
+    const result = new compile('console', 'expect', ...bindingNames, body)(
+      sandboxConsole,
+      expect,
+      ...bindingValues,
+    );
     return { logs, assertions, result, error: null };
   } catch (error) {
     return { logs, assertions, result: null, error };
@@ -76,8 +90,8 @@ function formatAssertion({ passed, label, actual, expected }) {
 // Build the combined log + assertion + result lines and render them into
 // `outputEl`. If a test returns a promise, wait for it so asynchronous logs and
 // assertions are included before the final output is painted.
-async function renderOutput(outputEl, userCode, test, isCurrent = () => true) {
-  const runResult = runCode(userCode, test);
+async function renderOutput(outputEl, userCode, test, bindings = {}, isCurrent = () => true) {
+  const runResult = runCode(userCode, test, bindings);
   const { logs, assertions } = runResult;
   let { result, error } = runResult;
 
@@ -125,12 +139,13 @@ const IDLE_MESSAGE = 'Click Run to execute your code.';
  * @param {string} [options.test='']        Snippet run after the code. It can console.log,
  *                                           call expect(actual, expected, label?) to assert,
  *                                           and/or return a string to display.
+ * @param {object} [options.bindings={}]    Extra named values injected into run scope.
  * @param {string} [options.label]          aria-label for the editor textarea.
  * @param {boolean} [options.autoRun=false] Run once immediately after mounting.
  * @returns {{ getCode: () => string, setCode: (c: string) => void, run: () => Promise<void>, reset: () => void, elements: object }}
  */
 export function mountCodePlayground(target, options = {}) {
-  const { code = '', test = '', label = 'Code editor', autoRun = false } = options;
+  const { code = '', test = '', bindings = {}, label = 'Code editor', autoRun = false } = options;
 
   const editor = document.createElement('textarea');
   editor.className = 'code-editor';
@@ -153,7 +168,7 @@ export function mountCodePlayground(target, options = {}) {
   let runId = 0;
   const run = () => {
     const currentRunId = ++runId;
-    return renderOutput(output, editor.value, test, () => currentRunId === runId);
+    return renderOutput(output, editor.value, test, bindings, () => currentRunId === runId);
   };
   const reset = () => {
     runId++;

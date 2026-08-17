@@ -1,4 +1,4 @@
-import { resolveSoonWithPromise } from './1-1-needle-utils.js';
+import { resolveSoonWithPromise } from './needle-utils.js';
 
 // Start every request before awaiting any result, allowing Needle to perform
 // the three HTTP requests in parallel.
@@ -9,7 +9,7 @@ const resultsPromise = Promise.all([
 ]).then((jokes) => {
   // Promise.all preserves input order even if the requests finish in a
   // different order.
-  console.log('all jokes in input order:', jokes);
+  console.log('all jokes in input order:', jokes.map((joke) => joke.setup));
   return jokes;
 });
 

@@ -3,6 +3,33 @@
 import { mountCodePlayground } from '../lib/code-playground.js';
 import '../lib/code-playground.css';
 
+const JOKE_URL = 'https://official-joke-api.appspot.com/random_joke';
+const FAIL_URL = 'http://127.0.0.1:1/profile';
+
+// Browser-safe bindings with the same API as examples/needle-utils.js (Needle in Node).
+function resolveSoonWithPromise(url = JOKE_URL) {
+  return fetch(url).then(async (response) => {
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+    return response.json();
+  });
+}
+
+function resolveSoon(callback, url = JOKE_URL) {
+  resolveSoonWithPromise(url).then(
+    (body) => callback(null, body),
+    (error) => callback(error),
+  );
+}
+
+const needleBindings = {
+  JOKE_URL,
+  FAIL_URL,
+  resolveSoon,
+  resolveSoonWithPromise,
+};
+
 const rawById = (modules, kind) => {
   const sources = {};
   for (const [path, source] of Object.entries(modules)) {
@@ -241,6 +268,7 @@ function renderExercise({ id, title, badge, desc, hint }) {
   mountCodePlayground(card, {
     code: starters[id],
     test: tests[id],
+    bindings: needleBindings,
     label: `Code editor for exercise ${id}: ${title}`,
   });
   return card;

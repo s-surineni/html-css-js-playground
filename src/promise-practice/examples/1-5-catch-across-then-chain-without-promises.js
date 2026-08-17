@@ -1,64 +1,59 @@
-const users = new Map([
-  [1, { id: 1, name: 'Asha' }],
-]);
+import { FAIL_URL, resolveSoon } from './needle-utils.js';
 
-const orders = [
-  { id: 101, userId: 1, total: 40 },
-  { id: 102, userId: 1, total: 75 },
-];
-
-function fetchUser(userId, callback) {
-  queueMicrotask(() => {
-    const user = users.get(userId);
-    if (!user) {
-      callback(new Error(`User ${userId} not found`));
-      return;
-    }
-    callback(null, user);
-  });
+function fetchJoke(callback) {
+  resolveSoon(callback);
 }
 
-function fetchOrders(userId, callback) {
-  queueMicrotask(() => {
-    callback(
-      null,
-      orders.filter((order) => order.userId === userId),
-    );
-  });
-}
-
-function summarizeOrders(userOrders, callback) {
-  queueMicrotask(() => {
-    if (userOrders.length === 0) {
-      callback(new Error('No orders to summarize'));
+function fetchPunchline(joke, callback) {
+  resolveSoon((error, nextJoke) => {
+    if (error) {
+      callback(error);
       return;
     }
     callback(null, {
-      count: userOrders.length,
-      total: userOrders.reduce((sum, order) => sum + order.total, 0),
+      setup: joke.setup,
+      punchline: nextJoke.punchline,
+    });
+  });
+}
+
+function summarizePair(pair, callback) {
+  resolveSoon((error, extra) => {
+    if (error) {
+      callback(error);
+      return;
+    }
+    callback(null, {
+      count: 2,
+      preview: `${pair.setup} / ${pair.punchline}`,
+      bonus: extra.setup,
     });
   });
 }
 
 // Callbacks do not bubble errors. Every nested step must check `error` itself.
-function loadSummary(userId, callback) {
-  fetchUser(userId, (userError, user) => {
-    if (userError) {
-      console.log('caught anywhere in the chain:', userError.message);
-      callback(null, userError.message);
+function loadSummary(shouldFail, callback) {
+  const start = shouldFail
+    ? (cb) => resolveSoon(cb, FAIL_URL)
+    : fetchJoke;
+
+  start((firstError, joke) => {
+    if (firstError) {
+      console.log('caught anywhere in the chain:', firstError.message);
+      callback(null, firstError.message);
       return;
     }
 
-    console.log('loaded user:', user.name);
-    fetchOrders(user.id, (ordersError, userOrders) => {
-      if (ordersError) {
-        console.log('caught anywhere in the chain:', ordersError.message);
-        callback(null, ordersError.message);
+    console.log('loaded joke:', joke.setup);
+    fetchPunchline(joke, (pairError, pair) => {
+      if (pairError) {
+        console.log('caught anywhere in the chain:', pairError.message);
+        callback(null, pairError.message);
         return;
       }
 
-      console.log('loaded orders:', userOrders.length);
-      summarizeOrders(userOrders, (summaryError, summary) => {
+      console.log('paired punchline:', pair.punchline);
+      summarizePair(pair, (summaryError, summary) => {
         if (summaryError) {
           console.log('caught anywhere in the chain:', summaryError.message);
           callback(null, summaryError.message);
@@ -72,4 +67,4 @@ function loadSummary(userId, callback) {
   });
 }
 
-loadSummary(99, () => {});
+loadSummary(true, () => {});

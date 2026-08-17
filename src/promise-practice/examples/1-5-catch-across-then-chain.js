@@ -1,58 +1,38 @@
-const users = new Map([
-  [1, { id: 1, name: 'Asha' }],
-]);
+import { FAIL_URL, resolveSoonWithPromise } from './needle-utils.js';
 
-const orders = [
-  { id: 101, userId: 1, total: 40 },
-  { id: 102, userId: 1, total: 75 },
-];
-
-function fetchUser(userId) {
-  return new Promise((resolve, reject) => {
-    queueMicrotask(() => {
-      const user = users.get(userId);
-      if (!user) {
-        reject(new Error(`User ${userId} not found`));
-        return;
-      }
-      resolve(user);
-    });
-  });
+function fetchJoke() {
+  return resolveSoonWithPromise();
 }
 
-function fetchOrders(userId) {
-  return new Promise((resolve) => {
-    queueMicrotask(() => {
-      resolve(orders.filter((order) => order.userId === userId));
-    });
-  });
+function fetchPunchline(joke) {
+  return resolveSoonWithPromise().then((nextJoke) => ({
+    setup: joke.setup,
+    punchline: nextJoke.punchline,
+  }));
 }
 
-function summarizeOrders(userOrders) {
-  return new Promise((resolve, reject) => {
-    queueMicrotask(() => {
-      if (userOrders.length === 0) {
-        reject(new Error('No orders to summarize'));
-        return;
-      }
-      resolve({
-        count: userOrders.length,
-        total: userOrders.reduce((sum, order) => sum + order.total, 0),
-      });
-    });
-  });
+function summarizePair(pair) {
+  return resolveSoonWithPromise().then((extra) => ({
+    count: 2,
+    preview: `${pair.setup} / ${pair.punchline}`,
+    bonus: extra.setup,
+  }));
 }
 
 // One trailing .catch() handles a rejection from any earlier step in the chain.
-function loadSummary(userId) {
-  return fetchUser(userId)
-    .then((user) => {
-      console.log('loaded user:', user.name);
-      return fetchOrders(user.id);
+function loadSummary(shouldFail) {
+  const firstStep = shouldFail
+    ? resolveSoonWithPromise(FAIL_URL)
+    : fetchJoke();
+
+  return firstStep
+    .then((joke) => {
+      console.log('loaded joke:', joke.setup);
+      return fetchPunchline(joke);
     })
-    .then((userOrders) => {
-      console.log('loaded orders:', userOrders.length);
-      return summarizeOrders(userOrders);
+    .then((pair) => {
+      console.log('paired punchline:', pair.punchline);
+      return summarizePair(pair);
     })
     .then((summary) => {
       console.log('summary:', summary);
@@ -64,4 +44,4 @@ function loadSummary(userId) {
     });
 }
 
-const summaryPromise = loadSummary(99);
+const summaryPromise = loadSummary(true);

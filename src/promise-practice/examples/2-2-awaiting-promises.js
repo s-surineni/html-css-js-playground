@@ -1,7 +1,7 @@
+import { resolveSoonWithPromise } from './needle-utils.js';
+
 function loadStatus() {
-  return new Promise((resolve) => {
-    queueMicrotask(() => resolve('done'));
-  });
+  return resolveSoonWithPromise().then(() => 'done');
 }
 
 async function main() {

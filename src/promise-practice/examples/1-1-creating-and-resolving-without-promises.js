@@ -1,4 +1,4 @@
-import { resolveSoon } from './1-1-needle-utils.js';
+import { resolveSoon } from './needle-utils.js';
 
 console.log('callback registered');
 console.log('waiting for callback...');
