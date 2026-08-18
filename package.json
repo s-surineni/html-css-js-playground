@@ -10,6 +10,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
+    "mock-api": "node scripts/mock-api-server.mjs",
     "test": "pnpm test:oop && pnpm test:promise",
     "test:oop": "node scripts/test-oop.mjs",
     "test:promise": "node scripts/test-promise.mjs"

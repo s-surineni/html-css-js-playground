@@ -1,0 +1,13 @@
+{
+  "users": [
+    { "id": 1, "name": "Asha" }
+  ],
+  "posts": [
+    { "id": 10, "userId": 1, "title": "Hello promises" },
+    { "id": 11, "userId": 1, "title": "Nested then hell" }
+  ],
+  "comments": [
+    { "id": 100, "postId": 10, "body": "Nice post!" },
+    { "id": 101, "postId": 10, "body": "Please flatten this chain." }
+  ]
+}

@@ -1,35 +1,23 @@
-import { readFile } from 'node:fs/promises';
+const API = process.env.MOCK_API_URL ?? 'http://localhost:4000';
 
-const dbPath = new URL('./db.json', import.meta.url);
-
-// Tiny JSON-file "database" mock — same shape as tools like json-server.
-async function readDb() {
-  const raw = await readFile(dbPath, 'utf8');
-  return JSON.parse(raw);
+async function getJson(path) {
+  const response = await fetch(`${API}${path}`);
+  if (!response.ok) {
+    throw new Error(`HTTP ${response.status} for ${path}`);
+  }
+  return response.json();
 }
 
-function delay(ms, value) {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(value), ms);
-  });
+function getUser(id = 1) {
+  return getJson(`/users/${id}`);
 }
 
-async function getUser(id = 1) {
-  const db = await readDb();
-  const user = db.users.find((row) => row.id === id);
-  return delay(50, user);
+function getPosts(userId) {
+  return getJson(`/posts?userId=${userId}`);
 }
 
-async function getPosts(userId) {
-  const db = await readDb();
-  const posts = db.posts.filter((row) => row.userId === userId);
-  return delay(50, posts);
-}
-
-async function getComments(postId) {
-  const db = await readDb();
-  const comments = db.comments.filter((row) => row.postId === postId);
-  return delay(50, comments);
+function getComments(postId) {
+  return getJson(`/comments?postId=${postId}`);
 }
 
 // WITHOUT automatic promise wrapping (Hypothetical Nightmare)
@@ -41,4 +29,7 @@ getUser()
         console.log(comments);
       });
     });
+  })
+  .catch((error) => {
+    console.error('Request failed — is the mock API running?', error.message);
   });
