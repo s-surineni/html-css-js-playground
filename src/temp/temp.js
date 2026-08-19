@@ -14,18 +14,18 @@ export const JOKE_URL = 'https://official-joke-api.appspot.com/random_joke';
 
 }
 
-async function getJoke() {
-    return new Promise((resolve, reject) => {    needle.get(JOKE_URL, (err, response, body) => {
+async function getJokeAsyn() {
+     new Promise((resolve, reject) => {    needle.get(JOKE_URL, (err, response, body) => {
         if (err) {
             reject(err)
         } else {
             resolve(body)
         }
-    })}
+    })})
 
 }
 try {
-    const res = await getJoke()
+    const res = await getJokeAsyn()
     console.log(res)
     console.log('after await')
 } catch (err) {
