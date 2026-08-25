@@ -10,6 +10,10 @@ class BankAccount {
     get balance() {
         return this.#balance;
     }
+
+    set balance(value) {
+        this.#balance = value;
+    }
 }
 
 const b1 = new BankAccount('d1', 10000)
