@@ -1,9 +1,13 @@
 import needle from 'needle';
 
-needle.get('https://jsonplaceholder.typicode.com/users/1', (error, response, body) => {
-  if (error) {
-    console.error(error);
-    return;
-  }
-  console.log(body);
-});
+console.log('before promise')
+new Promise((resolve, reject) => {
+    needle.get('https://jsonplaceholder.typicode.com/users/1', (error, resp, body) => {
+        console.log('error', error)
+        // console.log('resp', resp)
+        console.log('body', body)
+        console.log('after request')
+    });
+})
+
+console.log('after promise')
