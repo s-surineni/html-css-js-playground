@@ -1,35 +1,35 @@
 import { resolveSoon } from './needle-utils.js';
 
-function fetchJoke(callback) {
-  resolveSoon(callback);
+const API = 'https://jsonplaceholder.typicode.com';
+
+function getJson(path, callback) {
+  resolveSoon(callback, `${API}${path}`);
 }
 
-function describeJoke(joke, callback) {
-  resolveSoon((error, secondJoke) => {
-    if (error) {
-      callback(error);
-      return;
-    }
-    callback(null, {
-      first: `${joke.setup} — ${joke.punchline}`,
-      second: `${secondJoke.setup} — ${secondJoke.punchline}`,
-    });
-  });
+function fetchUser(id, callback) {
+  getJson(`/users/${id}`, callback);
 }
 
-fetchJoke((jokeError, joke) => {
-  if (jokeError) {
-    console.error('unable to load joke:', jokeError.message);
+function fetchPostsForUser(userId, callback) {
+  getJson(`/posts?userId=${userId}`, callback);
+}
+
+fetchUser(1, (userError, user) => {
+  if (userError) {
+    console.error('unable to load user:', userError.message);
     return;
   }
 
-  console.log('loaded joke:', joke.setup);
-  describeJoke(joke, (pairError, pair) => {
-    if (pairError) {
-      console.error('unable to chain jokes:', pairError.message);
+  console.log('loaded user:', user.name);
+  fetchPostsForUser(user.id, (postsError, posts) => {
+    if (postsError) {
+      console.error('unable to load posts:', postsError.message);
       return;
     }
 
-    console.log('chained jokes ready:', pair);
+    console.log('loaded posts:', posts.length, {
+      postCount: posts.length,
+      firstTitle: posts[0].title,
+    });
   });
 });

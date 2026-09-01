@@ -90,11 +90,12 @@ const curriculum = [
         id: '1-3',
         title: 'Chaining with Async Values',
         badge: 'medium',
-        desc: `Return a new promise from a <code>then</code> handler and
-          continue chaining, demonstrating that promises flatten nested
-          promise results automatically.`,
+        desc: `Chain dependent JSON API calls: load a user, then use that
+          user's id to load their posts. Returning a promise from
+          <code>then</code> flattens so the next handler gets the JSON body.`,
         hint: `Returning a promise from <code>then</code> causes the chain
-          to wait for it before proceeding.`,
+          to wait for that request before proceeding. Use a value from the
+          first response (like <code>user.id</code>) to build the next URL.`,
       },
       {
         id: '1-4',
