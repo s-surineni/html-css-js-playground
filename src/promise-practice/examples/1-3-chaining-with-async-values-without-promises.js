@@ -2,16 +2,12 @@ import { resolveSoon } from './needle-utils.js';
 
 const API = 'https://jsonplaceholder.typicode.com';
 
-function getJson(path, callback) {
-  resolveSoon(callback, `${API}${path}`);
-}
-
 function fetchUser(id, callback) {
-  getJson(`/users/${id}`, callback);
+  resolveSoon(callback, `${API}/users/${id}`);
 }
 
 function fetchPostsForUser(userId, callback) {
-  getJson(`/posts?userId=${userId}`, callback);
+  resolveSoon(callback, `${API}/posts?userId=${userId}`);
 }
 
 fetchUser(1, (userError, user) => {

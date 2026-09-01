@@ -2,16 +2,12 @@ import { resolveSoonWithPromise } from './needle-utils.js';
 
 const API = 'https://jsonplaceholder.typicode.com';
 
-function getJson(path) {
-  return resolveSoonWithPromise(`${API}${path}`);
-}
-
 function fetchUser(id) {
-  return getJson(`/users/${id}`);
+  return resolveSoonWithPromise(`${API}/users/${id}`);
 }
 
 function fetchPostsForUser(userId) {
-  return getJson(`/posts?userId=${userId}`);
+  return resolveSoonWithPromise(`${API}/posts?userId=${userId}`);
 }
 
 // Each then returns the next request. The chain waits for that promise,
