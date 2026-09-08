@@ -1,15 +1,15 @@
-import needle from 'needle'
+class BankAccount {
+  #balance;
+  constructor(name, balance) {
+    this.name = name;
+    this.#balance = balance;
+  }
 
-console.log('before promise')
-const prom = new Promise((resolve, reject) => {
-  needle.get('https://jsonplaceholder.typicode.com/users/1', (error, resp, body) => {
-    if (error) {
-      reject(error)
-    } else {
-      resolve(body)
-    }
-  })
-})
-const body = await prom
-console.log('body', body)
-console.log('after promise')
+  get balance() {
+    return this.#balance;
+  }
+}
+
+const b1 = new BankAccount('dg', 2000)
+console.log(b1.name)
+console.log(b1.balance)
