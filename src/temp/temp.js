@@ -1,8 +1,7 @@
-function BankAccount (name, balance) {
-  this.name = name;
-  this.balance = balance;
+const BankAccount = {
+  name: 'dd',
+  balance: 20000,
+  deposit(money) {
+    this.balance + money
+  }
 }
-
-const b1 = new BankAccount('dd', 20000)
-console.log(b1.balance)
-console.log(b1.name)
