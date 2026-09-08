@@ -1,15 +1,8 @@
-class BankAccount {
-  #balance;
-  constructor(name, balance) {
-    this.name = name;
-    this.#balance = balance;
-  }
-
-  get balance() {
-    return this.#balance;
-  }
+function BankAccount (name, balance) {
+  this.name = name;
+  this.balance = balance;
 }
 
-const b1 = new BankAccount('dg', 2000)
-console.log(b1.name)
+const b1 = new BankAccount('dd', 20000)
 console.log(b1.balance)
+console.log(b1.name)
