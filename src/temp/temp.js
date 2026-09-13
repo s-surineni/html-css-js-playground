@@ -25,14 +25,16 @@ function BankAccount(name, initBalance){
     balance += amount;
   };
 
-  get balance() {
-    return balance;
-  }
+  Object.defineProperty(this, 'balance', {
+    get: function() {
+      return balance;
+    }
+  });
 }
 
 const b1 = new BankAccount('dd', 1000)
 console.log(b1.balance)
 b1.deposit(1000)
 console.log(b1.balance)
-b1.balance = 'bal'
+// b1.balance = 'bal'
 console.log(b1.balance)
