@@ -17,9 +17,9 @@
 // console.log(b1.balance)
 
 
-function BankAccount(name, balance){
+function BankAccount(name, initBalance){
   this.name = name;
-  this.balance = balance;
+  let balance = initBalance;
 
   this.deposit = function deposit(amount) {
     this.balance += amount;
@@ -29,4 +29,6 @@ function BankAccount(name, balance){
 const b1 = new BankAccount('dd', 1000)
 console.log(b1.balance)
 b1.deposit(1000)
+console.log(b1.balance)
+b1.balance = 'bal'
 console.log(b1.balance)
