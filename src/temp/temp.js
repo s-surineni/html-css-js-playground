@@ -22,8 +22,12 @@ function BankAccount(name, initBalance){
   let balance = initBalance;
 
   this.deposit = function deposit(amount) {
-    this.balance += amount;
+    balance += amount;
   };
+
+  get balance() {
+    return balance;
+  }
 }
 
 const b1 = new BankAccount('dd', 1000)
