@@ -1,5 +1,6 @@
 class BankAccount {
-  // Instance field: every BankAccount object gets its own "account" type value.
+  // Instance field (not static): although declared in the class, every BankAccount
+  // object gets its own separate `type` property with the value "account".
   type = 'account';
 
   constructor(accountHolder, accountNumber) {
