@@ -2,6 +2,7 @@ class BankAccount {
   // Instance field (not static): although declared in the class, every BankAccount
   // object gets its own separate `type` property with the value "account".
   type = 'account';
+  // Class fields are declared without `let` or `var`; `#` makes this field private.
   #balance = 0;
 
   constructor(accountHolder, accountNumber) {
