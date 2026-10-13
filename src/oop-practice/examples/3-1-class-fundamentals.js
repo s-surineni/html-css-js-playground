@@ -2,7 +2,7 @@ class BankAccount {
   // Instance field (not static): although declared in the class, every BankAccount
   // object gets its own separate `type` property with the value "account".
   type = 'account';
-  balance = 0;
+  #balance = 0;
 
   constructor(accountHolder, accountNumber) {
     this.accountHolder = accountHolder;
@@ -11,6 +11,14 @@ class BankAccount {
 
   getHolderName() {
     return this.accountHolder;
+  }
+
+  getBalance() {
+    return this.#balance;
+  }
+
+  deposit(amount) {
+    this.#balance += amount;
   }
 }
 
